@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
@@ -1948,7 +1948,7 @@ select.form-input {
                         <button class="btn-secondary" onclick="document.getElementById('import-file').click()" title="กู้คืนข้อมูลจากไฟล์สำรอง">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 6px; vertical-align: middle;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>นำเข้าข้อมูล
                         </button>
-                        <input type="file" id="import-file" style="display: none;" onchange="importData(event)">
+                        <input type="file" id="import-file" accept=".json,.csv" style="display: none;" onchange="importData(event)">
                     </div>
                 </div>
 
@@ -3167,25 +3167,95 @@ window.exportData = function() {
     showToast("ส่งออกไฟล์สำรอง JSON สำเร็จ!", "success");
 };
 
-// Import data from JSON
+// Import data from JSON or CSV
 window.importData = async function(event) {
-    const file = event.target.files[0];
+    const inputEl = event.target;
+    const file = inputEl.files && inputEl.files[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onload = async function(e) {
         try {
-            const importedState = JSON.parse(e.target.result);
-            if (importedState.profile && importedState.logs) {
-                state = importedState;
-                await saveState();
-                initApp();
-                showToast("นำเข้าข้อมูลเรียบร้อยแล้ว!", "success");
-            } else {
-                showToast("รูปแบบไฟล์สำรองไม่ถูกต้อง", "error");
+            const fileContent = (e.target.result || "").trim();
+            let importedCount = 0;
+
+            // Handle JSON format
+            if (file.name.endsWith('.json') || fileContent.startsWith('{') || fileContent.startsWith('[')) {
+                const importedData = JSON.parse(fileContent);
+
+                if (Array.isArray(importedData)) {
+                    state.logs = importedData;
+                    importedCount = importedData.length;
+                } else if (importedData.logs && Array.isArray(importedData.logs)) {
+                    state.logs = importedData.logs;
+                    if (importedData.profile) {
+                        state.profile = Object.assign(state.profile, importedData.profile);
+                    }
+                    importedCount = importedData.logs.length;
+                } else if (importedData.profile) {
+                    state.profile = Object.assign(state.profile, importedData.profile);
+                    importedCount = 1;
+                } else {
+                    showToast("ไม่พบข้อมูลสถิติในไฟล์ JSON นี้", "error");
+                    inputEl.value = '';
+                    return;
+                }
             }
+            // Handle CSV format
+            else if (file.name.endsWith('.csv') || fileContent.includes(',')) {
+                const lines = fileContent.split(/\r?\n/).filter(line => line.trim().length > 0);
+                if (lines.length > 1) {
+                    const parsedLogs = [];
+                    for (let i = 1; i < lines.length; i++) {
+                        const cols = lines[i].split(',').map(c => c.trim().replace(/^["']|["']$/g, ''));
+                        if (cols.length >= 2 && cols[0] && !isNaN(parseFloat(cols[1]))) {
+                            parsedLogs.push({
+                                id: Date.now() - (lines.length - i) * 86400000,
+                                date: cols[0],
+                                weight: parseFloat(cols[1]),
+                                waist: parseFloat(cols[2]) || 0,
+                                chest: parseFloat(cols[3]) || 0,
+                                hips: parseFloat(cols[4]) || 0,
+                                armLeft: parseFloat(cols[5]) || 0,
+                                armRight: parseFloat(cols[6]) || 0,
+                                thighLeft: parseFloat(cols[7]) || 0,
+                                thighRight: parseFloat(cols[8]) || 0,
+                                photo: null,
+                                tags: cols[9] ? cols[9].split(';').map(t => t.trim()).filter(Boolean) : [],
+                                notes: cols[10] || ''
+                            });
+                        }
+                    }
+                    if (parsedLogs.length > 0) {
+                        state.logs = parsedLogs.sort((a, b) => new Date(a.date) - new Date(b.date));
+                        importedCount = parsedLogs.length;
+                    } else {
+                        showToast("ไม่สามารถอ่านข้อมูลจากไฟล์ CSV ได้", "error");
+                        inputEl.value = '';
+                        return;
+                    }
+                } else {
+                    showToast("ไฟล์ CSV ไม่มีข้อมูลบันทึก", "error");
+                    inputEl.value = '';
+                    return;
+                }
+            } else {
+                showToast("กรุณาเลือกไฟล์ .json หรือ .csv", "error");
+                inputEl.value = '';
+                return;
+            }
+
+            // Save state, update forms and all UI elements
+            await saveState();
+            initApp();
+            updateUI();
+            inputEl.value = '';
+            showToast(`นำเข้าข้อมูลสำเร็จ ${importedCount} รายการ! 🎉`, "success");
+
         } catch (err) {
-            showToast("เกิดข้อผิดพลาดในการอ่านไฟล์สำรอง", "error");
+            console.error("Import Error:", err);
+            showToast("เกิดข้อผิดพลาดในการอ่านไฟล์สำรอง: " + err.message, "error");
+            inputEl.value = '';
         }
     };
     reader.readAsText(file);
