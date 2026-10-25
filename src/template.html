@@ -664,58 +664,48 @@
                 </div>
             </section>
 
-            <!-- Tab: Photos (Before & After Slider) -->
+            <!-- Tab: Photos (Photo & Body Measurement Comparison Card) -->
             <section id="photos" class="tab-content">
                 <div class="content-header">
                     <div class="header-title">
-                        <h1>เปรียบเทียบรูปภาพสัดส่วน (Before & After)</h1>
-                        <p>ลากเลื่อนเพื่อเปรียบเทียบความเปลี่ยนแปลงของรูปร่างคุณ</p>
+                        <h1>เปรียบเทียบรูปภาพ & การ์ดสัดส่วนร่างกาย</h1>
+                        <p>ดูรูปภาพ 3 มุมมอง (หน้า, ข้าง, หลัง) พร้อมสัดส่วน และส่งออกเป็นการ์ดภาพ (PNG)</p>
+                    </div>
+                    <div class="header-btn-group">
+                        <button type="button" class="btn-primary" onclick="downloadComparisonCard()" title="ดาวน์โหลดการ์ดภาพเปรียบเทียบรูปและสัดส่วน">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            📥 ดาวน์โหลดการ์ดภาพ (PNG)
+                        </button>
                     </div>
                 </div>
 
-                <!-- Comparison Split Viewer -->
                 <div class="card-container" id="photo-comparison-card">
-                    <!-- Angle Selector Pills for Comparison -->
-                    <div class="angle-pill-group" id="compare-angle-pills">
-                        <button type="button" class="filter-pill active" data-angle="front" onclick="setComparisonAngle('front')">👤 ด้านหน้า (Front)</button>
-                        <button type="button" class="filter-pill" data-angle="side" onclick="setComparisonAngle('side')">🧍 ด้านข้าง (Side)</button>
-                        <button type="button" class="filter-pill" data-angle="back" onclick="setComparisonAngle('back')">🚶 ด้านหลัง (Back)</button>
-                    </div>
-
                     <div class="compare-selectors">
                         <div class="compare-select-item">
                             <label for="before-photo-select">👈 รูปเริ่มต้น (Before):</label>
-                            <select id="before-photo-select" class="form-input" onchange="renderComparisonSlider()"></select>
+                            <select id="before-photo-select" class="form-input" onchange="renderComparisonCard()"></select>
                         </div>
                         <div class="compare-select-item">
-                            <label for="after-photo-select">👉 รูปปัจจุบัน (After):</label>
-                            <select id="after-photo-select" class="form-input" onchange="renderComparisonSlider()"></select>
+                            <label for="after-photo-select">👉 รูปเปรียบเทียบ (After):</label>
+                            <select id="after-photo-select" class="form-input" onchange="renderComparisonCard()"></select>
                         </div>
                     </div>
 
-                    <!-- Interactive Slider Box -->
-                    <div class="comparison-container" id="comparison-container">
-                        <div class="img-wrapper before-img-wrapper">
-                            <img id="before-img" src="" alt="Before Photo">
-                            <div class="compare-tag before-tag" id="before-tag">Before</div>
-                        </div>
-                        <div class="img-wrapper after-img-wrapper" id="after-img-wrapper">
-                            <img id="after-img" src="" alt="After Photo">
-                            <div class="compare-tag after-tag" id="after-tag">After</div>
-                        </div>
-                        <input type="range" min="0" max="100" value="50" class="comparison-slider-handle" id="slider-range-input" oninput="handleSliderDrag(this.value)">
-                        <div class="slider-divider-line" id="slider-divider-line">
-                            <div class="slider-divider-thumb">↔</div>
-                        </div>
+                    <!-- Visual Comparison Card (Live Rendered in DOM) -->
+                    <div class="comparison-card-container" id="comparison-card-preview">
+                        <!-- Populated dynamically by renderComparisonCard() -->
                     </div>
 
                     <div id="no-photo-alert" style="display: none; text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
                         <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📷</div>
                         <h3>ยังไม่มีรูปภาพที่บันทึกไว้</h3>
-                        <p style="margin-top: 0.5rem;">คุณสามารถอัปโหลดรูปภาพสัดส่วนได้ในหน้า <strong>"บันทึกสัดส่วน"</strong> เมื่อเริ่มบันทึกครั้งแรกครับ</p>
+                        <p style="margin-top: 0.5rem;">คุณสามารถอัปโหลดรูปภาพ 3 มุมมองได้ในหน้า <strong>"บันทึกสัดส่วน"</strong> เมื่อเริ่มบันทึกครั้งแรกครับ</p>
                         <button class="btn-primary" style="margin-top: 1rem;" onclick="switchTab('log-entry')">ไปที่หน้าบันทึกสัดส่วน</button>
                     </div>
                 </div>
+
+                <!-- Hidden canvas for high-res PNG export -->
+                <canvas id="comparison-export-canvas" width="1200" height="1350" style="display: none;"></canvas>
 
                 <!-- Photo Timeline Gallery -->
                 <div class="card-container" style="margin-top: 2rem;">
