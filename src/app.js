@@ -1466,6 +1466,24 @@ window.viewPhotoFullscreen = function(photoUrl) {
     w.document.write(`<body style="margin:0;background:#090d16;display:flex;align-items:center;justify-content:center;height:100vh;"><img src="${photoUrl}" style="max-width:95vw;max-height:95vh;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.8);"></body>`);
 };
 
+// Change handler when Current Log selector changes
+window.onAfterLogChange = function() {
+    const beforeSelect = document.getElementById("before-photo-select");
+    const afterSelect = document.getElementById("after-photo-select");
+    if (!beforeSelect || !afterSelect) return;
+
+    const currentId = afterSelect.value;
+    const sortedLogs = [...state.logs].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const currIdx = sortedLogs.findIndex(l => l.id.toString() === currentId);
+
+    if (currIdx > 0) {
+        beforeSelect.value = sortedLogs[currIdx - 1].id.toString();
+    } else {
+        beforeSelect.value = "profile_start";
+    }
+    renderComparisonCard();
+};
+
 // Visual Comparison & Transformation Card Rendering (3 Angles + Body Measurements)
 function renderComparisonCard() {
     const container = document.getElementById("comparison-card-preview");
@@ -1473,12 +1491,14 @@ function renderComparisonCard() {
     const beforeSelect = document.getElementById("before-photo-select");
     const afterSelect = document.getElementById("after-photo-select");
 
-    const logsWithPhotos = state.logs.filter(l => !!(l.photoFront || l.photoSide || l.photoBack || l.photo || l.photos?.front || l.photos?.side || l.photos?.back))
-        .sort((a, b) => new Date(a.date) - new Date(b.date));
+    const sortedLogs = [...state.logs].sort((a, b) => new Date(a.date) - new Date(b.date));
 
-    if (logsWithPhotos.length === 0) {
+    if (sortedLogs.length === 0) {
         if (container) container.innerHTML = "";
-        if (noPhotoAlert) noPhotoAlert.style.display = "block";
+        if (noPhotoAlert) {
+            noPhotoAlert.style.display = "block";
+            noPhotoAlert.innerHTML = `<span>📷 ยังไม่มีประวัติการบันทึก กรุณาเพิ่มบันทึกสัดส่วนหรือรูปถ่ายที่แท็บ "บันทึกข้อมูล"</span>`;
+        }
         const selectors = document.querySelector(".compare-selectors");
         if (selectors) selectors.style.display = "none";
         return;
@@ -1491,54 +1511,85 @@ function renderComparisonCard() {
     const prevBeforeVal = beforeSelect.value;
     const prevAfterVal = afterSelect.value;
 
-    const selectHtml = logsWithPhotos.map(l => {
+    const afterOptionsHtml = sortedLogs.map(l => {
         const d = new Date(l.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
-        return `<option value="${l.id}">${d} (${l.weight} กก.)</option>`;
+        const hasPhoto = !!(l.photoFront || l.photoSide || l.photoBack || l.photo || l.photos?.front || l.photos?.side || l.photos?.back);
+        return `<option value="${l.id}">${d} (${l.weight} กก.)${hasPhoto ? ' 📸' : ''}</option>`;
     }).join("");
+    afterSelect.innerHTML = afterOptionsHtml;
 
-    beforeSelect.innerHTML = selectHtml;
-    afterSelect.innerHTML = selectHtml;
+    const startWeight = parseFloat(state.profile.startWeight || 75.0);
+    const beforeOptionsHtml = `
+        <option value="profile_start">🏁 วันเริ่มต้นโปรไฟล์ (${startWeight} กก.)</option>
+        ${afterOptionsHtml}
+    `;
+    beforeSelect.innerHTML = beforeOptionsHtml;
 
-    if (prevBeforeVal && logsWithPhotos.some(l => l.id.toString() === prevBeforeVal)) {
-        beforeSelect.value = prevBeforeVal;
-    } else {
-        beforeSelect.value = logsWithPhotos[0].id;
-    }
-
-    if (prevAfterVal && logsWithPhotos.some(l => l.id.toString() === prevAfterVal)) {
+    if (prevAfterVal && sortedLogs.some(l => l.id.toString() === prevAfterVal)) {
         afterSelect.value = prevAfterVal;
     } else {
-        afterSelect.value = logsWithPhotos[logsWithPhotos.length - 1].id;
+        afterSelect.value = sortedLogs[sortedLogs.length - 1].id.toString();
     }
 
-    const beforeLog = logsWithPhotos.find(l => l.id.toString() === beforeSelect.value) || logsWithPhotos[0];
-    const afterLog = logsWithPhotos.find(l => l.id.toString() === afterSelect.value) || logsWithPhotos[logsWithPhotos.length - 1];
+    if (prevBeforeVal && (prevBeforeVal === 'profile_start' || sortedLogs.some(l => l.id.toString() === prevBeforeVal))) {
+        beforeSelect.value = prevBeforeVal;
+    } else {
+        const currIdx = sortedLogs.findIndex(l => l.id.toString() === afterSelect.value);
+        if (currIdx > 0) {
+            beforeSelect.value = sortedLogs[currIdx - 1].id.toString();
+        } else {
+            beforeSelect.value = "profile_start";
+        }
+    }
 
-    const isSameDay = (beforeLog.id === afterLog.id);
+    const afterLog = sortedLogs.find(l => l.id.toString() === afterSelect.value) || sortedLogs[sortedLogs.length - 1];
+    let beforeLog;
+    if (beforeSelect.value === 'profile_start') {
+        beforeLog = {
+            id: 'profile_start',
+            date: state.profile.startDate || (afterLog ? new Date(new Date(afterLog.date).getTime() - 86400000 * 7).toISOString() : new Date().toISOString()),
+            weight: parseFloat(state.profile.startWeight || 75.0),
+            chest: null,
+            waist: null,
+            hips: null,
+            neck: state.profile.neck || null,
+            armLeft: null,
+            armRight: null,
+            thighLeft: null,
+            thighRight: null,
+            isProfileStart: true
+        };
+    } else {
+        beforeLog = sortedLogs.find(l => l.id.toString() === beforeSelect.value) || sortedLogs[0];
+    }
+
     const mUnit = state.profile.unitSystem === 'metric' ? 'ซม.' : 'นิ้ว';
 
-    // Format Dates
-    const bDate = new Date(beforeLog.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
-    const aDate = new Date(afterLog.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+    // Dates
+    const bDate = beforeLog.isProfileStart
+        ? `วันเริ่มต้นโปรไฟล์ (${state.profile.startDate ? new Date(state.profile.startDate).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' }) : 'ค่าเริ่มต้น'})`
+        : new Date(beforeLog.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+    const bDateShort = beforeLog.isProfileStart
+        ? 'เริ่มต้น'
+        : new Date(beforeLog.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short' });
 
-    // Weight Difference
+    const aDate = new Date(afterLog.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+    const aDateShort = new Date(afterLog.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short' });
+
+    // Weight difference
     const weightDiff = (afterLog.weight - beforeLog.weight).toFixed(1);
     let heroPillHtml = "";
-    if (!isSameDay) {
-        if (parseFloat(weightDiff) < 0) {
-            heroPillHtml = `<div class="comp-hero-pill">📉 ลดลง ${Math.abs(parseFloat(weightDiff))} กก. 🎉</div>`;
-        } else if (parseFloat(weightDiff) > 0) {
-            heroPillHtml = `<div class="comp-hero-pill" style="border-color:#f59e0b;color:#f59e0b;background:rgba(245,158,11,0.15)">📈 เพิ่มขึ้น +${weightDiff} กก.</div>`;
-        } else {
-            heroPillHtml = `<div class="comp-hero-pill" style="border-color:#94a3b8;color:#94a3b8;background:rgba(255,255,255,0.05)">➖ น้ำหนักคงที่ (${afterLog.weight} กก.)</div>`;
-        }
+    if (parseFloat(weightDiff) < 0) {
+        heroPillHtml = `<div class="comp-hero-pill">📉 ลดลง ${Math.abs(parseFloat(weightDiff))} กก. 🎉</div>`;
+    } else if (parseFloat(weightDiff) > 0) {
+        heroPillHtml = `<div class="comp-hero-pill" style="border-color:#f59e0b;color:#f59e0b;background:rgba(245,158,11,0.15)">📈 เพิ่มขึ้น +${weightDiff} กก.</div>`;
     } else {
-        heroPillHtml = `<div class="comp-hero-pill">⚖️ น้ำหนัก ${afterLog.weight} กก.</div>`;
+        heroPillHtml = `<div class="comp-hero-pill" style="border-color:#94a3b8;color:#94a3b8;background:rgba(255,255,255,0.05)">➖ น้ำหนักคงที่ (${afterLog.weight} กก.)</div>`;
     }
 
-    // Helper to format diff badge
-    function formatDiff(curVal, prevVal, unit, lowerIsBetter = true) {
-        if (isSameDay || !prevVal || !curVal) return "";
+    // Helper: diff badge
+    function formatDiffBadge(curVal, prevVal, unit, lowerIsBetter = true) {
+        if (curVal === null || curVal === undefined || prevVal === null || prevVal === undefined) return "";
         const diff = curVal - prevVal;
         if (Math.abs(diff) < 0.05) {
             return `<span class="comp-diff-badge comp-diff-zero">คงที่</span>`;
@@ -1549,14 +1600,14 @@ function renderComparisonCard() {
         return `<span class="comp-diff-badge ${cls}">${diff < 0 ? '▼' : '▲'} ${sign} ${unit}</span>`;
     }
 
-    // Helper to render photo frame
-    function renderPhotoFrame(src, label, badgeClass) {
-        if (!src) {
+    // Helper: photo frame
+    function renderPhotoFrame(src, label, badgeClass, isMissing = false, subInfo = '') {
+        if (!src || isMissing) {
             return `
                 <div class="comp-empty-frame">
                     <span style="font-size:1.6rem;">📷</span>
-                    <span>ยังไม่มีรูป</span>
-                    <small style="color:var(--text-muted);font-size:0.7rem;">${label}</small>
+                    <span style="font-weight:600;">${label}</span>
+                    ${subInfo ? `<small style="color:var(--text-muted);font-size:0.75rem;">${subInfo}</small>` : ''}
                 </div>
             `;
         }
@@ -1568,7 +1619,7 @@ function renderComparisonCard() {
         `;
     }
 
-    // 3 Angles: front, side, back
+    // 3 Angles
     const angles = [
         { key: 'front', icon: '👤', title: '1. ด้านหน้า (Front)' },
         { key: 'side', icon: '🧍', title: '2. ด้านข้าง (Side)' },
@@ -1585,28 +1636,22 @@ function renderComparisonCard() {
                 <div class="comp-angle-header">
                     <span>${ang.icon} ${ang.title}</span>
                 </div>
-        `;
-
-        if (isSameDay) {
-            photosHtml += `
-                <div class="comp-photo-single">
-                    ${renderPhotoFrame(aPhoto, `${aDate} • ${afterLog.weight} กก.`, 'comp-badge-after')}
-                </div>
-            `;
-        } else {
-            photosHtml += `
                 <div class="comp-photo-pair">
-                    ${renderPhotoFrame(bPhoto, `Before: ${beforeLog.weight} กก.`, 'comp-badge-before')}
-                    ${renderPhotoFrame(aPhoto, `After: ${afterLog.weight} กก.`, 'comp-badge-after')}
+                    ${bPhoto 
+                        ? renderPhotoFrame(bPhoto, `ครั้งก่อน: ${beforeLog.weight} กก.`, 'comp-badge-before')
+                        : renderPhotoFrame(null, 'ครั้งก่อน (ไม่มีรูป)', '', true, `${bDateShort} • ${beforeLog.weight} กก.`)
+                    }
+                    ${aPhoto 
+                        ? renderPhotoFrame(aPhoto, `ครั้งนี้: ${afterLog.weight} กก.`, 'comp-badge-after')
+                        : renderPhotoFrame(null, 'ครั้งนี้ (ไม่มีรูป)', '', true, `${aDateShort} • ${afterLog.weight} กก.`)
+                    }
                 </div>
-            `;
-        }
-
-        photosHtml += `</div>`;
+            </div>
+        `;
     });
     photosHtml += `</div>`;
 
-    // Measurements Data
+    // Measurements
     const bArm = (beforeLog.armLeft || beforeLog.armRight) ? `${beforeLog.armLeft || 0} / ${beforeLog.armRight || 0}` : null;
     const aArm = (afterLog.armLeft || afterLog.armRight) ? `${afterLog.armLeft || 0} / ${afterLog.armRight || 0}` : null;
     const bThigh = (beforeLog.thighLeft || beforeLog.thighRight) ? `${beforeLog.thighLeft || 0} / ${beforeLog.thighRight || 0}` : null;
@@ -1619,51 +1664,68 @@ function renderComparisonCard() {
         {
             icon: '⚖️',
             label: 'น้ำหนักตัว',
-            cur: `${afterLog.weight.toFixed(1)} กก.`,
-            prev: !isSameDay ? `${beforeLog.weight.toFixed(1)} กก.` : null,
-            diff: formatDiff(afterLog.weight, beforeLog.weight, 'กก.', true)
+            curVal: `${afterLog.weight.toFixed(1)} กก.`,
+            prevVal: `${beforeLog.weight.toFixed(1)} กก.`,
+            diffBadge: formatDiffBadge(afterLog.weight, beforeLog.weight, 'กก.', true)
         },
         {
             icon: '📏',
             label: 'รอบอก',
-            cur: afterLog.chest ? `${afterLog.chest.toFixed(1)} ${mUnit}` : '--',
-            prev: (!isSameDay && beforeLog.chest) ? `${beforeLog.chest.toFixed(1)} ${mUnit}` : null,
-            diff: formatDiff(afterLog.chest, beforeLog.chest, mUnit, true)
+            curVal: afterLog.chest ? `${afterLog.chest.toFixed(1)} ${mUnit}` : '--',
+            prevVal: beforeLog.chest ? `${beforeLog.chest.toFixed(1)} ${mUnit}` : '--',
+            diffBadge: (afterLog.chest && beforeLog.chest) ? formatDiffBadge(afterLog.chest, beforeLog.chest, mUnit, true) : ''
         },
         {
             icon: '⏳',
             label: 'รอบเอว',
-            cur: afterLog.waist ? `${afterLog.waist.toFixed(1)} ${mUnit}` : '--',
-            prev: (!isSameDay && beforeLog.waist) ? `${beforeLog.waist.toFixed(1)} ${mUnit}` : null,
-            diff: formatDiff(afterLog.waist, beforeLog.waist, mUnit, true)
+            curVal: afterLog.waist ? `${afterLog.waist.toFixed(1)} ${mUnit}` : '--',
+            prevVal: beforeLog.waist ? `${beforeLog.waist.toFixed(1)} ${mUnit}` : '--',
+            diffBadge: (afterLog.waist && beforeLog.waist) ? formatDiffBadge(afterLog.waist, beforeLog.waist, mUnit, true) : ''
         },
         {
             icon: '💪',
             label: 'รอบแขน (ซ้าย / ขวา)',
-            cur: aArm ? `${aArm} ${mUnit}` : '--',
-            prev: (!isSameDay && bArm) ? `${bArm} ${mUnit}` : null,
-            diff: formatDiff(afterLog.armLeft || afterLog.armRight, beforeLog.armLeft || beforeLog.armRight, mUnit, true)
+            curVal: aArm ? `${aArm} ${mUnit}` : '--',
+            prevVal: bArm ? `${bArm} ${mUnit}` : '--',
+            diffBadge: (afterLog.armLeft && beforeLog.armLeft) ? formatDiffBadge(afterLog.armLeft, beforeLog.armLeft, mUnit, true) : ''
         },
         {
             icon: '🦵',
             label: 'รอบขา (ซ้าย / ขวา)',
-            cur: aThigh ? `${aThigh} ${mUnit}` : '--',
-            prev: (!isSameDay && bThigh) ? `${bThigh} ${mUnit}` : null,
-            diff: formatDiff(afterLog.thighLeft || afterLog.thighRight, beforeLog.thighLeft || beforeLog.thighRight, mUnit, true)
+            curVal: aThigh ? `${aThigh} ${mUnit}` : '--',
+            prevVal: bThigh ? `${bThigh} ${mUnit}` : '--',
+            diffBadge: (afterLog.thighLeft && beforeLog.thighLeft) ? formatDiffBadge(afterLog.thighLeft, beforeLog.thighLeft, mUnit, true) : ''
         },
         {
             icon: '🧬',
-            label: 'สะโพก / % ไขมัน',
-            cur: `${afterLog.hips ? `${afterLog.hips.toFixed(1)} ${mUnit}` : '--'} ${bfAfter ? `(${bfAfter}%)` : ''}`,
-            prev: (!isSameDay && (beforeLog.hips || bfBefore)) ? `${beforeLog.hips ? `${beforeLog.hips.toFixed(1)} ${mUnit}` : ''} ${bfBefore ? `(${bfBefore}%)` : ''}` : null,
-            diff: formatDiff(afterLog.hips, beforeLog.hips, mUnit, true)
+            label: 'รอบสะโพก',
+            curVal: afterLog.hips ? `${afterLog.hips.toFixed(1)} ${mUnit}` : '--',
+            prevVal: beforeLog.hips ? `${beforeLog.hips.toFixed(1)} ${mUnit}` : '--',
+            diffBadge: (afterLog.hips && beforeLog.hips) ? formatDiffBadge(afterLog.hips, beforeLog.hips, mUnit, true) : ''
+        },
+        {
+            icon: '🔥',
+            label: '% ไขมันในร่างกาย',
+            curVal: bfAfter ? `${bfAfter}%` : '--',
+            prevVal: bfBefore ? `${bfBefore}%` : '--',
+            diffBadge: (bfAfter && bfBefore) ? formatDiffBadge(bfAfter, bfBefore, '%', true) : ''
         }
     ];
+
+    if (afterLog.neck || beforeLog.neck) {
+        metrics.push({
+            icon: '🧣',
+            label: 'รอบคอ',
+            curVal: afterLog.neck ? `${afterLog.neck.toFixed(1)} ${mUnit}` : '--',
+            prevVal: beforeLog.neck ? `${beforeLog.neck.toFixed(1)} ${mUnit}` : '--',
+            diffBadge: (afterLog.neck && beforeLog.neck) ? formatDiffBadge(afterLog.neck, beforeLog.neck, mUnit, true) : ''
+        });
+    }
 
     let metricsHtml = `
         <div class="comp-metrics-section">
             <div class="comp-metrics-title">
-                <span>📏 รายละเอียดสัดส่วนร่างกาย (Body Measurements)</span>
+                <span>📏 รายละเอียดสัดส่วนร่างกาย (Body Measurements: ครั้งก่อน ➔ ครั้งนี้)</span>
             </div>
             <div class="comp-metrics-grid">
     `;
@@ -1671,12 +1733,21 @@ function renderComparisonCard() {
     metrics.forEach(m => {
         metricsHtml += `
             <div class="comp-metric-card">
-                <span class="comp-metric-label">${m.icon} ${m.label}</span>
-                <div class="comp-metric-values">
-                    <span class="comp-metric-cur">${m.cur}</span>
-                    ${m.prev ? `<span class="comp-metric-prev">${m.prev}</span>` : ''}
+                <div class="comp-metric-top">
+                    <span class="comp-metric-label">${m.icon} ${m.label}</span>
+                    ${m.diffBadge || ''}
                 </div>
-                ${m.diff || ''}
+                <div class="comp-metric-comparison-row">
+                    <div class="comp-metric-data-col">
+                        <span class="comp-metric-tag">ครั้งก่อน (${bDateShort})</span>
+                        <span class="comp-metric-num">${m.prevVal}</span>
+                    </div>
+                    <span class="comp-metric-arrow">➔</span>
+                    <div class="comp-metric-data-col" style="text-align: right;">
+                        <span class="comp-metric-tag">ครั้งนี้ (${aDateShort})</span>
+                        <span class="comp-metric-num highlight">${m.curVal}</span>
+                    </div>
+                </div>
             </div>
         `;
     });
@@ -1691,7 +1762,7 @@ function renderComparisonCard() {
             <div class="comp-header">
                 <div class="comp-title-group">
                     <h2>✨ BodyFit Transformation Card</h2>
-                    <p>${state.profile.name || 'ผู้ใช้งาน'} • ${isSameDay ? bDate : `${bDate} ➔ ${aDate}`}</p>
+                    <p>${state.profile.name || 'ผู้ใช้งาน'} • ${bDate} ➔ ${aDate}</p>
                 </div>
                 ${heroPillHtml}
             </div>
@@ -1716,12 +1787,32 @@ window.downloadComparisonCard = async function() {
     const afterSelect = document.getElementById("after-photo-select");
     if (!beforeSelect || !afterSelect) return;
 
-    const beforeLog = state.logs.find(l => l.id.toString() === beforeSelect.value);
-    const afterLog = state.logs.find(l => l.id.toString() === afterSelect.value);
+    const sortedLogs = [...state.logs].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const afterLog = sortedLogs.find(l => l.id.toString() === afterSelect.value) || sortedLogs[sortedLogs.length - 1];
 
-    if (!beforeLog || !afterLog) {
+    if (!afterLog) {
         showToast("ไม่พบข้อมูลสัดส่วนเพื่อส่งออก", "error");
         return;
+    }
+
+    let beforeLog;
+    if (beforeSelect.value === 'profile_start') {
+        beforeLog = {
+            id: 'profile_start',
+            date: state.profile.startDate || (afterLog ? new Date(new Date(afterLog.date).getTime() - 86400000 * 7).toISOString() : new Date().toISOString()),
+            weight: parseFloat(state.profile.startWeight || 75.0),
+            chest: null,
+            waist: null,
+            hips: null,
+            neck: state.profile.neck || null,
+            armLeft: null,
+            armRight: null,
+            thighLeft: null,
+            thighRight: null,
+            isProfileStart: true
+        };
+    } else {
+        beforeLog = sortedLogs.find(l => l.id.toString() === beforeSelect.value) || sortedLogs[0];
     }
 
     showToast("กำลังสร้างการ์ดภาพเปรียบเทียบ...", "info");
@@ -1729,12 +1820,89 @@ window.downloadComparisonCard = async function() {
     const canvas = document.getElementById("comparison-export-canvas");
     if (!canvas) return;
 
-    const isSameDay = (beforeLog.id === afterLog.id);
     const mUnit = state.profile.unitSystem === 'metric' ? 'ซม.' : 'นิ้ว';
 
-    // Canvas sizing: width 1200px
+    const bDate = beforeLog.isProfileStart
+        ? `วันเริ่มต้น (${state.profile.startDate ? new Date(state.profile.startDate).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' }) : 'เริ่มต้น'})`
+        : new Date(beforeLog.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+    const bDateShort = beforeLog.isProfileStart
+        ? 'เริ่มต้น'
+        : new Date(beforeLog.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short' });
+
+    const aDate = new Date(afterLog.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+    const aDateShort = new Date(afterLog.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short' });
+
+    // Prepare metric cards
+    const bArm = (beforeLog.armLeft || beforeLog.armRight) ? `${beforeLog.armLeft || 0} / ${beforeLog.armRight || 0}` : null;
+    const aArm = (afterLog.armLeft || afterLog.armRight) ? `${afterLog.armLeft || 0} / ${afterLog.armRight || 0}` : null;
+    const bThigh = (beforeLog.thighLeft || beforeLog.thighRight) ? `${beforeLog.thighLeft || 0} / ${beforeLog.thighRight || 0}` : null;
+    const aThigh = (afterLog.thighLeft || afterLog.thighRight) ? `${afterLog.thighLeft || 0} / ${afterLog.thighRight || 0}` : null;
+
+    const bfBefore = calculateBodyFatPercentage(beforeLog);
+    const bfAfter = calculateBodyFatPercentage(afterLog);
+
+    function calcDiffPill(cur, prev, unit, lowerIsBetter = true) {
+        if (cur === null || cur === undefined || prev === null || prev === undefined) return null;
+        const diff = cur - prev;
+        if (Math.abs(diff) < 0.05) {
+            return { txt: "คงที่", color: "#94a3b8", bg: "rgba(255,255,255,0.08)", border: "rgba(255,255,255,0.2)" };
+        }
+        const isGood = lowerIsBetter ? diff < 0 : diff > 0;
+        const sign = diff > 0 ? `+${diff.toFixed(1)}` : `${diff.toFixed(1)}`;
+        return {
+            txt: `${diff < 0 ? '▼' : '▲'} ${sign} ${unit}`,
+            color: isGood ? "#34d399" : "#f43f5e",
+            bg: isGood ? "rgba(16,185,129,0.18)" : "rgba(244,63,94,0.18)",
+            border: isGood ? "rgba(16,185,129,0.4)" : "rgba(244,63,94,0.4)"
+        };
+    }
+
+    const measCards = [
+        {
+            label: "⚖️ น้ำหนักตัว",
+            cur: `${afterLog.weight.toFixed(1)} กก.`,
+            prev: `${beforeLog.weight.toFixed(1)} กก.`,
+            diff: calcDiffPill(afterLog.weight, beforeLog.weight, 'กก.', true)
+        },
+        {
+            label: "📏 รอบอก",
+            cur: afterLog.chest ? `${afterLog.chest.toFixed(1)} ${mUnit}` : "--",
+            prev: beforeLog.chest ? `${beforeLog.chest.toFixed(1)} ${mUnit}` : "--",
+            diff: (afterLog.chest && beforeLog.chest) ? calcDiffPill(afterLog.chest, beforeLog.chest, mUnit, true) : null
+        },
+        {
+            label: "⏳ รอบเอว",
+            cur: afterLog.waist ? `${afterLog.waist.toFixed(1)} ${mUnit}` : "--",
+            prev: beforeLog.waist ? `${beforeLog.waist.toFixed(1)} ${mUnit}` : "--",
+            diff: (afterLog.waist && beforeLog.waist) ? calcDiffPill(afterLog.waist, beforeLog.waist, mUnit, true) : null
+        },
+        {
+            label: "💪 รอบแขน (ซ้าย / ขวา)",
+            cur: aArm ? `${aArm} ${mUnit}` : "--",
+            prev: bArm ? `${bArm} ${mUnit}` : "--",
+            diff: (afterLog.armLeft && beforeLog.armLeft) ? calcDiffPill(afterLog.armLeft, beforeLog.armLeft, mUnit, true) : null
+        },
+        {
+            label: "🦵 รอบขา (ซ้าย / ขวา)",
+            cur: aThigh ? `${aThigh} ${mUnit}` : "--",
+            prev: bThigh ? `${bThigh} ${mUnit}` : "--",
+            diff: (afterLog.thighLeft && beforeLog.thighLeft) ? calcDiffPill(afterLog.thighLeft, beforeLog.thighLeft, mUnit, true) : null
+        },
+        {
+            label: "🧬 รอบสะโพก / % ไขมัน",
+            cur: `${afterLog.hips ? `${afterLog.hips.toFixed(1)} ${mUnit}` : '--'} ${bfAfter ? `(${bfAfter}%)` : ''}`,
+            prev: `${beforeLog.hips ? `${beforeLog.hips.toFixed(1)} ${mUnit}` : '--'} ${bfBefore ? `(${bfBefore}%)` : ''}`,
+            diff: (afterLog.hips && beforeLog.hips) ? calcDiffPill(afterLog.hips, beforeLog.hips, mUnit, true) : null
+        }
+    ];
+
+    const numRows = Math.ceil(measCards.length / 3);
+    const cardH = 104;
+    const gridY = 660;
+    const photoH = 400;
+
     canvas.width = 1200;
-    canvas.height = isSameDay ? 1160 : 1320;
+    canvas.height = gridY + numRows * (cardH + 16) + 90;
     const ctx = canvas.getContext("2d");
 
     // Helper: Rounded Rectangle
@@ -1776,13 +1944,13 @@ window.downloadComparisonCard = async function() {
     }
 
     // Helper: Draw image with object-fit: cover into rounded rect
-    function drawCover(img, x, y, w, h, r = 12) {
+    function drawCover(img, x, y, w, h, r = 12, placeholderLabel = "📷 ยังไม่มีรูป") {
         if (!img) {
             drawRoundRect(x, y, w, h, r, "rgba(255,255,255,0.02)", "rgba(255,255,255,0.08)", 1);
             ctx.fillStyle = "#64748b";
-            ctx.font = "bold 20px sans-serif";
+            ctx.font = "bold 15px sans-serif";
             ctx.textAlign = "center";
-            ctx.fillText("📷 ยังไม่มีรูป", x + w / 2, y + h / 2);
+            ctx.fillText(placeholderLabel, x + w / 2, y + h / 2);
             return;
         }
 
@@ -1819,11 +1987,10 @@ window.downloadComparisonCard = async function() {
         ctx.drawImage(img, sx, sy, sWidth, sHeight, x, y, w, h);
         ctx.restore();
 
-        // Stroke border
         drawRoundRect(x, y, w, h, r, null, "rgba(255,255,255,0.15)", 2);
     }
 
-    // Load all 6 potential images in parallel
+    // Load images
     const [bFront, aFront, bSide, aSide, bBack, aBack] = await Promise.all([
         loadImg(getLogPhoto(beforeLog, 'front')),
         loadImg(getLogPhoto(afterLog, 'front')),
@@ -1833,7 +2000,7 @@ window.downloadComparisonCard = async function() {
         loadImg(getLogPhoto(afterLog, 'back'))
     ]);
 
-    // 1. Draw Background
+    // Background
     const bgGrad = ctx.createLinearGradient(0, 0, 1200, canvas.height);
     bgGrad.addColorStop(0, "#0b1329");
     bgGrad.addColorStop(0.5, "#090d16");
@@ -1841,7 +2008,7 @@ window.downloadComparisonCard = async function() {
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, 1200, canvas.height);
 
-    // Decorative glow circles
+    // Glow
     const glow1 = ctx.createRadialGradient(200, 100, 10, 200, 100, 350);
     glow1.addColorStop(0, "rgba(168, 85, 247, 0.15)");
     glow1.addColorStop(1, "rgba(0, 0, 0, 0)");
@@ -1861,26 +2028,22 @@ window.downloadComparisonCard = async function() {
     borderGrad.addColorStop(1, "rgba(16, 185, 129, 0.6)");
     drawRoundRect(20, 20, 1160, canvas.height - 40, 24, null, borderGrad, 3);
 
-    // 2. Header
-    // Logo Icon Box
-    drawRoundRect(55, 55, 60, 60, 16, "linear-gradient(135deg, #a855f7, #06b6d4)", null);
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 28px sans-serif";
+    // Header Logo Icon Box
+    drawRoundRect(55, 55, 60, 60, 16, "#1e293b", "rgba(168,85,247,0.5)", 2);
+    ctx.fillStyle = "#38bdf8";
+    ctx.font = "bold 26px sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("BF", 85, 96);
+    ctx.fillText("BF", 85, 94);
 
     // Title & Subtitle
     ctx.textAlign = "left";
     ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 32px sans-serif";
+    ctx.font = "bold 30px sans-serif";
     ctx.fillText("BodyFit Transformation Card", 130, 80);
 
-    const bDate = new Date(beforeLog.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
-    const aDate = new Date(afterLog.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
-
     ctx.fillStyle = "#94a3b8";
-    ctx.font = "18px sans-serif";
-    const dateRangeStr = isSameDay ? `${state.profile.name || 'ผู้ใช้งาน'} • ${bDate}` : `${state.profile.name || 'ผู้ใช้งาน'} • ${bDate} ➔ ${aDate}`;
+    ctx.font = "17px sans-serif";
+    const dateRangeStr = `${state.profile.name || 'ผู้ใช้งาน'} • ${bDate} ➔ ${aDate}`;
     ctx.fillText(dateRangeStr, 130, 108);
 
     // Hero Pill (Right aligned)
@@ -1891,45 +2054,42 @@ window.downloadComparisonCard = async function() {
     let pillColor = "#34d399";
     let pillBorder = "rgba(16, 185, 129, 0.4)";
 
-    if (!isSameDay) {
-        if (parseFloat(weightDiff) < 0) {
-            pillText = `📉 ลดลง ${Math.abs(parseFloat(weightDiff))} กก. 🎉`;
-            pillBg = "rgba(16, 185, 129, 0.2)";
-            pillColor = "#34d399";
-            pillBorder = "rgba(16, 185, 129, 0.5)";
-        } else if (parseFloat(weightDiff) > 0) {
-            pillText = `📈 เพิ่มขึ้น +${weightDiff} กก.`;
-            pillBg = "rgba(245, 158, 11, 0.2)";
-            pillColor = "#fbbf24";
-            pillBorder = "rgba(245, 158, 11, 0.5)";
-        } else {
-            pillText = `➖ น้ำหนักคงที่ (${afterLog.weight} กก.)`;
-            pillBg = "rgba(255, 255, 255, 0.08)";
-            pillColor = "#cbd5e1";
-            pillBorder = "rgba(255, 255, 255, 0.2)";
-        }
+    if (parseFloat(weightDiff) < 0) {
+        pillText = `📉 ลดลง ${Math.abs(parseFloat(weightDiff))} กก. 🎉`;
+        pillBg = "rgba(16, 185, 129, 0.2)";
+        pillColor = "#34d399";
+        pillBorder = "rgba(16, 185, 129, 0.5)";
+    } else if (parseFloat(weightDiff) > 0) {
+        pillText = `📈 เพิ่มขึ้น +${weightDiff} กก.`;
+        pillBg = "rgba(245, 158, 11, 0.2)";
+        pillColor = "#fbbf24";
+        pillBorder = "rgba(245, 158, 11, 0.5)";
+    } else {
+        pillText = `➖ น้ำหนักคงที่ (${afterLog.weight} กก.)`;
+        pillBg = "rgba(255, 255, 255, 0.08)";
+        pillColor = "#cbd5e1";
+        pillBorder = "rgba(255, 255, 255, 0.2)";
     }
 
-    drawRoundRect(880, 58, 265, 52, 26, pillBg, pillBorder, 1.5);
+    drawRoundRect(860, 58, 285, 52, 26, pillBg, pillBorder, 1.5);
     ctx.fillStyle = pillColor;
-    ctx.font = "bold 20px sans-serif";
+    ctx.font = "bold 19px sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText(pillText, 1012, 91);
+    ctx.fillText(pillText, 1002, 91);
 
     // Divider
     ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(55, 138);
-    ctx.lineTo(1145, 138);
+    ctx.moveTo(55, 136);
+    ctx.lineTo(1145, 136);
     ctx.stroke();
 
-    // 3. 3-Angle Photos Section
-    const photoY = 160;
+    // 3-Angle Photos Section
+    const photoY = 155;
     const colW = 346;
     const colGap = 26;
     const startX = 55;
-    const photoH = isSameDay ? 380 : 420;
 
     const angleDefs = [
         { title: "👤 1. ด้านหน้า (Front)", bImg: bFront, aImg: aFront },
@@ -1940,130 +2100,44 @@ window.downloadComparisonCard = async function() {
     angleDefs.forEach((ang, i) => {
         const colX = startX + i * (colW + colGap);
 
-        // Column card box
-        drawRoundRect(colX, photoY, colW, photoH + 50, 16, "rgba(255,255,255,0.02)", "rgba(255,255,255,0.06)", 1);
+        drawRoundRect(colX, photoY, colW, photoH + 46, 16, "rgba(255,255,255,0.02)", "rgba(255,255,255,0.06)", 1);
 
-        // Column Header
         ctx.fillStyle = "#38bdf8";
-        ctx.font = "bold 18px sans-serif";
+        ctx.font = "bold 17px sans-serif";
         ctx.textAlign = "left";
-        ctx.fillText(ang.title, colX + 16, photoY + 30);
+        ctx.fillText(ang.title, colX + 16, photoY + 28);
 
-        const imgAreaY = photoY + 44;
-        const imgAreaH = photoH - 6;
+        const imgAreaY = photoY + 40;
+        const imgAreaH = photoH - 4;
+        const halfW = (colW - 32) / 2;
+        const bX = colX + 12;
+        const aX = bX + halfW + 8;
 
-        if (isSameDay) {
-            // Single image
-            const imgW = colW - 24;
-            const imgX = colX + 12;
-            drawCover(ang.aImg, imgX, imgAreaY, imgW, imgAreaH, 12);
+        // Before Photo
+        drawCover(ang.bImg, bX, imgAreaY, halfW, imgAreaH, 10, "📷 ครั้งก่อน");
+        drawRoundRect(bX + 4, imgAreaY + imgAreaH - 32, halfW - 8, 26, 6, "rgba(15,23,42,0.9)", "rgba(255,255,255,0.1)", 1);
+        ctx.fillStyle = "#cbd5e1";
+        ctx.font = "bold 11px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(`Before (${beforeLog.weight})`, bX + halfW / 2, imgAreaY + imgAreaH - 15);
 
-            // Bottom label
-            drawRoundRect(imgX + 10, imgAreaY + imgAreaH - 38, imgW - 20, 28, 6, "rgba(15,23,42,0.85)", "rgba(255,255,255,0.15)", 1);
-            ctx.fillStyle = "#38bdf8";
-            ctx.font = "bold 13px sans-serif";
-            ctx.textAlign = "center";
-            ctx.fillText(`${afterLog.weight} กก.`, imgX + imgW / 2, imgAreaY + imgAreaH - 20);
-        } else {
-            // Before vs After side by side
-            const halfW = (colW - 32) / 2;
-            const bX = colX + 12;
-            const aX = bX + halfW + 8;
-
-            // Before Photo
-            drawCover(ang.bImg, bX, imgAreaY, halfW, imgAreaH, 10);
-            drawRoundRect(bX + 6, imgAreaY + imgAreaH - 34, halfW - 12, 26, 6, "rgba(15,23,42,0.9)", "rgba(255,255,255,0.1)", 1);
-            ctx.fillStyle = "#cbd5e1";
-            ctx.font = "bold 12px sans-serif";
-            ctx.textAlign = "center";
-            ctx.fillText(`Before (${beforeLog.weight})`, bX + halfW / 2, imgAreaY + imgAreaH - 17);
-
-            // After Photo
-            drawCover(ang.aImg, aX, imgAreaY, halfW, imgAreaH, 10);
-            drawRoundRect(aX + 6, imgAreaY + imgAreaH - 34, halfW - 12, 26, 6, "rgba(15,23,42,0.9)", "rgba(6,182,212,0.4)", 1);
-            ctx.fillStyle = "#38bdf8";
-            ctx.font = "bold 12px sans-serif";
-            ctx.textAlign = "center";
-            ctx.fillText(`After (${afterLog.weight})`, aX + halfW / 2, imgAreaY + imgAreaH - 17);
-        }
+        // After Photo
+        drawCover(ang.aImg, aX, imgAreaY, halfW, imgAreaH, 10, "📷 ครั้งนี้");
+        drawRoundRect(aX + 4, imgAreaY + imgAreaH - 32, halfW - 8, 26, 6, "rgba(15,23,42,0.9)", "rgba(6,182,212,0.4)", 1);
+        ctx.fillStyle = "#38bdf8";
+        ctx.font = "bold 11px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(`After (${afterLog.weight})`, aX + halfW / 2, imgAreaY + imgAreaH - 15);
     });
 
-    // 4. Measurements Section
-    const measY = photoY + photoH + 70;
-
-    // Measurements title
+    // Measurements Title
     ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 22px sans-serif";
+    ctx.font = "bold 20px sans-serif";
     ctx.textAlign = "left";
-    ctx.fillText("📏 รายละเอียดสัดส่วนร่างกาย (Body Measurements)", 55, measY);
+    ctx.fillText("📏 รายละเอียดสัดส่วนร่างกาย (Body Measurements: ครั้งก่อน ➔ ครั้งนี้)", 55, gridY - 14);
 
+    // Metric Cards Grid
     const cardW = 346;
-    const cardH = 92;
-    const gridY = measY + 16;
-
-    const bArm = (beforeLog.armLeft || beforeLog.armRight) ? `${beforeLog.armLeft || 0} / ${beforeLog.armRight || 0}` : null;
-    const aArm = (afterLog.armLeft || afterLog.armRight) ? `${afterLog.armLeft || 0} / ${afterLog.armRight || 0}` : null;
-    const bThigh = (beforeLog.thighLeft || beforeLog.thighRight) ? `${beforeLog.thighLeft || 0} / ${beforeLog.thighRight || 0}` : null;
-    const aThigh = (afterLog.thighLeft || afterLog.thighRight) ? `${afterLog.thighLeft || 0} / ${afterLog.thighRight || 0}` : null;
-
-    const bfBefore = calculateBodyFatPercentage(beforeLog);
-    const bfAfter = calculateBodyFatPercentage(afterLog);
-
-    function calcDiff(cur, prev) {
-        if (isSameDay || !cur || !prev) return null;
-        return (cur - prev);
-    }
-
-    const measCards = [
-        {
-            label: "⚖️ น้ำหนักตัว",
-            cur: `${afterLog.weight.toFixed(1)} กก.`,
-            prev: !isSameDay ? `${beforeLog.weight.toFixed(1)} กก.` : null,
-            diff: calcDiff(afterLog.weight, beforeLog.weight),
-            unit: "กก.",
-            lowerIsBetter: true
-        },
-        {
-            label: "📏 รอบอก",
-            cur: afterLog.chest ? `${afterLog.chest.toFixed(1)} ${mUnit}` : "--",
-            prev: (!isSameDay && beforeLog.chest) ? `${beforeLog.chest.toFixed(1)} ${mUnit}` : null,
-            diff: calcDiff(afterLog.chest, beforeLog.chest),
-            unit: mUnit,
-            lowerIsBetter: true
-        },
-        {
-            label: "⏳ รอบเอว",
-            cur: afterLog.waist ? `${afterLog.waist.toFixed(1)} ${mUnit}` : "--",
-            prev: (!isSameDay && beforeLog.waist) ? `${beforeLog.waist.toFixed(1)} ${mUnit}` : null,
-            diff: calcDiff(afterLog.waist, beforeLog.waist),
-            unit: mUnit,
-            lowerIsBetter: true
-        },
-        {
-            label: "💪 รอบแขน (ซ้าย / ขวา)",
-            cur: aArm ? `${aArm} ${mUnit}` : "--",
-            prev: (!isSameDay && bArm) ? `${bArm} ${mUnit}` : null,
-            diff: calcDiff(afterLog.armLeft || afterLog.armRight, beforeLog.armLeft || beforeLog.armRight),
-            unit: mUnit,
-            lowerIsBetter: true
-        },
-        {
-            label: "🦵 รอบขา (ซ้าย / ขวา)",
-            cur: aThigh ? `${aThigh} ${mUnit}` : "--",
-            prev: (!isSameDay && bThigh) ? `${bThigh} ${mUnit}` : null,
-            diff: calcDiff(afterLog.thighLeft || afterLog.thighRight, beforeLog.thighLeft || beforeLog.thighRight),
-            unit: mUnit,
-            lowerIsBetter: true
-        },
-        {
-            label: "🧬 รอบสะโพก / % ไขมัน",
-            cur: `${afterLog.hips ? `${afterLog.hips.toFixed(1)} ${mUnit}` : '--'} ${bfAfter ? `(${bfAfter}%)` : ''}`,
-            prev: (!isSameDay && (beforeLog.hips || bfBefore)) ? `${beforeLog.hips ? `${beforeLog.hips.toFixed(1)} ${mUnit}` : ''} ${bfBefore ? `(${bfBefore}%)` : ''}` : null,
-            diff: calcDiff(afterLog.hips, beforeLog.hips),
-            unit: mUnit,
-            lowerIsBetter: true
-        }
-    ];
 
     measCards.forEach((c, idx) => {
         const row = Math.floor(idx / 3);
@@ -2071,56 +2145,64 @@ window.downloadComparisonCard = async function() {
         const mX = startX + col * (cardW + colGap);
         const mY = gridY + row * (cardH + 16);
 
-        // Card box
+        // Card container
         drawRoundRect(mX, mY, cardW, cardH, 14, "rgba(255,255,255,0.03)", "rgba(255,255,255,0.08)", 1);
 
-        // Label
+        // Top row: Label + Diff Pill
         ctx.fillStyle = "#94a3b8";
-        ctx.font = "bold 15px sans-serif";
+        ctx.font = "bold 14px sans-serif";
         ctx.textAlign = "left";
-        ctx.fillText(c.label, mX + 16, mY + 28);
+        ctx.fillText(c.label, mX + 14, mY + 25);
 
-        // Current Value
-        ctx.fillStyle = "#ffffff";
-        ctx.font = "bold 22px sans-serif";
-        ctx.fillText(c.cur, mX + 16, mY + 62);
-
-        // Previous Value and Diff Pill (Right aligned)
-        if (!isSameDay && c.prev) {
-            ctx.fillStyle = "#64748b";
-            ctx.font = "14px sans-serif";
-            ctx.textAlign = "right";
-            ctx.fillText(c.prev, mX + cardW - 16, mY + 30);
-
-            if (c.diff !== null) {
-                const diffVal = c.diff;
-                const isGood = c.lowerIsBetter ? diffVal < 0 : diffVal > 0;
-                const sign = diffVal > 0 ? `+${diffVal.toFixed(1)}` : `${diffVal.toFixed(1)}`;
-                const diffTxt = `${diffVal < 0 ? '▼' : '▲'} ${sign} ${c.unit}`;
-                const diffColor = isGood ? "#34d399" : "#f43f5e";
-                const diffBg = isGood ? "rgba(16,185,129,0.15)" : "rgba(244,63,94,0.15)";
-                const diffBorder = isGood ? "rgba(16,185,129,0.3)" : "rgba(244,63,94,0.3)";
-
-                drawRoundRect(mX + cardW - 130, mY + 44, 114, 26, 6, diffBg, diffBorder, 1);
-                ctx.fillStyle = diffColor;
-                ctx.font = "bold 13px sans-serif";
-                ctx.textAlign = "center";
-                ctx.fillText(diffTxt, mX + cardW - 73, mY + 62);
-            }
+        if (c.diff) {
+            drawRoundRect(mX + cardW - 116, mY + 10, 104, 22, 6, c.diff.bg, c.diff.border, 1);
+            ctx.fillStyle = c.diff.color;
+            ctx.font = "bold 11px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText(c.diff.txt, mX + cardW - 64, mY + 25);
         }
+
+        // Comparison Box
+        drawRoundRect(mX + 10, mY + 36, cardW - 20, 56, 8, "rgba(0,0,0,0.35)", "rgba(255,255,255,0.05)", 1);
+
+        // Left: Previous Data
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#64748b";
+        ctx.font = "11px sans-serif";
+        ctx.fillText(`ครั้งก่อน (${bDateShort})`, mX + 20, mY + 54);
+
+        ctx.fillStyle = "#cbd5e1";
+        ctx.font = "bold 15px sans-serif";
+        ctx.fillText(c.prev, mX + 20, mY + 77);
+
+        // Center Arrow
+        ctx.fillStyle = "#06b6d4";
+        ctx.font = "bold 16px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("➔", mX + cardW / 2, mY + 68);
+
+        // Right: Current Data
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#38bdf8";
+        ctx.font = "11px sans-serif";
+        ctx.fillText(`ครั้งนี้ (${aDateShort})`, mX + cardW - 20, mY + 54);
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 17px sans-serif";
+        ctx.fillText(c.cur, mX + cardW - 20, mY + 77);
     });
 
-    // 5. Footer
-    const footerY = canvas.height - 45;
+    // Footer
+    const footerY = canvas.height - 35;
     ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(55, footerY - 20);
-    ctx.lineTo(1145, footerY - 20);
+    ctx.moveTo(55, footerY - 16);
+    ctx.lineTo(1145, footerY - 16);
     ctx.stroke();
 
     ctx.fillStyle = "#64748b";
-    ctx.font = "14px sans-serif";
+    ctx.font = "13px sans-serif";
     ctx.textAlign = "left";
     ctx.fillText("⚡ บันทึกและสร้างโดย BodyFit • Personal Fitness & Body Tracker", 55, footerY);
 
@@ -2128,7 +2210,7 @@ window.downloadComparisonCard = async function() {
     const nowStr = new Date().toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
     ctx.fillText(`ส่งออกเมื่อ: ${nowStr}`, 1145, footerY);
 
-    // 6. Trigger PNG Download
+    // PNG Download
     const dataUrl = canvas.toDataURL("image/png");
     const link = document.createElement("a");
     link.download = `bodyfit_transformation_${getTodayDateString()}.png`;
@@ -2191,7 +2273,11 @@ window.selectGalleryPhoto = function(logId, angle = 'front') {
     const afterSelect = document.getElementById("after-photo-select");
     if (afterSelect) {
         afterSelect.value = logId;
-        renderComparisonCard();
+        if (window.onAfterLogChange) {
+            window.onAfterLogChange();
+        } else {
+            renderComparisonCard();
+        }
         document.getElementById("photo-comparison-card").scrollIntoView({ behavior: 'smooth' });
     }
 };

@@ -682,12 +682,12 @@
                 <div class="card-container" id="photo-comparison-card">
                     <div class="compare-selectors">
                         <div class="compare-select-item">
-                            <label for="before-photo-select">👈 รูปเริ่มต้น (Before):</label>
+                            <label for="before-photo-select">👈 บันทึกครั้งก่อน (Previous):</label>
                             <select id="before-photo-select" class="form-input" onchange="renderComparisonCard()"></select>
                         </div>
                         <div class="compare-select-item">
-                            <label for="after-photo-select">👉 รูปเปรียบเทียบ (After):</label>
-                            <select id="after-photo-select" class="form-input" onchange="renderComparisonCard()"></select>
+                            <label for="after-photo-select">👉 บันทึกครั้งนี้ (Current):</label>
+                            <select id="after-photo-select" class="form-input" onchange="onAfterLogChange()"></select>
                         </div>
                     </div>
 
