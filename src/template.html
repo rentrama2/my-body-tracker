@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="neon">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BodyFit - บันทึกน้ำหนักและสัดส่วนส่วนตัว</title>
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22BodyFit%22%2C%22short_name%22%3A%22BodyFit%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23090d16%22%2C%22theme_color%22%3A%22%23a855f7%22%7D">
+    <meta name="theme-color" content="#a855f7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='6' fill='%23a855f7'/><text x='12' y='17' font-size='12' font-weight='bold' fill='white' text-anchor='middle'>BF</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='6' fill='%23a855f7'/><text x='12' y='17' font-size='12' font-weight='bold' fill='white' text-anchor='middle'>BF</text></svg>">
+    
+    <style>/*STYLE_PLACEHOLDER*/</style>
+    <!-- Chart.js CDN for interactive charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation (Desktop) -->
+        <aside class="sidebar">
+            <div class="sidebar-top">
+                <div class="brand">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="brand-icon" style="stroke: url(#brand-grad); filter: drop-shadow(0 2px 8px rgba(168, 85, 247, 0.4));">
+                        <defs>
+                            <linearGradient id="brand-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="var(--primary-neon)"/>
+                                <stop offset="100%" stop-color="var(--secondary-neon)"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                    <span class="brand-name">BodyFit</span>
+                </div>
+                <ul class="nav-links">
+                    <li>
+                        <a class="nav-item active" data-tab="dashboard">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                            <span>แดชบอร์ด</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-item" data-tab="log-entry">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                            <span>บันทึกสัดส่วน</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-item" data-tab="photos">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                            <span>เปรียบเทียบรูปภาพ</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-item" data-tab="history">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            <span>ประวัติ & สำรอง</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-item" data-tab="profile">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            <span>โปรไฟล์ & เผาผลาญ</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="user-profile-summary">
+                <div class="user-avatar" id="sidebar-avatar">U</div>
+                <div class="user-info">
+                    <div class="user-name" id="sidebar-name">ผู้ใช้งาน</div>
+                    <div class="user-goal" id="sidebar-goal">เป้าหมาย: -- กก.</div>
+                    <div class="user-sync-status" id="sidebar-sync-badge" style="font-size: 0.75rem; margin-top: 2px; color: var(--success-emerald)">● ข้อมูลส่วนตัว (ออฟไลน์)</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- Tab: Dashboard -->
+            <section id="dashboard" class="tab-content active">
+                <div class="content-header">
+                    <div class="header-title">
+                        <h1 id="welcome-message">สวัสดี, ผู้ใช้งาน 👋</h1>
+                        <p>ภาพรวมสถิติและก้าวหน้าในการพัฒนาตัวเองของคุณ</p>
+                    </div>
+                    <div class="header-btn-group">
+                        <!-- Theme Switcher -->
+                        <select id="theme-selector" class="theme-picker-select" onchange="changeTheme(this.value)" title="เลือกธีมสีหน้าจอ">
+                            <option value="neon">🌌 นีออน ดาร์ก</option>
+                            <option value="mint">🌿 มินต์ สุขภาพ</option>
+                            <option value="ocean">🌊 โอเชียน ไซแอน</option>
+                            <option value="light">☀️ คลีน ไลท์</option>
+                        </select>
+                        <!-- Quick Weight Button -->
+                        <button type="button" class="btn-quick-weight" onclick="openQuickWeightModal()" title="ชั่งน้ำหนักด่วนใน 3 วินาที">
+                            ⚡ ชั่งด่วน
+                        </button>
+                        <!-- Weekly Report Button -->
+                        <button type="button" class="btn-secondary" onclick="openWeeklyReportModal()" title="ดูรายงานสรุปผลรอบ 7 วัน">
+                            📑 สรุปสัปดาห์
+                        </button>
+                        <!-- Achievement Card Button -->
+                        <button type="button" class="btn-secondary" onclick="openShareCardModal()" title="สร้างการ์ดสรุปความสำเร็จเพื่อบันทึกหรือแชร์">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right: 6px;"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg> การ์ดความสำเร็จ
+                        </button>
+                        <!-- New Log Entry Button -->
+                        <button type="button" class="btn-primary" onclick="switchTab('log-entry')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> บันทึกวันนี้
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Motivation & Milestone Banner -->
+                <div class="motivation-banner">
+                    <div class="banner-stat">
+                        <div class="banner-icon">🔥</div>
+                        <div class="banner-stat-content">
+                            <div class="banner-label">บันทึกต่อเนื่อง (Streak)</div>
+                            <div class="banner-val" id="stat-streak">0 วัน</div>
+                        </div>
+                    </div>
+                    <div class="banner-divider"></div>
+                    <div class="banner-stat">
+                        <div class="banner-icon">📉</div>
+                        <div class="banner-stat-content">
+                            <div class="banner-label">ลดไปแล้วทั้งหมด</div>
+                            <div class="banner-val" id="stat-total-lost">0.0 กก.</div>
+                        </div>
+                    </div>
+                    <div class="banner-divider"></div>
+                    <div class="banner-stat">
+                        <div class="banner-icon">🎯</div>
+                        <div class="banner-stat-content">
+                            <div class="banner-label">คาดการณ์ถึงเป้าหมาย</div>
+                            <div class="banner-val" id="stat-estimated-date">กำลังประมวลผล...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daily Water Tracker Widget -->
+                <div class="water-tracker-card">
+                    <div class="water-info-side">
+                        <div class="water-cup-icon">💧</div>
+                        <div class="water-details">
+                            <h3>ดื่มน้ำประจำวัน (Water Tracker)</h3>
+                            <div class="water-amount-big">
+                                <span id="water-current-amount">0</span>
+                                <span style="font-size: 1rem; font-weight: 500; color: var(--text-secondary);">/ <span id="water-target-amount">2,500</span> มล. (<span id="water-pct-label">0%</span>)</span>
+                            </div>
+                            <div class="water-progress-track">
+                                <div class="water-progress-fill" id="water-progress-fill" style="width: 0%;"></div>
+                            </div>
+                            <p id="water-advice-msg" style="margin-top: 6px; font-size: 0.8rem; color: var(--text-secondary);">ดื่มน้ำแก้วแรกของวันเพื่อปลุกระบบเผาผลาญ!</p>
+                        </div>
+                    </div>
+                    <div class="water-buttons-side">
+                        <button type="button" class="btn-water" onclick="addWater(250)">+250 มล. (1 แก้ว)</button>
+                        <button type="button" class="btn-water" onclick="addWater(500)">+500 มล. (1 ขวด)</button>
+                        <button type="button" class="btn-water" onclick="addWater(-250)">-250 มล.</button>
+                        <button type="button" class="btn-water-reset" onclick="resetWater()" title="รีเซ็ตการดื่มน้ำของวันนี้">รีเซ็ต</button>
+                    </div>
+                </div>
+
+                <!-- Primary Metrics Grid -->
+                <div class="metrics-grid">
+                    <div class="metric-card weight-card">
+                        <div class="metric-label">
+                            <span>น้ำหนักตัว</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary-neon)"><path d="M6.5 6.5h11M6.5 17.5h11M12 6.5v11M3 12h18M3 8v8M21 8v8"/></svg>
+                        </div>
+                        <div class="metric-value-container">
+                            <span class="metric-value" id="metric-weight">--</span>
+                            <span class="metric-unit" id="unit-weight">กก.</span>
+                        </div>
+                        <div class="metric-change" id="change-weight">
+                            <span>ไม่มีข้อมูลก่อนหน้า</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card waist-card">
+                        <div class="metric-label">
+                            <span>รอบเอว</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-cyan)"><path d="M5 3h14c1.1 0 2 .9 2 2v14c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2z"/><path d="M3 7h9M3 12h5M3 17h9"/></svg>
+                        </div>
+                        <div class="metric-value-container">
+                            <span class="metric-value" id="metric-waist">--</span>
+                            <span class="metric-unit" id="unit-waist">นิ้ว</span>
+                        </div>
+                        <div class="metric-change" id="change-waist">
+                            <span>ไม่มีข้อมูลก่อนหน้า</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card chest-card">
+                        <div class="metric-label">
+                            <span>รอบอก</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--secondary-neon)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        </div>
+                        <div class="metric-value-container">
+                            <span class="metric-value" id="metric-chest">--</span>
+                            <span class="metric-unit" id="unit-chest">นิ้ว</span>
+                        </div>
+                        <div class="metric-change" id="change-chest">
+                            <span>ไม่มีข้อมูลก่อนหน้า</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card hips-card">
+                        <div class="metric-label">
+                            <span>รอบสะโพก</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #8b5cf6"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                        </div>
+                        <div class="metric-value-container">
+                            <span class="metric-value" id="metric-hips">--</span>
+                            <span class="metric-unit" id="unit-hips">นิ้ว</span>
+                        </div>
+                        <div class="metric-change" id="change-hips">
+                            <span>ไม่มีข้อมูลก่อนหน้า</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary Row (Charts with Filters & Goals) -->
+                <div class="dashboard-row">
+                    <!-- Weight Trend Chart with Filters -->
+                    <div class="card-container chart-card-container">
+                        <div class="chart-header-row">
+                            <div class="card-title" style="margin-bottom: 0;">กราฟแนวโน้มสัดส่วน</div>
+                            <div class="chart-controls-wrapper">
+                                <!-- Time range selector -->
+                                <div class="pill-group" id="time-filter-pills">
+                                    <button class="filter-pill" data-range="7d" onclick="setTimeRange('7d')">7 วัน</button>
+                                    <button class="filter-pill" data-range="30d" onclick="setTimeRange('30d')">30 วัน</button>
+                                    <button class="filter-pill" data-range="90d" onclick="setTimeRange('90d')">3 เดือน</button>
+                                    <button class="filter-pill active" data-range="all" onclick="setTimeRange('all')">ทั้งหมด</button>
+                                </div>
+                                <!-- Metric view selector -->
+                                <div class="pill-group" id="metric-filter-pills">
+                                    <button class="filter-pill active" data-metric="all" onclick="setMetricView('all')">รวม</button>
+                                    <button class="filter-pill" data-metric="weight" onclick="setMetricView('weight')">น้ำหนัก</button>
+                                    <button class="filter-pill" data-metric="waist" onclick="setMetricView('waist')">เอว & สะโพก</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="trendsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Progress Goals Card with Mini-Milestones Stepper -->
+                    <div class="card-container">
+                        <div class="card-title">เป้าหมายของคุณ</div>
+                        <div class="goals-list">
+                            <!-- Goal Weight -->
+                            <div class="goal-item">
+                                <div class="goal-header">
+                                    <span class="goal-name">ลดน้ำหนักตัว</span>
+                                    <span class="goal-target" id="goal-weight-text">-- / -- กก.</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-bar" id="goal-weight-bar" style="width: 0%; background: linear-gradient(to right, var(--primary-neon), var(--secondary-neon))"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Goal Waist -->
+                            <div class="goal-item">
+                                <div class="goal-header">
+                                    <span class="goal-name">ลดรอบเอว</span>
+                                    <span class="goal-target" id="goal-waist-text">-- / -- นิ้ว</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-bar" id="goal-waist-bar" style="width: 0%; background: linear-gradient(to right, var(--accent-cyan), var(--success-emerald))"></div>
+                                </div>
+                            </div>
+
+                            <!-- Fast Action Suggestion -->
+                            <div class="goal-advice" id="goal-advice-box">
+                                <div style="font-weight: 600; font-size: 0.9rem; color: var(--text-primary); margin-bottom: 4px;">💡 ข้อความแนะนำวันนี้</div>
+                                <div style="font-size: 0.85rem; color: var(--text-secondary);" id="goal-advice-text">
+                                    การบันทึกสม่ำเสมอคือกุญแจสำคัญสู่ความสำเร็จ!
+                                </div>
+                            </div>
+
+                            <!-- Mini Milestones Checkpoint Stepper -->
+                            <div class="milestones-stepper">
+                                <div class="stepper-header">
+                                    <span class="stepper-title">⏳ ด่านความสำเร็จย่อย (Milestones)</span>
+                                    <span class="stepper-badge" id="stepper-active-badge">กำลังคำนวณ...</span>
+                                </div>
+                                <div class="stepper-track" id="milestones-stepper-track">
+                                    <!-- Rendered dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Health & Metabolism Calculators Panel -->
+                <div class="card-container">
+                    <div class="card-title">ดัชนีสุขภาพ & เมแทบอลิซึม (คำนวณอัตโนมัติ)</div>
+                    <div class="calcs-grid calcs-grid-custom">
+                        <!-- BMI Card -->
+                        <div class="calc-card">
+                            <div class="calc-header">
+                                <span class="calc-name">ดัชนีมวลกาย (BMI)</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-cyan)"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                            </div>
+                            <div class="calc-value" id="calc-bmi">--</div>
+                            <div>
+                                <span class="calc-status" id="calc-bmi-status">ไม่มีข้อมูล</span>
+                            </div>
+                        </div>
+
+                        <!-- WHR Card -->
+                        <div class="calc-card">
+                            <div class="calc-header">
+                                <span class="calc-name">เอวต่อสะโพก (WHR)</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--secondary-neon)"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                            </div>
+                            <div class="calc-value" id="calc-whr">--</div>
+                            <div>
+                                <span class="calc-status" id="calc-whr-status">ไม่มีข้อมูล</span>
+                            </div>
+                        </div>
+
+                        <!-- BMR Card -->
+                        <div class="calc-card">
+                            <div class="calc-header">
+                                <span class="calc-name">เผาผลาญพื้นฐาน (BMR)</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #f59e0b"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+                            </div>
+                            <div class="calc-value" id="calc-bmr">--</div>
+                            <div class="calc-sublabel">แคลอรีขณะพักผ่อน (kcal/วัน)</div>
+                        </div>
+
+                        <!-- TDEE Card -->
+                        <div class="calc-card">
+                            <div class="calc-header">
+                                <span class="calc-name">เผาผลาญรวม (TDEE)</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary-neon)"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                            </div>
+                            <div class="calc-value" id="calc-tdee">--</div>
+                            <div class="calc-sublabel">พลังงานใช้ตามกิจกรรม (kcal/วัน)</div>
+                        </div>
+
+                        <!-- Calorie Target Card -->
+                        <div class="calc-card highlight-calc-card">
+                            <div class="calc-header">
+                                <span class="calc-name">เป้าหมายลดไขมัน</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--success-emerald)"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                            </div>
+                            <div class="calc-value text-emerald" id="calc-deficit-cal">--</div>
+                            <div class="calc-sublabel">พลังงานที่ควรกิน (TDEE - 500 kcal)</div>
+                        </div>
+
+                        <!-- Protein Target Card -->
+                        <div class="calc-card">
+                            <div class="calc-header">
+                                <span class="calc-name">โปรตีนที่แนะนำ</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #38bdf8"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            </div>
+                            <div class="calc-value" id="calc-protein">--</div>
+                            <div class="calc-sublabel">กรัม/วัน (รักษาและสร้างกล้ามเนื้อ)</div>
+                        </div>
+
+                        <!-- Body Fat % Card (US Navy Formula) -->
+                        <div class="calc-card">
+                            <div class="calc-header">
+                                <span class="calc-name">ไขมันร่างกาย (%BF)</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #ec4899;"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                            </div>
+                            <div class="calc-value" id="calc-body-fat" style="color: #ec4899;">--</div>
+                            <div>
+                                <span class="calc-status" id="calc-body-fat-status">กรอกรอบคอ</span>
+                            </div>
+                        </div>
+
+                        <!-- Lean Mass Card (LBM) -->
+                        <div class="calc-card">
+                            <div class="calc-header">
+                                <span class="calc-name">มวลไร้ไขมัน (LBM)</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary-neon);"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                            </div>
+                            <div class="calc-value" id="calc-lean-mass" style="color: var(--primary-neon);">--</div>
+                            <div class="calc-sublabel">น้ำหนักตัวลบไขมัน (กก.)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Macro Nutrients Breakdown Card -->
+                <div class="macro-card card-container" style="margin-top: 2rem;">
+                    <div class="card-header-row" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+                        <div>
+                            <div class="card-title" style="margin-bottom: 0.25rem;">🥩 สัดส่วนสารอาหารหลัก (Macro Nutrients Split)</div>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">คำนวณตามพลังงานที่ควรได้รับต่อวันเพื่อผลลัพธ์ที่ดีที่สุด</p>
+                        </div>
+                        <select id="macro-diet-select" class="form-input macro-select" onchange="changeMacroDiet(this.value)" style="width: auto; padding: 0.45rem 1rem;">
+                            <option value="balanced">สมดุลมาตรฐาน (C40 / P30 / F30)</option>
+                            <option value="high-protein">เน้นโปรตีนสร้างกล้าม (C35 / P40 / F25)</option>
+                            <option value="low-carb">โลว์คาร์บ ลดแป้ง (C20 / P40 / F40)</option>
+                            <option value="keto">คีโตเจนิค (C5 / P25 / F70)</option>
+                        </select>
+                    </div>
+                    <div class="macro-ratio-bar">
+                        <div class="macro-bar-carb" id="bar-carb" style="width: 40%;" title="คาร์โบไฮเดรต"></div>
+                        <div class="macro-bar-protein" id="bar-protein" style="width: 30%;" title="โปรตีน"></div>
+                        <div class="macro-bar-fat" id="bar-fat" style="width: 30%;" title="ไขมันดี"></div>
+                    </div>
+                    <div class="macro-boxes-grid">
+                        <div class="macro-box">
+                            <span class="macro-box-title">🍚 คาร์โบไฮเดรต</span>
+                            <span class="macro-box-val" id="macro-carbs-g" style="color: #38bdf8;">--</span>
+                            <span class="macro-box-cal" id="macro-carbs-cal">-- kcal</span>
+                        </div>
+                        <div class="macro-box">
+                            <span class="macro-box-title">🥩 โปรตีน</span>
+                            <span class="macro-box-val" id="macro-protein-g" style="color: #ec4899;">--</span>
+                            <span class="macro-box-cal" id="macro-protein-cal">-- kcal</span>
+                        </div>
+                        <div class="macro-box">
+                            <span class="macro-box-title">🥑 ไขมันดี</span>
+                            <span class="macro-box-val" id="macro-fat-g" style="color: #f59e0b;">--</span>
+                            <span class="macro-box-cal" id="macro-fat-cal">-- kcal</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Measurement Matrix Comparison Table Card -->
+                <div class="card-container" style="margin-top: 2rem;">
+                    <div class="card-title">📏 ตารางเปรียบเทียบสัดส่วน (Measurement Matrix)</div>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: -0.5rem; margin-bottom: 1rem;">
+                        วิเคราะห์การเปลี่ยนแปลงตั้งแต่เริ่มต้นบันทึกวันแรก vs สัปดาห์ก่อนหน้า vs สัดส่วนปัจจุบัน
+                    </p>
+                    <div class="matrix-table-wrap">
+                        <table class="matrix-table">
+                            <thead>
+                                <tr>
+                                    <th>จุดวัดสัดส่วน</th>
+                                    <th>วันแรกสุด</th>
+                                    <th>สัปดาห์ก่อน</th>
+                                    <th>ล่าสุด</th>
+                                    <th>ผลต่างรวม</th>
+                                </tr>
+                            </thead>
+                            <tbody id="matrix-table-body">
+                                <!-- Populated dynamically by renderMeasurementMatrix() -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Badges & Milestones Section -->
+                <div class="card-container" style="margin-top: 2rem;">
+                    <div class="card-title">เหรียญความสำเร็จและภารกิจ (Achievements)</div>
+                    <div class="badges-grid" id="badges-grid">
+                        <!-- Dynamic Badges injected -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab: Log Entry Form -->
+            <section id="log-entry" class="tab-content">
+                <div class="content-header">
+                    <div class="header-title">
+                        <h1>บันทึกสัดส่วนร่างกาย</h1>
+                        <p>กรอกข้อมูลสัดส่วนของคุณในวันนี้เพื่อติดตามความคืบหน้า</p>
+                    </div>
+                </div>
+
+                <div class="card-container">
+                    <form id="measurement-form">
+                        <input type="hidden" id="edit-id">
+                        
+                        <div class="form-grid">
+                            <!-- Log Date -->
+                            <div class="form-group">
+                                <label for="log-date">วันที่บันทึก</label>
+                                <div class="input-wrapper">
+                                    <input type="date" id="log-date" class="form-input" required>
+                                </div>
+                            </div>
+
+                            <!-- Weight -->
+                            <div class="form-group">
+                                <label for="log-weight">น้ำหนักตัว</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="log-weight" step="0.1" class="form-input" placeholder="0.0" required>
+                                    <span class="input-unit label-weight-unit">กก.</span>
+                                </div>
+                            </div>
+
+                            <!-- Neck (US Navy Body Fat) -->
+                            <div class="form-group">
+                                <label for="log-neck">รอบคอ (สำหรับคำนวณ % ไขมัน)</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="log-neck" step="0.1" class="form-input" placeholder="33.0">
+                                    <span class="input-unit label-measure-unit">นิ้ว</span>
+                                </div>
+                            </div>
+
+                            <!-- Waist -->
+                            <div class="form-group">
+                                <label for="log-waist">รอบเอว</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="log-waist" step="0.1" class="form-input" placeholder="0.0" required>
+                                    <span class="input-unit label-measure-unit">นิ้ว</span>
+                                </div>
+                            </div>
+
+                            <!-- Chest -->
+                            <div class="form-group">
+                                <label for="log-chest">รอบอก</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="log-chest" step="0.1" class="form-input" placeholder="0.0">
+                                    <span class="input-unit label-measure-unit">นิ้ว</span>
+                                </div>
+                            </div>
+
+                            <!-- Hips -->
+                            <div class="form-group">
+                                <label for="log-hips">รอบสะโพก</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="log-hips" step="0.1" class="form-input" placeholder="0.0">
+                                    <span class="input-unit label-measure-unit">นิ้ว</span>
+                                </div>
+                            </div>
+
+                            <!-- Left Arm -->
+                            <div class="form-group">
+                                <label for="log-arm-left">ต้นแขนซ้าย</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="log-arm-left" step="0.1" class="form-input" placeholder="0.0">
+                                    <span class="input-unit label-measure-unit">นิ้ว</span>
+                                </div>
+                            </div>
+
+                            <!-- Right Arm -->
+                            <div class="form-group">
+                                <label for="log-arm-right">ต้นแขนขวา</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="log-arm-right" step="0.1" class="form-input" placeholder="0.0">
+                                    <span class="input-unit label-measure-unit">นิ้ว</span>
+                                </div>
+                            </div>
+
+                            <!-- Left Thigh -->
+                            <div class="form-group">
+                                <label for="log-thigh-left">ต้นขาซ้าย</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="log-thigh-left" step="0.1" class="form-input" placeholder="0.0">
+                                    <span class="input-unit label-measure-unit">นิ้ว</span>
+                                </div>
+                            </div>
+
+                            <!-- Right Thigh -->
+                            <div class="form-group">
+                                <label for="log-thigh-right">ต้นขาขวา</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="log-thigh-right" step="0.1" class="form-input" placeholder="0.0">
+                                    <span class="input-unit label-measure-unit">นิ้ว</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Photo Upload Section -->
+                        <div class="form-group full-width" style="margin-top: 1.5rem;">
+                            <label>รูปถ่ายหุ่นประจำวัน (หน้ากระจก / หน้าตรง / ด้านข้าง)</label>
+                            <div class="photo-upload-container">
+                                <input type="file" id="log-photo" accept="image/*" class="photo-file-input" onchange="handlePhotoUpload(event)">
+                                <label for="log-photo" class="photo-upload-dropzone" id="photo-dropzone">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-cyan);"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                                    <span>แตะเพื่อเลือกรูปถ่าย หรือเปิดกล้องมือถือ</span>
+                                    <small style="color: var(--text-muted); font-size: 0.8rem;">(รูปจะถูกบีบอัดเก็บในเครื่อง ปลอดภัย 100%)</small>
+                                </label>
+                                <div class="photo-preview-wrap" id="photo-preview-wrap" style="display: none;">
+                                    <img id="photo-preview-img" src="" alt="พรีวิวรูปสัดส่วน">
+                                    <button type="button" class="btn-remove-photo" onclick="removeUploadedPhoto()">✕ นำรูปออก</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Behavioral Tags Section -->
+                        <div class="form-group full-width" style="margin-top: 1rem;">
+                            <label>พฤติกรรมในวันนี้ (กดเลือกแท็กที่ตรงกับคุณ)</label>
+                            <div class="tag-chips-wrapper" id="tag-chips-wrapper">
+                                <button type="button" class="tag-chip" data-tag="ออกกำลังกาย">💪 ออกกำลังกาย</button>
+                                <button type="button" class="tag-chip" data-tag="กินคลีน">🥗 กินคลีน</button>
+                                <button type="button" class="tag-chip" data-tag="ดื่มน้ำครบ">💧 ดื่มน้ำ 2L+</button>
+                                <button type="button" class="tag-chip" data-tag="หลับเต็มอิ่ม">😴 หลับเต็มอิ่ม</button>
+                                <button type="button" class="tag-chip" data-tag="ชีทเดย์">🍕 ชีทเดย์</button>
+                                <button type="button" class="tag-chip" data-tag="เครียด/นอนน้อย">⚡ เครียด/นอนน้อย</button>
+                            </div>
+                        </div>
+
+                        <!-- Notes Textarea -->
+                        <div class="form-group full-width" style="margin-top: 1rem;">
+                            <label for="log-notes">บันทึกสั้นๆ ประจำวัน (Notes)</label>
+                            <textarea id="log-notes" class="form-input form-textarea" placeholder="เช่น วันนี้วิ่งไป 30 นาที รู้สึกเบาสบายตัว ไม่หิวดึก"></textarea>
+                        </div>
+
+                        <div class="form-actions" style="margin-top: 2rem;">
+                            <button type="button" class="btn-secondary" onclick="resetLogForm(); switchTab('dashboard');">ยกเลิก</button>
+                            <button type="submit" class="btn-primary" id="save-log-btn">บันทึกข้อมูล</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Tab: Photos (Before & After Slider) -->
+            <section id="photos" class="tab-content">
+                <div class="content-header">
+                    <div class="header-title">
+                        <h1>เปรียบเทียบรูปภาพสัดส่วน (Before & After)</h1>
+                        <p>ลากเลื่อนเพื่อเปรียบเทียบความเปลี่ยนแปลงของรูปร่างคุณ</p>
+                    </div>
+                </div>
+
+                <!-- Comparison Split Viewer -->
+                <div class="card-container" id="photo-comparison-card">
+                    <div class="compare-selectors">
+                        <div class="compare-select-item">
+                            <label for="before-photo-select">👈 รูปเริ่มต้น (Before):</label>
+                            <select id="before-photo-select" class="form-input" onchange="renderComparisonSlider()"></select>
+                        </div>
+                        <div class="compare-select-item">
+                            <label for="after-photo-select">👉 รูปปัจจุบัน (After):</label>
+                            <select id="after-photo-select" class="form-input" onchange="renderComparisonSlider()"></select>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Slider Box -->
+                    <div class="comparison-container" id="comparison-container">
+                        <div class="img-wrapper before-img-wrapper">
+                            <img id="before-img" src="" alt="Before Photo">
+                            <div class="compare-tag before-tag" id="before-tag">Before</div>
+                        </div>
+                        <div class="img-wrapper after-img-wrapper" id="after-img-wrapper">
+                            <img id="after-img" src="" alt="After Photo">
+                            <div class="compare-tag after-tag" id="after-tag">After</div>
+                        </div>
+                        <input type="range" min="0" max="100" value="50" class="comparison-slider-handle" id="slider-range-input" oninput="handleSliderDrag(this.value)">
+                        <div class="slider-divider-line" id="slider-divider-line">
+                            <div class="slider-divider-thumb">↔</div>
+                        </div>
+                    </div>
+
+                    <div id="no-photo-alert" style="display: none; text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📷</div>
+                        <h3>ยังไม่มีรูปภาพที่บันทึกไว้</h3>
+                        <p style="margin-top: 0.5rem;">คุณสามารถอัปโหลดรูปภาพสัดส่วนได้ในหน้า <strong>"บันทึกสัดส่วน"</strong> เมื่อเริ่มบันทึกครั้งแรกครับ</p>
+                        <button class="btn-primary" style="margin-top: 1rem;" onclick="switchTab('log-entry')">ไปที่หน้าบันทึกสัดส่วน</button>
+                    </div>
+                </div>
+
+                <!-- Photo Timeline Gallery -->
+                <div class="card-container" style="margin-top: 2rem;">
+                    <div class="card-title">แกลเลอรี่รูปภาพทั้งหมดในประวัติ</div>
+                    <div class="photo-gallery-grid" id="photo-gallery-grid">
+                        <!-- Thumbnails injected dynamically -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab: History Log -->
+            <section id="history" class="tab-content">
+                <div class="content-header">
+                    <div class="header-title">
+                        <h1>ประวัติการบันทึกสัดส่วน</h1>
+                        <p>รายการประวัติทั้งหมดที่คุณบันทึกไว้ในระบบ</p>
+                    </div>
+                    <div class="backup-actions">
+                        <button class="btn-secondary" onclick="exportCSV()" title="ดาวน์โหลดไฟล์สำหรับเปิดใน Microsoft Excel หรือ Numbers">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 6px; vertical-align: middle;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="8" y1="13" x2="16" y2="13"></line><line x1="8" y1="17" x2="16" y2="17"></line></svg>Excel (CSV)
+                        </button>
+                        <button class="btn-secondary" onclick="exportData()" title="สำรองข้อมูลทั้งหมดในระบบ">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 6px; vertical-align: middle;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>สำรอง (JSON)
+                        </button>
+                        <button class="btn-secondary" onclick="document.getElementById('import-file').click()" title="กู้คืนข้อมูลจากไฟล์สำรอง">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 6px; vertical-align: middle;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>นำเข้าข้อมูล
+                        </button>
+                        <input type="file" id="import-file" accept=".json,.csv" style="display: none;" onchange="importData(event)">
+                    </div>
+                </div>
+
+                <div class="card-container">
+                    <div class="table-wrapper">
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>วันที่</th>
+                                    <th>รูป</th>
+                                    <th>น้ำหนัก (<span class="tbl-weight-unit">กก.</span>)</th>
+                                    <th>เอว (<span class="tbl-measure-unit">นิ้ว</span>)</th>
+                                    <th>อก / สะโพก (<span class="tbl-measure-unit">นิ้ว</span>)</th>
+                                    <th>แขน ซ/ข (<span class="tbl-measure-unit">นิ้ว</span>)</th>
+                                    <th>ขา ซ/ข (<span class="tbl-measure-unit">นิ้ว</span>)</th>
+                                    <th>พฤติกรรม & บันทึก</th>
+                                    <th>การจัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table-body">
+                                <!-- Logs injected dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab: Profile Settings -->
+            <section id="profile" class="tab-content">
+                <div class="content-header">
+                    <div class="header-title">
+                        <h1>โปรไฟล์และการตั้งค่าเมแทบอลิซึม</h1>
+                        <p>กรอกข้อมูลร่างกายเพื่อคำนวณอัตราเผาผลาญ BMR / TDEE ที่แม่นยำ</p>
+                    </div>
+                </div>
+
+                <div class="card-container">
+                    <div class="profile-avatar-select">
+                        <div class="profile-avatar-large" id="profile-avatar">U</div>
+                        <div>
+                            <h2 id="profile-display-name">ผู้ใช้งาน</h2>
+                            <p style="color: var(--text-secondary)" id="profile-display-desc">ผู้ดูแลสุขภาพส่วนตัว</p>
+                        </div>
+                    </div>
+
+                    <form id="profile-form">
+                        <div class="form-grid">
+                            <!-- Display Name -->
+                            <div class="form-group">
+                                <label for="user-name">ชื่อของคุณ</label>
+                                <input type="text" id="user-name" class="form-input" placeholder="กรอกชื่อของคุณ" required>
+                            </div>
+
+                            <!-- Gender (Required for BMR) -->
+                            <div class="form-group">
+                                <label for="user-gender">เพศสภาพ (สำหรับคำนวณ BMR)</label>
+                                <select id="user-gender" class="form-input">
+                                    <option value="male">ชาย</option>
+                                    <option value="female" selected>หญิง</option>
+                                </select>
+                            </div>
+
+                            <!-- Age (Required for BMR) -->
+                            <div class="form-group">
+                                <label for="user-age">อายุ (ปี)</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="user-age" class="form-input" placeholder="เช่น 28" min="10" max="100" required>
+                                    <span class="input-unit">ปี</span>
+                                </div>
+                            </div>
+
+                            <!-- Height -->
+                            <div class="form-group">
+                                <label for="user-height">ส่วนสูง</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="user-height" class="form-input" placeholder="ส่วนสูงของคุณ" required>
+                                    <span class="input-unit">ซม.</span>
+                                </div>
+                            </div>
+
+                            <!-- Neck Size (Required for Body Fat %) -->
+                            <div class="form-group">
+                                <label for="user-neck">รอบคอเริ่มต้น (คำนวณ % ไขมัน)</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="user-neck" step="0.1" class="form-input" placeholder="33.0" required>
+                                    <span class="input-unit label-measure-unit">นิ้ว</span>
+                                </div>
+                            </div>
+
+                            <!-- Activity Level (Required for TDEE) -->
+                            <div class="form-group full-width">
+                                <label for="user-activity">ระดับการออกกำลังกาย / กิจกรรมประจำวัน (คำนวณ TDEE)</label>
+                                <select id="user-activity" class="form-input">
+                                    <option value="sedentary">นั่งทำงานเป็นหลัก ไม่ออกกำลังกาย (x1.2)</option>
+                                    <option value="light" selected>ออกกำลังกายเบาๆ 1-3 วัน/สัปดาห์ (x1.375)</option>
+                                    <option value="moderate">ออกกำลังกายปานกลาง 3-5 วัน/สัปดาห์ (x1.55)</option>
+                                    <option value="active">ออกกำลังกายหนัก 6-7 วัน/สัปดาห์ (x1.725)</option>
+                                </select>
+                            </div>
+
+                            <!-- Units toggle -->
+                            <div class="form-group">
+                                <label for="unit-system">ระบบหน่วยวัด</label>
+                                <select id="unit-system" class="form-input" onchange="updateUnitLabels()">
+                                    <option value="metric">เมตร (กิโลกรัม / เซนติเมตร)</option>
+                                    <option value="imperial" selected>อังกฤษ (กิโลกรัม / นิ้ว)</option>
+                                </select>
+                            </div>
+
+                            <!-- Starting weight -->
+                            <div class="form-group">
+                                <label for="start-weight">น้ำหนักเริ่มต้น</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="start-weight" step="0.1" class="form-input" placeholder="0.0" required>
+                                    <span class="input-unit label-weight-unit">กก.</span>
+                                </div>
+                            </div>
+
+                            <!-- Target Weight -->
+                            <div class="form-group">
+                                <label for="target-weight">เป้าหมายน้ำหนัก</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="target-weight" step="0.1" class="form-input" placeholder="0.0" required>
+                                    <span class="input-unit label-weight-unit">กก.</span>
+                                </div>
+                            </div>
+
+                            <!-- Target Waist -->
+                            <div class="form-group">
+                                <label for="target-waist">เป้าหมายรอบเอว</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="target-waist" step="0.1" class="form-input" placeholder="0.0" required>
+                                    <span class="input-unit label-measure-unit">นิ้ว</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions" style="margin-top: 2rem;">
+                            <button type="submit" class="btn-primary">บันทึกโปรไฟล์ & เป้าหมาย</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <button class="bottom-nav-item active" data-tab="dashboard">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>แดชบอร์ด</span>
+        </button>
+        <button class="bottom-nav-item" data-tab="log-entry">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+            <span>บันทึก</span>
+        </button>
+        <button class="bottom-nav-item" data-tab="photos">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            <span>รูปภาพ</span>
+        </button>
+        <button class="bottom-nav-item" data-tab="history">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>ประวัติ</span>
+        </button>
+        <button class="bottom-nav-item" data-tab="profile">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span>โปรไฟล์</span>
+        </button>
+    </nav>
+
+    <!-- Shareable Progress Card Modal -->
+    <div class="modal-overlay" id="share-card-modal" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>การ์ดสรุปความสำเร็จของฉัน</h3>
+                <button class="modal-close" onclick="closeShareCardModal()">✕</button>
+            </div>
+            
+            <!-- Renderable Visual Card -->
+            <div class="progress-card-preview" id="progress-card-preview">
+                <div class="pc-header">
+                    <div class="pc-avatar" id="pc-avatar">U</div>
+                    <div>
+                        <h3 class="pc-name" id="pc-name">ผู้ใช้งาน</h3>
+                        <p class="pc-subtitle">BodyFit Personal Journey</p>
+                    </div>
+                </div>
+                <div class="pc-hero-metric">
+                    <div class="pc-hero-number" id="pc-total-loss">-0.0 กก.</div>
+                    <div class="pc-hero-label">น้ำหนักที่ลดได้ทั้งหมด 🎉</div>
+                </div>
+                <div class="pc-stats-row">
+                    <div class="pc-stat">
+                        <span class="pc-stat-title">เริ่มต้น</span>
+                        <span class="pc-stat-val" id="pc-start-weight">-- กก.</span>
+                    </div>
+                    <div class="pc-stat-arrow">➔</div>
+                    <div class="pc-stat">
+                        <span class="pc-stat-title">ปัจจุบัน</span>
+                        <span class="pc-stat-val" id="pc-current-weight">-- กก.</span>
+                    </div>
+                    <div class="pc-stat-arrow">➔</div>
+                    <div class="pc-stat">
+                        <span class="pc-stat-title">เป้าหมาย</span>
+                        <span class="pc-stat-val" id="pc-target-weight">-- กก.</span>
+                    </div>
+                </div>
+                <div class="pc-extra-details">
+                    <div class="pc-detail-item">
+                        <span>รอบเอวลดลง:</span>
+                        <strong id="pc-waist-change">--</strong>
+                    </div>
+                    <div class="pc-detail-item">
+                        <span>ความคืบหน้าเป้าหมาย:</span>
+                        <strong id="pc-goal-pct">--%</strong>
+                    </div>
+                    <div class="pc-detail-item">
+                        <span>บันทึกต่อเนื่อง:</span>
+                        <strong id="pc-streak">-- วัน</strong>
+                    </div>
+                </div>
+                <div class="pc-footer">
+                    <span>⚡ สุขภาพดีเริ่มต้นที่ตัวเรา • BodyFit Tracker</span>
+                </div>
+            </div>
+
+            <!-- Hidden canvas for rendering image -->
+            <canvas id="card-render-canvas" style="display: none;"></canvas>
+
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="downloadProgressCard()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    บันทึกเป็นการ์ดรูปภาพ (PNG)
+                </button>
+                <button class="btn-secondary" onclick="closeShareCardModal()">ปิด</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Weight Log Modal (⚡ 3-second weight log) -->
+    <div class="modal-overlay" id="quick-weight-modal" style="display: none;">
+        <div class="modal-card" style="max-width: 440px;">
+            <div class="modal-header">
+                <h3>⚡ ชั่งน้ำหนักด่วน (Quick Log)</h3>
+                <button class="modal-close" onclick="closeQuickWeightModal()">✕</button>
+            </div>
+            <form onsubmit="saveQuickWeight(event)" style="display: flex; flex-direction: column; gap: 1.15rem;">
+                <div class="form-group">
+                    <label for="quick-log-date">วันที่ชั่ง</label>
+                    <div class="input-wrapper">
+                        <input type="date" id="quick-log-date" class="form-input" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="quick-log-weight">น้ำหนักวันนี้</label>
+                    <div class="input-wrapper">
+                        <input type="number" step="0.1" id="quick-log-weight" class="form-input quick-weight-input" placeholder="0.0" required autofocus>
+                        <span class="input-unit label-weight-unit" style="font-size: 1.25rem; right: 1.25rem;">กก.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.4rem; display: block;">แท็กสภาพร่างกายตอนชั่ง:</label>
+                    <div class="tag-chips-wrapper">
+                        <button type="button" class="tag-chip quick-tag-chip" data-tag="ตื่นนอน">🌅 ตื่นนอน</button>
+                        <button type="button" class="tag-chip quick-tag-chip" data-tag="หลังขับถ่าย">🚽 หลังขับถ่าย</button>
+                        <button type="button" class="tag-chip quick-tag-chip" data-tag="ก่อนนอน">🌙 ก่อนนอน</button>
+                        <button type="button" class="tag-chip quick-tag-chip" data-tag="หลังซ้อม">💪 หลังซ้อม</button>
+                        <button type="button" class="tag-chip quick-tag-chip" data-tag="ท้องว่าง">🥗 ท้องว่าง</button>
+                    </div>
+                </div>
+                <div class="modal-actions" style="margin-top: 0.5rem;">
+                    <button type="submit" class="btn-primary" style="flex: 1;">⚡ บันทึกน้ำหนักทันที</button>
+                    <button type="button" class="btn-secondary" onclick="closeQuickWeightModal()">ยกเลิก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Weekly Summary Report Modal (📑 Weekly Report Card) -->
+    <div class="modal-overlay" id="weekly-report-modal" style="display: none;">
+        <div class="modal-card" style="max-width: 520px;">
+            <div class="modal-header">
+                <h3>📑 สรุปผลประจำสัปดาห์ (Weekly Report)</h3>
+                <button class="modal-close" onclick="closeWeeklyReportModal()">✕</button>
+            </div>
+            <div class="weekly-report-body" style="text-align: center;">
+                <div class="weekly-grade-badge" id="weekly-grade">A+</div>
+                <h4 style="margin: 0.75rem 0 0.25rem 0; font-size: 1.15rem; color: var(--text-primary);">ผลการประเมิน 7 วันล่าสุด</h4>
+                <div class="weekly-stats-grid">
+                    <div class="weekly-stat-box">
+                        <div class="weekly-stat-num" id="weekly-weight-change">0.0 กก.</div>
+                        <div class="weekly-stat-lbl">การเปลี่ยนแปลงน้ำหนัก</div>
+                    </div>
+                    <div class="weekly-stat-box">
+                        <div class="weekly-stat-num" id="weekly-days-logged">0 / 7 วัน</div>
+                        <div class="weekly-stat-lbl">ความสม่ำเสมอบันทึก</div>
+                    </div>
+                    <div class="weekly-stat-box">
+                        <div class="weekly-stat-num" id="weekly-water-total">0.0 ลิตร</div>
+                        <div class="weekly-stat-lbl">ปริมาณน้ำดื่มสะสม</div>
+                    </div>
+                    <div class="weekly-stat-box">
+                        <div class="weekly-stat-num" id="weekly-streak-val">🔥 0 วัน</div>
+                        <div class="weekly-stat-lbl">สถิติวินัยต่อเนื่อง</div>
+                    </div>
+                </div>
+                <p id="weekly-advice-text" style="font-size: 0.88rem; color: var(--text-secondary); background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border); border-radius: 12px; padding: 0.85rem; margin-top: 0.5rem;"></p>
+            </div>
+            <!-- Hidden canvas for weekly PNG export -->
+            <canvas id="weekly-card-canvas" width="600" height="780" style="display: none;"></canvas>
+            <div class="modal-actions" style="margin-top: 0.5rem;">
+                <button type="button" class="btn-primary" onclick="downloadWeeklyReportCard()" style="flex: 1;">
+                    📥 ดาวน์โหลดการ์ดสรุปผล (PNG)
+                </button>
+                <button type="button" class="btn-secondary" onclick="closeWeeklyReportModal()">ปิด</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>/*SCRIPT_PLACEHOLDER*/</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="th">
+﻿<!DOCTYPE html>
+<html lang="th" data-theme="neon">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -10,12 +10,12 @@
     <meta name="theme-color" content="#a855f7">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='6' fill='%23a855f7'/><text x='12' y='17' font-size='12' font-weight='bold' fill='white' text-anchor='middle'>BF</text></svg>"><link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='6' fill='%23a855f7'/><text x='12' y='17' font-size='12' font-weight='bold' fill='white' text-anchor='middle'>BF</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='6' fill='%23a855f7'/><text x='12' y='17' font-size='12' font-weight='bold' fill='white' text-anchor='middle'>BF</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='6' fill='%23a855f7'/><text x='12' y='17' font-size='12' font-weight='bold' fill='white' text-anchor='middle'>BF</text></svg>">
     
-    <style>
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+    <style>@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
-:root {
+:root, [data-theme="neon"] {
     --bg-gradient: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 50%, #020617 100%);
     --card-bg: rgba(30, 41, 59, 0.45);
     --card-border: rgba(255, 255, 255, 0.08);
@@ -30,7 +30,84 @@
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
+    --input-bg: rgba(15, 23, 42, 0.45);
+    --header-bg: rgba(15, 23, 42, 0.7);
+    --body-bg: #020617;
+    --chart-grid: rgba(255, 255, 255, 0.04);
+    --table-stripe: rgba(15, 23, 42, 0.2);
+    --pill-bg: rgba(15, 23, 42, 0.6);
+}
+
+[data-theme="mint"] {
+    --bg-gradient: radial-gradient(circle at 50% 0%, #064e3b 0%, #062f22 50%, #021710 100%);
+    --card-bg: rgba(6, 78, 59, 0.25);
+    --card-border: rgba(52, 211, 153, 0.15);
+    --glass-blur: blur(16px);
     
+    --primary-neon: #10b981; /* Emerald */
+    --secondary-neon: #06b6d4; /* Cyan */
+    --accent-cyan: #34d399; /* Mint */
+    --success-emerald: #10b981;
+    --warning-rose: #f43f5e;
+    
+    --text-primary: #f0fdf4;
+    --text-secondary: #a7f3d0;
+    --text-muted: #6ee7b7;
+    --input-bg: rgba(6, 40, 28, 0.5);
+    --header-bg: rgba(4, 25, 18, 0.85);
+    --body-bg: #021710;
+    --chart-grid: rgba(52, 211, 153, 0.06);
+    --table-stripe: rgba(6, 40, 28, 0.3);
+    --pill-bg: rgba(6, 40, 28, 0.7);
+}
+
+[data-theme="ocean"] {
+    --bg-gradient: radial-gradient(circle at 50% 0%, #0c4a6e 0%, #082f49 50%, #021626 100%);
+    --card-bg: rgba(8, 47, 73, 0.3);
+    --card-border: rgba(56, 189, 248, 0.15);
+    --glass-blur: blur(16px);
+    
+    --primary-neon: #0284c7; /* Sky/Ocean */
+    --secondary-neon: #38bdf8; /* Light Sky */
+    --accent-cyan: #06b6d4; /* Cyan */
+    --success-emerald: #10b981;
+    --warning-rose: #f43f5e;
+    
+    --text-primary: #f0f9ff;
+    --text-secondary: #bae6fd;
+    --text-muted: #7dd3fc;
+    --input-bg: rgba(8, 47, 73, 0.5);
+    --header-bg: rgba(3, 24, 40, 0.85);
+    --body-bg: #021626;
+    --chart-grid: rgba(56, 189, 248, 0.06);
+    --table-stripe: rgba(8, 47, 73, 0.3);
+    --pill-bg: rgba(8, 47, 73, 0.7);
+}
+
+[data-theme="light"] {
+    --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --card-border: rgba(0, 0, 0, 0.08);
+    --glass-blur: blur(12px);
+    
+    --primary-neon: #7c3aed; /* Deep Purple */
+    --secondary-neon: #db2777; /* Rose */
+    --accent-cyan: #0284c7; /* Ocean Blue */
+    --success-emerald: #059669;
+    --warning-rose: #e11d48;
+    
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --input-bg: rgba(241, 245, 249, 0.9);
+    --header-bg: rgba(255, 255, 255, 0.9);
+    --body-bg: #f8fafc;
+    --chart-grid: rgba(0, 0, 0, 0.05);
+    --table-stripe: rgba(241, 245, 249, 0.7);
+    --pill-bg: rgba(226, 232, 240, 0.8);
+}
+
+:root {
     --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -49,6 +126,7 @@ body {
     overflow-x: hidden;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* App Layout */
@@ -60,7 +138,7 @@ body {
 /* Sidebar Styling (Desktop) */
 .sidebar {
     width: 270px;
-    background: rgba(15, 23, 42, 0.7);
+    background: var(--header-bg);
     backdrop-filter: var(--glass-blur);
     border-right: 1px solid var(--card-border);
     padding: 2.2rem 1.4rem;
@@ -81,16 +159,13 @@ body {
 
 .brand-icon {
     font-size: 2rem;
-    background: linear-gradient(135deg, var(--primary-neon), var(--secondary-neon));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 
 .brand-name {
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: -0.5px;
-    background: linear-gradient(to right, #ffffff, #c084fc);
+    background: linear-gradient(to right, var(--text-primary), var(--primary-neon));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -123,7 +198,7 @@ body {
 
 .nav-item.active {
     background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(236, 72, 153, 0.15));
-    border-color: rgba(168, 85, 247, 0.3);
+    border-color: var(--primary-neon);
     box-shadow: 0 4px 20px rgba(168, 85, 247, 0.12);
 }
 
@@ -140,6 +215,7 @@ body {
     height: 44px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--accent-cyan), var(--primary-neon));
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -195,7 +271,7 @@ body {
     font-size: 2.1rem;
     font-weight: 700;
     margin-bottom: 0.25rem;
-    background: linear-gradient(to right, #ffffff, #cbd5e1);
+    background: linear-gradient(to right, var(--text-primary), var(--text-secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -208,15 +284,33 @@ body {
 .header-btn-group {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.6rem;
     flex-wrap: wrap;
+}
+
+/* Theme Picker Dropdown */
+.theme-picker-select {
+    background: var(--pill-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-primary);
+    padding: 0.65rem 0.9rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.theme-picker-select:hover {
+    border-color: var(--primary-neon);
 }
 
 .btn-primary {
     background: linear-gradient(135deg, var(--primary-neon), var(--secondary-neon));
     color: #fff;
     border: none;
-    padding: 0.75rem 1.4rem;
+    padding: 0.75rem 1.3rem;
     border-radius: 12px;
     font-weight: 600;
     cursor: pointer;
@@ -226,7 +320,7 @@ body {
     transition: var(--transition);
     box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
     font-family: inherit;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
 }
 
 .btn-primary:hover {
@@ -238,7 +332,7 @@ body {
     background: rgba(255, 255, 255, 0.05);
     color: var(--text-primary);
     border: 1px solid var(--card-border);
-    padding: 0.75rem 1.4rem;
+    padding: 0.75rem 1.2rem;
     border-radius: 12px;
     font-weight: 600;
     cursor: pointer;
@@ -247,7 +341,7 @@ body {
     gap: 0.4rem;
     transition: var(--transition);
     font-family: inherit;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
 }
 
 .btn-secondary:hover {
@@ -256,13 +350,35 @@ body {
     transform: translateY(-1px);
 }
 
+.btn-quick-weight {
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+    font-family: inherit;
+    font-size: 0.92rem;
+}
+
+.btn-quick-weight:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+}
+
 /* Motivation & Milestone Banner */
 .motivation-banner {
     background: linear-gradient(135deg, rgba(168, 85, 247, 0.12), rgba(6, 182, 212, 0.08));
-    border: 1px solid rgba(168, 85, 247, 0.25);
+    border: 1px solid var(--card-border);
     border-radius: 20px;
     padding: 1.25rem 1.75rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.75rem;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -303,14 +419,129 @@ body {
 .banner-val {
     font-size: 1.3rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--text-primary);
     margin-top: 2px;
 }
 
 .banner-divider {
     width: 1px;
     height: 40px;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--card-border);
+}
+
+/* Daily Water Tracker Card */
+.water-tracker-card {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(2, 132, 199, 0.08));
+    border: 1px solid rgba(6, 182, 212, 0.25);
+    border-radius: 20px;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.water-info-side {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.water-cup-icon {
+    font-size: 2.4rem;
+    background: rgba(6, 182, 212, 0.15);
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+.water-details h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.water-details p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.water-amount-big {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent-cyan);
+    margin: 2px 0;
+}
+
+.water-progress-track {
+    width: 100%;
+    min-width: 200px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 6px;
+}
+
+.water-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #06b6d4, #38bdf8);
+    border-radius: 99px;
+    transition: width 0.4s ease;
+}
+
+.water-buttons-side {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-water {
+    background: rgba(6, 182, 212, 0.15);
+    border: 1px solid rgba(6, 182, 212, 0.35);
+    color: var(--text-primary);
+    padding: 0.55rem 0.9rem;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.btn-water:hover {
+    background: rgba(6, 182, 212, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(6, 182, 212, 0.25);
+}
+
+.btn-water-reset {
+    background: transparent;
+    border: 1px solid var(--card-border);
+    color: var(--text-muted);
+    padding: 0.55rem 0.75rem;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.btn-water-reset:hover {
+    color: var(--warning-rose);
+    border-color: var(--warning-rose);
 }
 
 /* Primary Metrics Grid */
@@ -416,6 +647,7 @@ body {
     border-radius: 24px;
     padding: 1.75rem;
     position: relative;
+    margin-bottom: 1.75rem;
 }
 
 .card-title {
@@ -425,6 +657,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
 }
 
 /* Chart Header & Filter Controls */
@@ -444,7 +678,7 @@ body {
 }
 
 .pill-group {
-    background: rgba(15, 23, 42, 0.6);
+    background: var(--pill-bg);
     border: 1px solid var(--card-border);
     border-radius: 99px;
     padding: 3px;
@@ -517,18 +751,111 @@ body {
     transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.goal-advice {
-    background: rgba(6, 182, 212, 0.06);
-    border: 1px solid rgba(6, 182, 212, 0.2);
-    border-radius: 14px;
-    padding: 0.9rem 1rem;
-    margin-top: 0.5rem;
+/* Mini Milestones Checkpoint Stepper */
+.milestones-stepper {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--card-border);
 }
 
-/* Health & Metabolism 6-Grid */
-.calcs-grid-6 {
+.stepper-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.stepper-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.stepper-badge {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 99px;
+    background: rgba(168, 85, 247, 0.15);
+    color: var(--primary-neon);
+    font-weight: 600;
+}
+
+.stepper-track {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    margin: 1.5rem 0.5rem 0.5rem 0.5rem;
+}
+
+.stepper-track::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    z-index: 1;
+}
+
+.step-node {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.step-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--body-bg);
+    border: 2px solid var(--card-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    transition: var(--transition);
+}
+
+.step-node.completed .step-circle {
+    background: var(--success-emerald);
+    border-color: var(--success-emerald);
+    color: #fff;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+
+.step-node.active .step-circle {
+    background: var(--primary-neon);
+    border-color: #fff;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+    transform: scale(1.15);
+}
+
+.step-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.step-node.active .step-label {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+/* Health & Metabolism Grid */
+.calcs-grid-custom {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1.25rem;
     margin-top: 0.5rem;
 }
@@ -563,31 +890,31 @@ body {
 
 .calc-name {
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     color: var(--text-primary);
 }
 
 .calc-value {
-    font-size: 2.1rem;
+    font-size: 2rem;
     font-weight: 700;
     line-height: 1.1;
-    color: #fff;
-    margin: 0.5rem 0 0.25rem 0;
+    color: var(--text-primary);
+    margin: 0.45rem 0 0.2rem 0;
 }
 
-.text-emerald {
-    color: var(--success-emerald);
-}
+.text-emerald { color: var(--success-emerald); }
+.text-cyan { color: var(--accent-cyan); }
+.text-amber { color: #f59e0b; }
 
 .calc-sublabel {
-    font-size: 0.75rem;
+    font-size: 0.74rem;
     color: var(--text-muted);
 }
 
 .calc-status {
     padding: 0.25rem 0.65rem;
     border-radius: 99px;
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     font-weight: 600;
     display: inline-block;
     text-align: center;
@@ -596,6 +923,110 @@ body {
 .status-normal { background: rgba(16, 185, 129, 0.15); color: var(--success-emerald); border: 1px solid rgba(16, 185, 129, 0.25); }
 .status-warning { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.25); }
 .status-danger { background: rgba(244, 63, 94, 0.15); color: var(--warning-rose); border: 1px solid rgba(244, 63, 94, 0.25); }
+
+/* Macro Nutrients Breakdown Card */
+.macro-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 1.5rem;
+}
+
+.macro-ratio-bar {
+    height: 14px;
+    width: 100%;
+    border-radius: 99px;
+    overflow: hidden;
+    display: flex;
+    margin: 1rem 0;
+}
+
+.macro-bar-carb { background: #38bdf8; transition: width 0.4s ease; }
+.macro-bar-protein { background: #ec4899; transition: width 0.4s ease; }
+.macro-bar-fat { background: #f59e0b; transition: width 0.4s ease; }
+
+.macro-boxes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.9rem;
+}
+
+.macro-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 0.9rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.macro-box-title {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.macro-box-val {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-top: 0.25rem;
+}
+
+.macro-box-cal {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+
+/* Measurement Matrix Table */
+.matrix-table-wrap {
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 1px solid var(--card-border);
+    margin-top: 0.5rem;
+}
+
+.matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    background: var(--table-stripe);
+}
+
+.matrix-table th {
+    background: var(--header-bg);
+    color: var(--text-secondary);
+    font-weight: 600;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.86rem;
+    border-bottom: 1px solid var(--card-border);
+    white-space: nowrap;
+}
+
+.matrix-table td {
+    padding: 0.8rem 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    font-size: 0.9rem;
+}
+
+.matrix-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.delta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.delta-good { background: rgba(16, 185, 129, 0.15); color: var(--success-emerald); }
+.delta-bad { background: rgba(244, 63, 94, 0.15); color: var(--warning-rose); }
+.delta-zero { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); }
 
 /* Badges / Milestones Grid */
 .badges-grid {
@@ -672,7 +1103,7 @@ body {
 
 .form-input {
     width: 100%;
-    background: rgba(15, 23, 42, 0.45);
+    background: var(--input-bg);
     border: 1px solid var(--card-border);
     border-radius: 12px;
     padding: 0.75rem 2.8rem 0.75rem 1rem;
@@ -691,7 +1122,6 @@ select.form-input {
     outline: none;
     border-color: var(--primary-neon);
     box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
-    background: rgba(15, 23, 42, 0.65);
 }
 
 .input-unit {
@@ -728,7 +1158,7 @@ select.form-input {
     gap: 0.4rem;
     cursor: pointer;
     transition: var(--transition);
-    background: rgba(15, 23, 42, 0.3);
+    background: var(--input-bg);
 }
 
 .photo-upload-dropzone:hover {
@@ -868,7 +1298,7 @@ select.form-input {
     top: 0;
     left: 0;
     height: 100%;
-    width: 580px; /* matched container max-width */
+    width: 580px;
     max-width: none;
     object-fit: cover;
 }
@@ -973,7 +1403,7 @@ select.form-input {
     font-size: 0.75rem;
     display: flex;
     justify-content: space-between;
-    background: rgba(15, 23, 42, 0.7);
+    background: var(--header-bg);
     color: var(--text-secondary);
 }
 
@@ -994,11 +1424,11 @@ select.form-input {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
-    background: rgba(15, 23, 42, 0.2);
+    background: var(--table-stripe);
 }
 
 .history-table th {
-    background: rgba(15, 23, 42, 0.6);
+    background: var(--header-bg);
     color: var(--text-secondary);
     font-weight: 600;
     padding: 0.85rem 1.1rem;
@@ -1091,6 +1521,7 @@ select.form-input {
     height: 80px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--accent-cyan), var(--primary-neon));
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1099,30 +1530,33 @@ select.form-input {
     box-shadow: 0 8px 30px rgba(168, 85, 247, 0.3);
 }
 
-/* Shareable Progress Card Modal */
+/* Modals General */
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.78);
     backdrop-filter: blur(8px);
     z-index: 1200;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem;
+    animation: fadeIn 0.2s ease-out;
 }
 
 .modal-card {
-    background: #0f172a;
+    background: var(--header-bg);
     border: 1px solid var(--card-border);
     border-radius: 24px;
-    max-width: 460px;
+    max-width: 480px;
     width: 100%;
     padding: 1.75rem;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+    max-height: 92vh;
+    overflow-y: auto;
 }
 
 .modal-header {
@@ -1140,15 +1574,24 @@ select.form-input {
     background: transparent;
     border: none;
     color: var(--text-muted);
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     cursor: pointer;
     transition: var(--transition);
 }
 
 .modal-close:hover {
-    color: #fff;
+    color: var(--text-primary);
 }
 
+.modal-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.modal-actions .btn-primary { flex: 2; justify-content: center; }
+.modal-actions .btn-secondary { flex: 1; justify-content: center; }
+
+/* Progress Card Preview inside Modal */
 .progress-card-preview {
     background: radial-gradient(circle at 50% 0%, #3b0764 0%, #0f172a 75%);
     border: 1px solid rgba(168, 85, 247, 0.35);
@@ -1158,6 +1601,7 @@ select.form-input {
     display: flex;
     flex-direction: column;
     gap: 1.1rem;
+    color: #f8fafc;
 }
 
 .pc-header {
@@ -1171,6 +1615,7 @@ select.form-input {
     height: 44px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--accent-cyan), var(--primary-neon));
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1178,15 +1623,8 @@ select.form-input {
     font-size: 1.25rem;
 }
 
-.pc-name {
-    font-size: 1.15rem;
-    font-weight: 700;
-}
-
-.pc-subtitle {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-}
+.pc-name { font-size: 1.15rem; font-weight: 700; color: #fff; }
+.pc-subtitle { font-size: 0.75rem; color: #94a3b8; }
 
 .pc-hero-metric {
     text-align: center;
@@ -1205,11 +1643,7 @@ select.form-input {
     line-height: 1.1;
 }
 
-.pc-hero-label {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin-top: 0.25rem;
-}
+.pc-hero-label { font-size: 0.85rem; color: #cbd5e1; margin-top: 0.25rem; }
 
 .pc-stats-row {
     display: flex;
@@ -1220,66 +1654,77 @@ select.form-input {
     border-radius: 12px;
 }
 
-.pc-stat {
-    text-align: center;
-}
-
-.pc-stat-title {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    display: block;
-}
-
-.pc-stat-val {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #fff;
-    margin-top: 2px;
-}
-
-.pc-stat-arrow {
-    color: var(--accent-cyan);
-    font-size: 0.85rem;
-}
+.pc-stat { text-align: center; }
+.pc-stat-title { font-size: 0.7rem; color: #94a3b8; display: block; }
+.pc-stat-val { font-size: 0.95rem; font-weight: 700; color: #fff; margin-top: 2px; }
+.pc-stat-arrow { color: #06b6d4; font-size: 0.85rem; }
 
 .pc-extra-details {
     display: flex;
     flex-direction: column;
     gap: 0.45rem;
     font-size: 0.85rem;
-    color: var(--text-secondary);
+    color: #cbd5e1;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     padding-top: 0.8rem;
 }
 
-.pc-detail-item {
-    display: flex;
-    justify-content: space-between;
-}
+.pc-detail-item { display: flex; justify-content: space-between; }
+.pc-detail-item strong { color: #fff; }
+.pc-footer { text-align: center; font-size: 0.72rem; color: #94a3b8; }
 
-.pc-detail-item strong {
+/* Weekly Report Modal Specifics */
+.weekly-grade-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    font-weight: 800;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f59e0b, #ec4899);
     color: #fff;
+    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(236, 72, 153, 0.4);
 }
 
-.pc-footer {
-    text-align: center;
-    font-size: 0.72rem;
-    color: var(--text-muted);
-}
-
-.modal-actions {
-    display: flex;
+.weekly-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
+    margin: 1rem 0;
 }
 
-.modal-actions .btn-primary {
-    flex: 2;
-    justify-content: center;
+.weekly-stat-box {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 0.85rem;
+    text-align: center;
 }
 
-.modal-actions .btn-secondary {
-    flex: 1;
-    justify-content: center;
+.weekly-stat-num {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.weekly-stat-lbl {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* Quick Weight Modal Specifics */
+.quick-weight-input {
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-align: center;
+    padding: 1rem;
+    height: auto;
+    border-radius: 16px;
+    letter-spacing: -1px;
+    color: var(--primary-neon);
 }
 
 /* Mobile Bottom Navigation (Hidden on Desktop) */
@@ -1299,7 +1744,7 @@ select.form-input {
 }
 
 .toast {
-    background: rgba(15, 23, 42, 0.9);
+    background: var(--header-bg);
     backdrop-filter: var(--glass-blur);
     border: 1px solid var(--card-border);
     color: var(--text-primary);
@@ -1326,13 +1771,13 @@ select.form-input {
 /* Responsive Media Queries */
 @media (max-width: 768px) {
     .sidebar {
-        display: none; /* Hide sidebar completely on mobile */
+        display: none;
     }
 
     .main-content {
         margin-left: 0;
         padding: 1.25rem;
-        padding-bottom: 5.5rem; /* leave room for bottom nav */
+        padding-bottom: 5.5rem;
     }
 
     .bottom-nav {
@@ -1341,7 +1786,7 @@ select.form-input {
         bottom: 0;
         left: 0;
         width: 100%;
-        background: rgba(15, 23, 42, 0.92);
+        background: var(--header-bg);
         backdrop-filter: var(--glass-blur);
         border-top: 1px solid var(--card-border);
         z-index: 999;
@@ -1367,10 +1812,6 @@ select.form-input {
         transition: var(--transition);
     }
 
-    .bottom-nav-item svg {
-        transition: var(--transition);
-    }
-
     .bottom-nav-item.active {
         color: var(--primary-neon);
     }
@@ -1390,6 +1831,16 @@ select.form-input {
     .banner-divider {
         width: 100%;
         height: 1px;
+    }
+
+    .water-tracker-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .water-buttons-side {
+        width: 100%;
+        justify-content: flex-start;
     }
 
     .metrics-grid {
@@ -1421,7 +1872,6 @@ select.form-input {
         height: 320px;
     }
 }
-
 </style>
     <!-- Chart.js CDN for interactive charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -1499,10 +1949,27 @@ select.form-input {
                         <p>ภาพรวมสถิติและก้าวหน้าในการพัฒนาตัวเองของคุณ</p>
                     </div>
                     <div class="header-btn-group">
-                        <button class="btn-secondary" onclick="openShareCardModal()" title="สร้างการ์ดสรุปความสำเร็จเพื่อบันทึกหรือแชร์">
+                        <!-- Theme Switcher -->
+                        <select id="theme-selector" class="theme-picker-select" onchange="changeTheme(this.value)" title="เลือกธีมสีหน้าจอ">
+                            <option value="neon">🌌 นีออน ดาร์ก</option>
+                            <option value="mint">🌿 มินต์ สุขภาพ</option>
+                            <option value="ocean">🌊 โอเชียน ไซแอน</option>
+                            <option value="light">☀️ คลีน ไลท์</option>
+                        </select>
+                        <!-- Quick Weight Button -->
+                        <button type="button" class="btn-quick-weight" onclick="openQuickWeightModal()" title="ชั่งน้ำหนักด่วนใน 3 วินาที">
+                            ⚡ ชั่งด่วน
+                        </button>
+                        <!-- Weekly Report Button -->
+                        <button type="button" class="btn-secondary" onclick="openWeeklyReportModal()" title="ดูรายงานสรุปผลรอบ 7 วัน">
+                            📑 สรุปสัปดาห์
+                        </button>
+                        <!-- Achievement Card Button -->
+                        <button type="button" class="btn-secondary" onclick="openShareCardModal()" title="สร้างการ์ดสรุปความสำเร็จเพื่อบันทึกหรือแชร์">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right: 6px;"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg> การ์ดความสำเร็จ
                         </button>
-                        <button class="btn-primary" onclick="switchTab('log-entry')">
+                        <!-- New Log Entry Button -->
+                        <button type="button" class="btn-primary" onclick="switchTab('log-entry')">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> บันทึกวันนี้
                         </button>
                     </div>
@@ -1532,6 +1999,30 @@ select.form-input {
                             <div class="banner-label">คาดการณ์ถึงเป้าหมาย</div>
                             <div class="banner-val" id="stat-estimated-date">กำลังประมวลผล...</div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Daily Water Tracker Widget -->
+                <div class="water-tracker-card">
+                    <div class="water-info-side">
+                        <div class="water-cup-icon">💧</div>
+                        <div class="water-details">
+                            <h3>ดื่มน้ำประจำวัน (Water Tracker)</h3>
+                            <div class="water-amount-big">
+                                <span id="water-current-amount">0</span>
+                                <span style="font-size: 1rem; font-weight: 500; color: var(--text-secondary);">/ <span id="water-target-amount">2,500</span> มล. (<span id="water-pct-label">0%</span>)</span>
+                            </div>
+                            <div class="water-progress-track">
+                                <div class="water-progress-fill" id="water-progress-fill" style="width: 0%;"></div>
+                            </div>
+                            <p id="water-advice-msg" style="margin-top: 6px; font-size: 0.8rem; color: var(--text-secondary);">ดื่มน้ำแก้วแรกของวันเพื่อปลุกระบบเผาผลาญ!</p>
+                        </div>
+                    </div>
+                    <div class="water-buttons-side">
+                        <button type="button" class="btn-water" onclick="addWater(250)">+250 มล. (1 แก้ว)</button>
+                        <button type="button" class="btn-water" onclick="addWater(500)">+500 มล. (1 ขวด)</button>
+                        <button type="button" class="btn-water" onclick="addWater(-250)">-250 มล.</button>
+                        <button type="button" class="btn-water-reset" onclick="resetWater()" title="รีเซ็ตการดื่มน้ำของวันนี้">รีเซ็ต</button>
                     </div>
                 </div>
 
@@ -1621,7 +2112,7 @@ select.form-input {
                         </div>
                     </div>
 
-                    <!-- Progress Goals Card -->
+                    <!-- Progress Goals Card with Mini-Milestones Stepper -->
                     <div class="card-container">
                         <div class="card-title">เป้าหมายของคุณ</div>
                         <div class="goals-list">
@@ -1654,6 +2145,17 @@ select.form-input {
                                     การบันทึกสม่ำเสมอคือกุญแจสำคัญสู่ความสำเร็จ!
                                 </div>
                             </div>
+
+                            <!-- Mini Milestones Checkpoint Stepper -->
+                            <div class="milestones-stepper">
+                                <div class="stepper-header">
+                                    <span class="stepper-title">⏳ ด่านความสำเร็จย่อย (Milestones)</span>
+                                    <span class="stepper-badge" id="stepper-active-badge">กำลังคำนวณ...</span>
+                                </div>
+                                <div class="stepper-track" id="milestones-stepper-track">
+                                    <!-- Rendered dynamically -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1661,7 +2163,7 @@ select.form-input {
                 <!-- Health & Metabolism Calculators Panel -->
                 <div class="card-container">
                     <div class="card-title">ดัชนีสุขภาพ & เมแทบอลิซึม (คำนวณอัตโนมัติ)</div>
-                    <div class="calcs-grid calcs-grid-6">
+                    <div class="calcs-grid calcs-grid-custom">
                         <!-- BMI Card -->
                         <div class="calc-card">
                             <div class="calc-header">
@@ -1725,11 +2227,95 @@ select.form-input {
                             <div class="calc-value" id="calc-protein">--</div>
                             <div class="calc-sublabel">กรัม/วัน (รักษาและสร้างกล้ามเนื้อ)</div>
                         </div>
+
+                        <!-- Body Fat % Card (US Navy Formula) -->
+                        <div class="calc-card">
+                            <div class="calc-header">
+                                <span class="calc-name">ไขมันร่างกาย (%BF)</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #ec4899;"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                            </div>
+                            <div class="calc-value" id="calc-body-fat" style="color: #ec4899;">--</div>
+                            <div>
+                                <span class="calc-status" id="calc-body-fat-status">กรอกรอบคอ</span>
+                            </div>
+                        </div>
+
+                        <!-- Lean Mass Card (LBM) -->
+                        <div class="calc-card">
+                            <div class="calc-header">
+                                <span class="calc-name">มวลไร้ไขมัน (LBM)</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary-neon);"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                            </div>
+                            <div class="calc-value" id="calc-lean-mass" style="color: var(--primary-neon);">--</div>
+                            <div class="calc-sublabel">น้ำหนักตัวลบไขมัน (กก.)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Macro Nutrients Breakdown Card -->
+                <div class="macro-card card-container" style="margin-top: 2rem;">
+                    <div class="card-header-row" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+                        <div>
+                            <div class="card-title" style="margin-bottom: 0.25rem;">🥩 สัดส่วนสารอาหารหลัก (Macro Nutrients Split)</div>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">คำนวณตามพลังงานที่ควรได้รับต่อวันเพื่อผลลัพธ์ที่ดีที่สุด</p>
+                        </div>
+                        <select id="macro-diet-select" class="form-input macro-select" onchange="changeMacroDiet(this.value)" style="width: auto; padding: 0.45rem 1rem;">
+                            <option value="balanced">สมดุลมาตรฐาน (C40 / P30 / F30)</option>
+                            <option value="high-protein">เน้นโปรตีนสร้างกล้าม (C35 / P40 / F25)</option>
+                            <option value="low-carb">โลว์คาร์บ ลดแป้ง (C20 / P40 / F40)</option>
+                            <option value="keto">คีโตเจนิค (C5 / P25 / F70)</option>
+                        </select>
+                    </div>
+                    <div class="macro-ratio-bar">
+                        <div class="macro-bar-carb" id="bar-carb" style="width: 40%;" title="คาร์โบไฮเดรต"></div>
+                        <div class="macro-bar-protein" id="bar-protein" style="width: 30%;" title="โปรตีน"></div>
+                        <div class="macro-bar-fat" id="bar-fat" style="width: 30%;" title="ไขมันดี"></div>
+                    </div>
+                    <div class="macro-boxes-grid">
+                        <div class="macro-box">
+                            <span class="macro-box-title">🍚 คาร์โบไฮเดรต</span>
+                            <span class="macro-box-val" id="macro-carbs-g" style="color: #38bdf8;">--</span>
+                            <span class="macro-box-cal" id="macro-carbs-cal">-- kcal</span>
+                        </div>
+                        <div class="macro-box">
+                            <span class="macro-box-title">🥩 โปรตีน</span>
+                            <span class="macro-box-val" id="macro-protein-g" style="color: #ec4899;">--</span>
+                            <span class="macro-box-cal" id="macro-protein-cal">-- kcal</span>
+                        </div>
+                        <div class="macro-box">
+                            <span class="macro-box-title">🥑 ไขมันดี</span>
+                            <span class="macro-box-val" id="macro-fat-g" style="color: #f59e0b;">--</span>
+                            <span class="macro-box-cal" id="macro-fat-cal">-- kcal</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Measurement Matrix Comparison Table Card -->
+                <div class="card-container" style="margin-top: 2rem;">
+                    <div class="card-title">📏 ตารางเปรียบเทียบสัดส่วน (Measurement Matrix)</div>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: -0.5rem; margin-bottom: 1rem;">
+                        วิเคราะห์การเปลี่ยนแปลงตั้งแต่เริ่มต้นบันทึกวันแรก vs สัปดาห์ก่อนหน้า vs สัดส่วนปัจจุบัน
+                    </p>
+                    <div class="matrix-table-wrap">
+                        <table class="matrix-table">
+                            <thead>
+                                <tr>
+                                    <th>จุดวัดสัดส่วน</th>
+                                    <th>วันแรกสุด</th>
+                                    <th>สัปดาห์ก่อน</th>
+                                    <th>ล่าสุด</th>
+                                    <th>ผลต่างรวม</th>
+                                </tr>
+                            </thead>
+                            <tbody id="matrix-table-body">
+                                <!-- Populated dynamically by renderMeasurementMatrix() -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
                 <!-- Badges & Milestones Section -->
-                <div class="card-container">
+                <div class="card-container" style="margin-top: 2rem;">
                     <div class="card-title">เหรียญความสำเร็จและภารกิจ (Achievements)</div>
                     <div class="badges-grid" id="badges-grid">
                         <!-- Dynamic Badges injected -->
@@ -1765,6 +2351,15 @@ select.form-input {
                                 <div class="input-wrapper">
                                     <input type="number" id="log-weight" step="0.1" class="form-input" placeholder="0.0" required>
                                     <span class="input-unit label-weight-unit">กก.</span>
+                                </div>
+                            </div>
+
+                            <!-- Neck (US Navy Body Fat) -->
+                            <div class="form-group">
+                                <label for="log-neck">รอบคอ (สำหรับคำนวณ % ไขมัน)</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="log-neck" step="0.1" class="form-input" placeholder="33.0">
+                                    <span class="input-unit label-measure-unit">นิ้ว</span>
                                 </div>
                             </div>
 
@@ -2029,6 +2624,15 @@ select.form-input {
                                 </div>
                             </div>
 
+                            <!-- Neck Size (Required for Body Fat %) -->
+                            <div class="form-group">
+                                <label for="user-neck">รอบคอเริ่มต้น (คำนวณ % ไขมัน)</label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="user-neck" step="0.1" class="form-input" placeholder="33.0" required>
+                                    <span class="input-unit label-measure-unit">นิ้ว</span>
+                                </div>
+                            </div>
+
                             <!-- Activity Level (Required for TDEE) -->
                             <div class="form-group full-width">
                                 <label for="user-activity">ระดับการออกกำลังกาย / กิจกรรมประจำวัน (คำนวณ TDEE)</label>
@@ -2180,11 +2784,90 @@ select.form-input {
         </div>
     </div>
 
+    <!-- Quick Weight Log Modal (⚡ 3-second weight log) -->
+    <div class="modal-overlay" id="quick-weight-modal" style="display: none;">
+        <div class="modal-card" style="max-width: 440px;">
+            <div class="modal-header">
+                <h3>⚡ ชั่งน้ำหนักด่วน (Quick Log)</h3>
+                <button class="modal-close" onclick="closeQuickWeightModal()">✕</button>
+            </div>
+            <form onsubmit="saveQuickWeight(event)" style="display: flex; flex-direction: column; gap: 1.15rem;">
+                <div class="form-group">
+                    <label for="quick-log-date">วันที่ชั่ง</label>
+                    <div class="input-wrapper">
+                        <input type="date" id="quick-log-date" class="form-input" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="quick-log-weight">น้ำหนักวันนี้</label>
+                    <div class="input-wrapper">
+                        <input type="number" step="0.1" id="quick-log-weight" class="form-input quick-weight-input" placeholder="0.0" required autofocus>
+                        <span class="input-unit label-weight-unit" style="font-size: 1.25rem; right: 1.25rem;">กก.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.4rem; display: block;">แท็กสภาพร่างกายตอนชั่ง:</label>
+                    <div class="tag-chips-wrapper">
+                        <button type="button" class="tag-chip quick-tag-chip" data-tag="ตื่นนอน">🌅 ตื่นนอน</button>
+                        <button type="button" class="tag-chip quick-tag-chip" data-tag="หลังขับถ่าย">🚽 หลังขับถ่าย</button>
+                        <button type="button" class="tag-chip quick-tag-chip" data-tag="ก่อนนอน">🌙 ก่อนนอน</button>
+                        <button type="button" class="tag-chip quick-tag-chip" data-tag="หลังซ้อม">💪 หลังซ้อม</button>
+                        <button type="button" class="tag-chip quick-tag-chip" data-tag="ท้องว่าง">🥗 ท้องว่าง</button>
+                    </div>
+                </div>
+                <div class="modal-actions" style="margin-top: 0.5rem;">
+                    <button type="submit" class="btn-primary" style="flex: 1;">⚡ บันทึกน้ำหนักทันที</button>
+                    <button type="button" class="btn-secondary" onclick="closeQuickWeightModal()">ยกเลิก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Weekly Summary Report Modal (📑 Weekly Report Card) -->
+    <div class="modal-overlay" id="weekly-report-modal" style="display: none;">
+        <div class="modal-card" style="max-width: 520px;">
+            <div class="modal-header">
+                <h3>📑 สรุปผลประจำสัปดาห์ (Weekly Report)</h3>
+                <button class="modal-close" onclick="closeWeeklyReportModal()">✕</button>
+            </div>
+            <div class="weekly-report-body" style="text-align: center;">
+                <div class="weekly-grade-badge" id="weekly-grade">A+</div>
+                <h4 style="margin: 0.75rem 0 0.25rem 0; font-size: 1.15rem; color: var(--text-primary);">ผลการประเมิน 7 วันล่าสุด</h4>
+                <div class="weekly-stats-grid">
+                    <div class="weekly-stat-box">
+                        <div class="weekly-stat-num" id="weekly-weight-change">0.0 กก.</div>
+                        <div class="weekly-stat-lbl">การเปลี่ยนแปลงน้ำหนัก</div>
+                    </div>
+                    <div class="weekly-stat-box">
+                        <div class="weekly-stat-num" id="weekly-days-logged">0 / 7 วัน</div>
+                        <div class="weekly-stat-lbl">ความสม่ำเสมอบันทึก</div>
+                    </div>
+                    <div class="weekly-stat-box">
+                        <div class="weekly-stat-num" id="weekly-water-total">0.0 ลิตร</div>
+                        <div class="weekly-stat-lbl">ปริมาณน้ำดื่มสะสม</div>
+                    </div>
+                    <div class="weekly-stat-box">
+                        <div class="weekly-stat-num" id="weekly-streak-val">🔥 0 วัน</div>
+                        <div class="weekly-stat-lbl">สถิติวินัยต่อเนื่อง</div>
+                    </div>
+                </div>
+                <p id="weekly-advice-text" style="font-size: 0.88rem; color: var(--text-secondary); background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border); border-radius: 12px; padding: 0.85rem; margin-top: 0.5rem;"></p>
+            </div>
+            <!-- Hidden canvas for weekly PNG export -->
+            <canvas id="weekly-card-canvas" width="600" height="780" style="display: none;"></canvas>
+            <div class="modal-actions" style="margin-top: 0.5rem;">
+                <button type="button" class="btn-primary" onclick="downloadWeeklyReportCard()" style="flex: 1;">
+                    📥 ดาวน์โหลดการ์ดสรุปผล (PNG)
+                </button>
+                <button type="button" class="btn-secondary" onclick="closeWeeklyReportModal()">ปิด</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notification container -->
     <div class="toast-container" id="toast-container"></div>
 
-    <script>
-// BodyFit - Personal Health & Body Tracker App
+    <script>// BodyFit - Advanced Personal Health & Body Tracker
 // State Management
 let state = {
     profile: {
@@ -2192,13 +2875,17 @@ let state = {
         gender: "female", // 'female' or 'male'
         age: 28,
         height: 165,
+        neck: 32, // cm or inches
         activityLevel: "light", // 'sedentary', 'light', 'moderate', 'active'
         unitSystem: "imperial", // 'imperial' (kg/inch) or 'metric' (kg/cm)
         startWeight: 75.0,
         targetWeight: 60.0,
-        targetWaist: 28.0
+        targetWaist: 28.0,
+        macroDiet: "balanced", // 'balanced', 'high-protein', 'low-carb', 'keto'
+        waterTarget: 2500 // ml
     },
-    logs: []
+    logs: [],
+    waterLogs: {} // { "YYYY-MM-DD": 1750 }
 };
 
 // UI Filter States
@@ -2219,6 +2906,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadData();
     initApp();
     setupEventListeners();
+    initTheme();
     updateUI();
     registerServiceWorker();
 });
@@ -2227,6 +2915,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function loadData() {
     const savedProfile = localStorage.getItem("bodyfit_profile");
     const savedLogs = localStorage.getItem("bodyfit_logs");
+    const savedWater = localStorage.getItem("bodyfit_water");
 
     if (savedProfile) {
         state.profile = Object.assign(state.profile, JSON.parse(savedProfile));
@@ -2239,6 +2928,14 @@ function loadData() {
     } else {
         generateMockData();
         localStorage.setItem("bodyfit_logs", JSON.stringify(state.logs));
+    }
+
+    if (savedWater) {
+        try {
+            state.waterLogs = JSON.parse(savedWater);
+        } catch (e) {
+            state.waterLogs = {};
+        }
     }
 }
 
@@ -2267,6 +2964,10 @@ function generateMockData() {
             ? (40 - (3 * (1 - factor))).toFixed(1)
             : (101 - (7 * (1 - factor))).toFixed(1);
 
+        const neck = state.profile.unitSystem === 'imperial'
+            ? (13.0 - (0.5 * (1 - factor))).toFixed(1)
+            : (33.0 - (1.2 * (1 - factor))).toFixed(1);
+
         const arm = state.profile.unitSystem === 'imperial'
             ? (13.5 - (1.0 * (1 - factor))).toFixed(1)
             : (34 - (2.5 * (1 - factor))).toFixed(1);
@@ -2282,6 +2983,7 @@ function generateMockData() {
             id: Date.now() - (i * 1000 * 60 * 60 * 24 * 7),
             date: date.toISOString().split('T')[0],
             weight: parseFloat(weight),
+            neck: parseFloat(neck),
             chest: parseFloat(chest),
             waist: parseFloat(waist),
             hips: parseFloat(hips),
@@ -2302,17 +3004,41 @@ function generateMockData() {
 async function saveState() {
     localStorage.setItem("bodyfit_profile", JSON.stringify(state.profile));
     localStorage.setItem("bodyfit_logs", JSON.stringify(state.logs));
+    localStorage.setItem("bodyfit_water", JSON.stringify(state.waterLogs));
     updateUI();
 }
 
 // Register PWA Service Worker
 function registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
         navigator.serviceWorker.register('sw.js')
             .then(() => console.log("BodyFit Service Worker Active"))
             .catch(err => console.log("Service Worker Registration Failed:", err));
     }
 }
+
+// Theme Management
+function initTheme() {
+    const savedTheme = localStorage.getItem("bodyfit_theme") || "neon";
+    changeTheme(savedTheme, false);
+}
+
+function changeTheme(themeName, doSave = true) {
+    document.documentElement.setAttribute("data-theme", themeName);
+    if (doSave) {
+        localStorage.setItem("bodyfit_theme", themeName);
+    }
+    const themeSelect = document.getElementById("theme-selector");
+    if (themeSelect) themeSelect.value = themeName;
+    const profileThemeSelect = document.getElementById("profile-theme-select");
+    if (profileThemeSelect) profileThemeSelect.value = themeName;
+
+    // Refresh charts to match new theme colors
+    if (trendsChart) {
+        renderCharts();
+    }
+}
+window.changeTheme = changeTheme;
 
 // Populate forms with state
 function initApp() {
@@ -2320,13 +3046,15 @@ function initApp() {
     document.getElementById("user-gender").value = state.profile.gender || "female";
     document.getElementById("user-age").value = state.profile.age || 28;
     document.getElementById("user-height").value = state.profile.height || 165;
+    document.getElementById("user-neck").value = state.profile.neck || (state.profile.unitSystem === 'metric' ? 33 : 13);
     document.getElementById("user-activity").value = state.profile.activityLevel || "light";
     document.getElementById("unit-system").value = state.profile.unitSystem || "imperial";
-    document.getElementById("start-weight").value = state.profile.startWeight || 70;
+    document.getElementById("start-weight").value = state.profile.startWeight || 75;
     document.getElementById("target-weight").value = state.profile.targetWeight || 60;
     document.getElementById("target-waist").value = state.profile.targetWaist || 28;
+    document.getElementById("macro-diet-select").value = state.profile.macroDiet || "balanced";
 
-    // Reset date in log form
+    // Reset date in log form to today
     document.getElementById("log-date").value = new Date().toISOString().split('T')[0];
     
     updateUnitLabels();
@@ -2372,6 +3100,13 @@ function setupEventListeners() {
         });
     });
 
+    // Quick tag chips in Quick Weight modal
+    document.querySelectorAll(".quick-tag-chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+            chip.classList.toggle("active");
+        });
+    });
+
     // Profile form submit
     document.getElementById("profile-form").addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -2380,11 +3115,13 @@ function setupEventListeners() {
         state.profile.gender = document.getElementById("user-gender").value;
         state.profile.age = parseInt(document.getElementById("user-age").value) || 28;
         state.profile.height = parseFloat(document.getElementById("user-height").value) || 165;
+        state.profile.neck = parseFloat(document.getElementById("user-neck").value) || 33;
         state.profile.activityLevel = document.getElementById("user-activity").value;
         state.profile.unitSystem = document.getElementById("unit-system").value;
         state.profile.startWeight = parseFloat(document.getElementById("start-weight").value);
         state.profile.targetWeight = parseFloat(document.getElementById("target-weight").value);
         state.profile.targetWaist = parseFloat(document.getElementById("target-waist").value);
+        state.profile.macroDiet = document.getElementById("macro-diet-select").value;
 
         await saveState();
         showToast("บันทึกโปรไฟล์และการตั้งค่าสำเร็จ!", "success");
@@ -2408,6 +3145,7 @@ function setupEventListeners() {
             id: logId ? parseInt(logId) : Date.now(),
             date: logDate,
             weight: parseFloat(document.getElementById("log-weight").value),
+            neck: parseFloat(document.getElementById("log-neck").value) || state.profile.neck || 33,
             chest: parseFloat(document.getElementById("log-chest").value) || 0,
             waist: parseFloat(document.getElementById("log-waist").value),
             hips: parseFloat(document.getElementById("log-hips").value) || 0,
@@ -2423,7 +3161,6 @@ function setupEventListeners() {
         if (logId) {
             const index = state.logs.findIndex(log => log.id === parseInt(logId));
             if (index !== -1) {
-                // Keep old photo if not updated
                 if (!newLog.photo && state.logs[index].photo) {
                     newLog.photo = state.logs[index].photo;
                 }
@@ -2455,6 +3192,7 @@ function resetLogForm() {
     currentSelectedTags = [];
     document.querySelectorAll(".tag-chip").forEach(c => c.classList.remove("active"));
 }
+window.resetLogForm = resetLogForm;
 
 // Photo Upload Handler with Automatic Canvas Compression
 function handlePhotoUpload(event) {
@@ -2470,7 +3208,6 @@ function handlePhotoUpload(event) {
     reader.onload = function(e) {
         const img = new Image();
         img.onload = function() {
-            // Compress to maximum 640px dimensions
             const maxDim = 640;
             let width = img.width;
             let height = img.height;
@@ -2493,10 +3230,8 @@ function handlePhotoUpload(event) {
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0, width, height);
 
-            // Export as JPEG 0.75 quality for lightweight storage
             currentUploadedPhoto = canvas.toDataURL("image/jpeg", 0.75);
 
-            // Show preview
             document.getElementById("photo-preview-img").src = currentUploadedPhoto;
             document.getElementById("photo-preview-wrap").style.display = "block";
             document.getElementById("photo-dropzone").style.display = "none";
@@ -2517,7 +3252,6 @@ function removeUploadedPhoto() {
     document.getElementById("photo-dropzone").style.display = "flex";
 }
 window.removeUploadedPhoto = removeUploadedPhoto;
-window.resetLogForm = resetLogForm;
 
 // Switch Navigation Tab
 function switchTab(tabId) {
@@ -2525,12 +3259,10 @@ function switchTab(tabId) {
         tab.classList.remove("active");
     });
 
-    // Update Sidebar
     document.querySelectorAll(".nav-item").forEach(item => {
         item.classList.toggle("active", item.getAttribute("data-tab") === tabId);
     });
 
-    // Update Bottom Nav
     document.querySelectorAll(".bottom-nav-item").forEach(item => {
         item.classList.toggle("active", item.getAttribute("data-tab") === tabId);
     });
@@ -2569,7 +3301,494 @@ window.setMetricView = function(metric) {
     renderCharts();
 };
 
-// Main UI updater
+// --- DAILY WATER TRACKER ---
+function getTodayDateString() {
+    return new Date().toISOString().split('T')[0];
+}
+
+window.addWater = async function(amount) {
+    const today = getTodayDateString();
+    const current = state.waterLogs[today] || 0;
+    state.waterLogs[today] = Math.max(0, current + amount);
+    await saveState();
+    showToast(amount > 0 ? `+${amount} มล. เติมน้ำเรียบร้อย! 💧` : `${amount} มล. ปรับลดยอดน้ำ`, "info");
+};
+
+window.resetWater = async function() {
+    if (confirm("ต้องการรีเซ็ตยอดการดื่มน้ำของวันนี้ใช่หรือไม่?")) {
+        const today = getTodayDateString();
+        state.waterLogs[today] = 0;
+        await saveState();
+        showToast("รีเซ็ตยอดดื่มน้ำของวันนี้แล้ว", "info");
+    }
+};
+
+function updateWaterUI() {
+    const today = getTodayDateString();
+    const current = state.waterLogs[today] || 0;
+    const target = state.profile.waterTarget || 2500;
+    const pct = Math.min(100, Math.round((current / target) * 100));
+
+    const amountEl = document.getElementById("water-current-amount");
+    const pctEl = document.getElementById("water-pct-label");
+    const barEl = document.getElementById("water-progress-fill");
+    const adviceEl = document.getElementById("water-advice-msg");
+
+    if (amountEl) amountEl.textContent = `${current.toLocaleString()} / ${target.toLocaleString()} มล.`;
+    if (pctEl) pctEl.textContent = `${pct}% (${Math.round(current / 250)} / ${Math.round(target / 250)} แก้ว)`;
+    if (barEl) barEl.style.width = `${pct}%`;
+
+    if (adviceEl) {
+        if (pct >= 100) {
+            adviceEl.textContent = "🎉 ยอดเยี่ยมที่สุด! วันนี้คุณดื่มน้ำครบตามเป้าหมายแล้ว ร่างกายสดชื่นเต็มร้อย";
+        } else if (pct >= 50) {
+            adviceEl.textContent = `💧 ดื่มไปแล้ว ${pct}% อีกเพียง ${Math.round((target - current) / 250)} แก้วจะพิชิตเป้าหมาย!`;
+        } else {
+            adviceEl.textContent = "อย่าลืมจิบน้ำสม่ำเสมอระหว่างวัน เพื่อกระตุ้นการเผาผลาญไขมันและผิวพรรณสดใส";
+        }
+    }
+}
+
+// --- QUICK WEIGHT LOG MODAL ---
+window.openQuickWeightModal = function() {
+    const modal = document.getElementById("quick-weight-modal");
+    if (!modal) return;
+
+    document.getElementById("quick-log-date").value = getTodayDateString();
+    
+    // Pre-fill weight with latest log weight or startWeight
+    const sortedLogs = [...state.logs].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const latest = sortedLogs[sortedLogs.length - 1];
+    document.getElementById("quick-log-weight").value = latest ? latest.weight.toFixed(1) : state.profile.startWeight.toFixed(1);
+
+    modal.style.display = "flex";
+};
+
+window.closeQuickWeightModal = function() {
+    const modal = document.getElementById("quick-weight-modal");
+    if (modal) modal.style.display = "none";
+};
+
+window.saveQuickWeight = async function(event) {
+    event.preventDefault();
+    const date = document.getElementById("quick-log-date").value;
+    const weight = parseFloat(document.getElementById("quick-log-weight").value);
+
+    if (!date || isNaN(weight) || weight <= 0) {
+        showToast("กรุณากรอกน้ำหนักที่ถูกต้อง", "error");
+        return;
+    }
+
+    // Collect quick tags
+    const quickTags = [];
+    document.querySelectorAll(".quick-tag-chip.active").forEach(chip => {
+        quickTags.push(chip.getAttribute("data-tag"));
+    });
+
+    const existingIndex = state.logs.findIndex(l => l.date === date);
+
+    if (existingIndex !== -1) {
+        // Update existing log
+        state.logs[existingIndex].weight = weight;
+        if (quickTags.length > 0) {
+            state.logs[existingIndex].tags = [...new Set([...(state.logs[existingIndex].tags || []), ...quickTags])];
+        }
+    } else {
+        // Create new log (copy previous measurements so charts stay smooth)
+        const sortedLogs = [...state.logs].sort((a, b) => new Date(a.date) - new Date(b.date));
+        const prev = sortedLogs[sortedLogs.length - 1];
+
+        const newLog = {
+            id: Date.now(),
+            date: date,
+            weight: weight,
+            neck: prev ? prev.neck : (state.profile.neck || 33),
+            chest: prev ? prev.chest : 0,
+            waist: prev ? prev.waist : (state.profile.targetWaist + 3),
+            hips: prev ? prev.hips : 0,
+            armLeft: prev ? prev.armLeft : 0,
+            armRight: prev ? prev.armRight : 0,
+            thighLeft: prev ? prev.thighLeft : 0,
+            thighRight: prev ? prev.thighRight : 0,
+            photo: null,
+            tags: quickTags,
+            notes: "บันทึกด่วนเฉพาะน้ำหนัก"
+        };
+        state.logs.push(newLog);
+    }
+
+    state.logs.sort((a, b) => new Date(a.date) - new Date(b.date));
+    await saveState();
+
+    closeQuickWeightModal();
+    showToast(`บันทึกน้ำหนัก ${weight} กก. เรียบร้อย! ⚡`, "success");
+};
+
+// --- MACRO SPLIT CALCULATOR ---
+window.changeMacroDiet = async function(dietType) {
+    state.profile.macroDiet = dietType;
+    await saveState();
+};
+
+function updateMacroUI(tdeeVal) {
+    const dietType = state.profile.macroDiet || "balanced";
+    document.getElementById("macro-diet-select").value = dietType;
+
+    // Deficit calorie target (TDEE - 500 kcal, min 1200)
+    const targetCalories = Math.max(1200, tdeeVal - 500);
+
+    let pPct = 0.30, cPct = 0.40, fPct = 0.30;
+    if (dietType === "high-protein") {
+        pPct = 0.40; cPct = 0.35; fPct = 0.25;
+    } else if (dietType === "low-carb") {
+        pPct = 0.40; cPct = 0.20; fPct = 0.40;
+    } else if (dietType === "keto") {
+        pPct = 0.25; cPct = 0.05; fPct = 0.70;
+    }
+
+    // Grams calculation
+    const proteinGrams = Math.round((targetCalories * pPct) / 4);
+    const carbsGrams = Math.round((targetCalories * cPct) / 4);
+    const fatGrams = Math.round((targetCalories * fPct) / 9);
+
+    document.getElementById("macro-protein-g").textContent = `${proteinGrams}g`;
+    document.getElementById("macro-protein-cal").textContent = `${Math.round(proteinGrams * 4)} kcal (${Math.round(pPct * 100)}%)`;
+
+    document.getElementById("macro-carbs-g").textContent = `${carbsGrams}g`;
+    document.getElementById("macro-carbs-cal").textContent = `${Math.round(carbsGrams * 4)} kcal (${Math.round(cPct * 100)}%)`;
+
+    document.getElementById("macro-fat-g").textContent = `${fatGrams}g`;
+    document.getElementById("macro-fat-cal").textContent = `${Math.round(fatGrams * 9)} kcal (${Math.round(fPct * 100)}%)`;
+
+    // Ratio Bar
+    document.getElementById("bar-carb").style.width = `${cPct * 100}%`;
+    document.getElementById("bar-protein").style.width = `${pPct * 100}%`;
+    document.getElementById("bar-fat").style.width = `${fPct * 100}%`;
+}
+
+// --- US NAVY BODY FAT % CALCULATION ---
+function calculateBodyFatPercentage(log) {
+    if (!log) return null;
+
+    const isMetric = state.profile.unitSystem === 'metric';
+    const heightCm = state.profile.height; // always in cm
+    const gender = state.profile.gender || "female";
+
+    // Convert measurements to cm for formula
+    const neckCm = (log.neck || state.profile.neck || (isMetric ? 33 : 13)) * (isMetric ? 1 : 2.54);
+    const waistCm = (log.waist || 80) * (isMetric ? 1 : 2.54);
+    const hipsCm = (log.hips || 95) * (isMetric ? 1 : 2.54);
+
+    let bf = 0;
+    try {
+        if (gender === "male") {
+            const diff = waistCm - neckCm;
+            if (diff > 0) {
+                bf = 495 / (1.0324 - 0.19077 * Math.log10(diff) + 0.15456 * Math.log10(heightCm)) - 450;
+            }
+        } else {
+            const diff = waistCm + hipsCm - neckCm;
+            if (diff > 0) {
+                bf = 495 / (1.29579 - 0.35004 * Math.log10(diff) + 0.22100 * Math.log10(heightCm)) - 450;
+            }
+        }
+    } catch (e) {
+        bf = 0;
+    }
+
+    if (isNaN(bf) || bf < 3 || bf > 65) return null;
+    return parseFloat(bf.toFixed(1));
+}
+
+// --- MINI MILESTONES STEPPER ---
+function updateMilestonesStepper(startW, currentW, targetW) {
+    const stepperContainer = document.getElementById("milestones-stepper-track");
+    if (!stepperContainer) return;
+
+    const totalDiff = Math.abs(startW - targetW);
+    if (totalDiff < 2) {
+        stepperContainer.innerHTML = `<span style="color:var(--text-muted);font-size:0.8rem;">เป้าหมายใกล้เคียงกับน้ำหนักเริ่มต้น</span>`;
+        return;
+    }
+
+    // Generate 4-5 checkpoints
+    const stepsCount = 5;
+    const stepDiff = (targetW - startW) / (stepsCount - 1);
+    const checkpoints = [];
+
+    for (let i = 0; i < stepsCount; i++) {
+        const val = startW + (stepDiff * i);
+        checkpoints.push(parseFloat(val.toFixed(1)));
+    }
+
+    let activeIndex = 0;
+    let html = "";
+
+    checkpoints.forEach((val, idx) => {
+        let isCompleted = false;
+        let isActive = false;
+
+        if (startW > targetW) { // losing weight
+            if (currentW <= val) {
+                isCompleted = true;
+            } else if (idx > 0 && currentW <= checkpoints[idx - 1] && currentW > val) {
+                isActive = true;
+                activeIndex = idx;
+            }
+        } else { // gaining weight
+            if (currentW >= val) {
+                isCompleted = true;
+            } else if (idx > 0 && currentW >= checkpoints[idx - 1] && currentW < val) {
+                isActive = true;
+                activeIndex = idx;
+            }
+        }
+
+        const statusClass = isCompleted ? "completed" : (isActive ? "active" : "locked");
+        const icon = isCompleted ? "✓" : (isActive ? "🏃" : (idx === stepsCount - 1 ? "🏁" : `${idx + 1}`));
+
+        html += `
+            <div class="step-node ${statusClass}">
+                <div class="step-circle">${icon}</div>
+                <div class="step-label">${val} กก.</div>
+            </div>
+        `;
+    });
+
+    stepperContainer.innerHTML = html;
+
+    const badgeEl = document.getElementById("stepper-active-badge");
+    if (badgeEl) {
+        if (currentW <= targetW && startW > targetW) {
+            badgeEl.textContent = "🏆 พิชิตทุกด่านแล้ว!";
+            badgeEl.style.background = "rgba(16,185,129,0.2)";
+            badgeEl.style.color = "var(--success-emerald)";
+        } else {
+            const nextTarget = checkpoints[activeIndex || 1];
+            const toGo = Math.abs(currentW - nextTarget).toFixed(1);
+            badgeEl.textContent = `ด่านที่ ${activeIndex || 1}: อีก ${toGo} กก.`;
+        }
+    }
+}
+
+// --- MEASUREMENT MATRIX COMPARISON TABLE ---
+function renderMeasurementMatrix(sortedLogs, latestLog) {
+    const tbody = document.getElementById("matrix-table-body");
+    if (!tbody) return;
+
+    if (!latestLog || sortedLogs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:1.5rem;">ยังไม่มีข้อมูลสถิติเพื่อเปรียบเทียบ</td></tr>`;
+        return;
+    }
+
+    const firstLog = sortedLogs[0];
+    const prevLog = sortedLogs.length >= 2 ? sortedLogs[sortedLogs.length - 2] : null;
+    const mUnit = state.profile.unitSystem === 'metric' ? 'ซม.' : 'นิ้ว';
+
+    const firstBF = calculateBodyFatPercentage(firstLog);
+    const prevBF = prevLog ? calculateBodyFatPercentage(prevLog) : null;
+    const currBF = calculateBodyFatPercentage(latestLog);
+
+    const metrics = [
+        { label: "น้ำหนักตัว", key: "weight", unit: "กก.", start: firstLog.weight, prev: prevLog ? prevLog.weight : null, curr: latestLog.weight, lowerBetter: true },
+        { label: "รอบเอว", key: "waist", unit: mUnit, start: firstLog.waist, prev: prevLog ? prevLog.waist : null, curr: latestLog.waist, lowerBetter: true },
+        { label: "รอบอก", key: "chest", unit: mUnit, start: firstLog.chest || 0, prev: prevLog ? prevLog.chest : null, curr: latestLog.chest || 0, lowerBetter: true },
+        { label: "รอบสะโพก", key: "hips", unit: mUnit, start: firstLog.hips || 0, prev: prevLog ? prevLog.hips : null, curr: latestLog.hips || 0, lowerBetter: true },
+        { label: "ต้นแขนซ้าย", key: "armLeft", unit: mUnit, start: firstLog.armLeft || 0, prev: prevLog ? prevLog.armLeft : null, curr: latestLog.armLeft || 0, lowerBetter: true },
+        { label: "ต้นขาซ้าย", key: "thighLeft", unit: mUnit, start: firstLog.thighLeft || 0, prev: prevLog ? prevLog.thighLeft : null, curr: latestLog.thighLeft || 0, lowerBetter: true },
+        { label: "% ไขมันในร่างกาย", key: "bf", unit: "%", start: firstBF, prev: prevBF, curr: currBF, lowerBetter: true }
+    ];
+
+    let html = "";
+    metrics.forEach(m => {
+        if (!m.curr && m.curr !== 0) return;
+
+        const totalDiff = (m.curr && m.start) ? (m.curr - m.start) : null;
+        let deltaHtml = `<span class="delta-badge delta-zero">━ 0</span>`;
+
+        if (totalDiff !== null && !isNaN(totalDiff)) {
+            const formatted = totalDiff > 0 ? `+${totalDiff.toFixed(1)}` : totalDiff.toFixed(1);
+            if (totalDiff === 0) {
+                deltaHtml = `<span class="delta-badge delta-zero">━ คงที่</span>`;
+            } else {
+                const isGood = m.lowerBetter ? totalDiff < 0 : totalDiff > 0;
+                const arrow = totalDiff < 0 ? "▼" : "▲";
+                deltaHtml = `<span class="delta-badge ${isGood ? 'delta-good' : 'delta-bad'}">${arrow} ${formatted} ${m.unit}</span>`;
+            }
+        }
+
+        html += `
+            <tr>
+                <td><strong>${m.label}</strong></td>
+                <td>${m.start ? `${m.start.toFixed(1)} ${m.unit}` : '--'}</td>
+                <td>${m.prev ? `${m.prev.toFixed(1)} ${m.unit}` : '--'}</td>
+                <td><strong style="color:var(--text-primary);">${m.curr.toFixed(1)} ${m.unit}</strong></td>
+                <td>${deltaHtml}</td>
+            </tr>
+        `;
+    });
+
+    tbody.innerHTML = html;
+}
+
+// --- WEEKLY SUMMARY REPORT MODAL ---
+window.openWeeklyReportModal = function() {
+    const modal = document.getElementById("weekly-report-modal");
+    if (!modal) return;
+
+    const sortedLogs = [...state.logs].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const now = new Date();
+    const cutoff = new Date();
+    cutoff.setDate(now.getDate() - 7);
+
+    const weekLogs = sortedLogs.filter(l => new Date(l.date) >= cutoff);
+    const daysLogged = weekLogs.length;
+
+    // Weight change in last 7 days
+    let weightChangeStr = "0.0 กก.";
+    if (weekLogs.length >= 2) {
+        const diff = weekLogs[weekLogs.length - 1].weight - weekLogs[0].weight;
+        weightChangeStr = diff > 0 ? `+${diff.toFixed(1)} กก.` : `${diff.toFixed(1)} กก.`;
+    } else if (sortedLogs.length >= 2) {
+        const diff = sortedLogs[sortedLogs.length - 1].weight - sortedLogs[sortedLogs.length - 2].weight;
+        weightChangeStr = diff > 0 ? `+${diff.toFixed(1)} กก.` : `${diff.toFixed(1)} กก.`;
+    }
+
+    // Weekly water total
+    let totalWaterWeek = 0;
+    for (let i = 0; i < 7; i++) {
+        const d = new Date();
+        d.setDate(now.getDate() - i);
+        const dStr = d.toISOString().split('T')[0];
+        totalWaterWeek += (state.waterLogs[dStr] || 0);
+    }
+
+    // Grade logic
+    let grade = "A+";
+    let message = "วินัยดีเยี่ยมมาก! ทำสถิติได้อย่างน่าประทับใจ สุขภาพและรูปร่างที่ดีขึ้นอยู่ในมือคุณแล้วครับ";
+    if (daysLogged >= 5) {
+        grade = "A+";
+    } else if (daysLogged >= 3) {
+        grade = "A";
+        message = "เก่งมากครับ รักษาระดับความต่อเนื่องไว้นะครับ สัปดาห์หน้าเพิ่มความสม่ำเสมออีกนิดจะยอดเยี่ยมเลย";
+    } else {
+        grade = "B";
+        message = "ก้าวเล็กๆ ในแต่ละวันจะนำไปสู่ความสำเร็จใหญ่ มาตั้งเป้าบันทึกให้ครบ 5 วันในสัปดาห์หน้านะครับ!";
+    }
+
+    document.getElementById("weekly-grade").textContent = grade;
+    document.getElementById("weekly-weight-change").textContent = weightChangeStr;
+    document.getElementById("weekly-days-logged").textContent = `${daysLogged} / 7 วัน`;
+    document.getElementById("weekly-water-total").textContent = `${(totalWaterWeek / 1000).toFixed(1)} ลิตร`;
+    document.getElementById("weekly-streak-val").textContent = document.getElementById("stat-streak").textContent;
+    document.getElementById("weekly-advice-text").textContent = message;
+
+    modal.style.display = "flex";
+};
+
+window.closeWeeklyReportModal = function() {
+    const modal = document.getElementById("weekly-report-modal");
+    if (modal) modal.style.display = "none";
+};
+
+window.downloadWeeklyReportCard = function() {
+    const canvas = document.getElementById("weekly-card-canvas");
+    canvas.width = 600;
+    canvas.height = 780;
+    const ctx = canvas.getContext("2d");
+
+    // Background Gradient
+    const bgGrad = ctx.createLinearGradient(0, 0, 600, 780);
+    bgGrad.addColorStop(0, "#064e3b");
+    bgGrad.addColorStop(0.5, "#0f172a");
+    bgGrad.addColorStop(1, "#020617");
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, 600, 780);
+
+    // Border
+    ctx.strokeStyle = "rgba(16, 185, 129, 0.4)";
+    ctx.lineWidth = 4;
+    ctx.strokeRect(20, 20, 560, 740);
+
+    // Title
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#34d399";
+    ctx.font = "bold 28px sans-serif";
+    ctx.fillText("BodyFit Weekly Report", 300, 80);
+
+    ctx.fillStyle = "#94a3b8";
+    ctx.font = "16px sans-serif";
+    ctx.fillText(`สรุปผลประจำสัปดาห์ • คุณ ${state.profile.name}`, 300, 110);
+
+    // Big Grade Circle
+    ctx.fillStyle = "#10b981";
+    ctx.beginPath();
+    ctx.arc(300, 185, 50, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 44px sans-serif";
+    ctx.fillText(document.getElementById("weekly-grade").textContent, 300, 200);
+
+    // 4 Stats Boxes
+    ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
+    ctx.fillRect(50, 260, 235, 110);
+    ctx.fillRect(315, 260, 235, 110);
+    ctx.fillRect(50, 390, 235, 110);
+    ctx.fillRect(315, 390, 235, 110);
+
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(50, 260, 235, 110);
+    ctx.strokeRect(315, 260, 235, 110);
+    ctx.strokeRect(50, 390, 235, 110);
+    ctx.strokeRect(315, 390, 235, 110);
+
+    // Fill Box Texts
+    ctx.font = "14px sans-serif";
+    ctx.fillStyle = "#94a3b8";
+    ctx.fillText("การเปลี่ยนแปลงน้ำหนัก", 167, 295);
+    ctx.fillText("จำนวนวันที่บันทึก", 432, 295);
+    ctx.fillText("ปริมาณน้ำที่ดื่มรวม", 167, 425);
+    ctx.fillText("วินัยต่อเนื่อง (Streak)", 432, 425);
+
+    ctx.font = "bold 24px sans-serif";
+    ctx.fillStyle = "#10b981";
+    ctx.fillText(document.getElementById("weekly-weight-change").textContent, 167, 340);
+    ctx.fillStyle = "#38bdf8";
+    ctx.fillText(document.getElementById("weekly-days-logged").textContent, 432, 340);
+    ctx.fillStyle = "#06b6d4";
+    ctx.fillText(document.getElementById("weekly-water-total").textContent, 167, 470);
+    ctx.fillStyle = "#f59e0b";
+    ctx.fillText(document.getElementById("weekly-streak-val").textContent, 432, 470);
+
+    // Message box
+    ctx.fillStyle = "rgba(0, 0, 0, 0.35)";
+    ctx.fillRect(50, 520, 500, 140);
+    ctx.strokeRect(50, 520, 500, 140);
+
+    ctx.font = "bold 18px sans-serif";
+    ctx.fillStyle = "#f0fdf4";
+    ctx.fillText("💡 คำแนะนำสำหรับสัปดาห์นี้", 300, 560);
+
+    ctx.font = "15px sans-serif";
+    ctx.fillStyle = "#cbd5e1";
+    const msg = document.getElementById("weekly-advice-text").textContent;
+    ctx.fillText(msg.length > 50 ? msg.substring(0, 48) + "..." : msg, 300, 605);
+
+    // Footer
+    ctx.font = "14px sans-serif";
+    ctx.fillStyle = "#64748b";
+    ctx.fillText("⚡ สุขภาพดีเริ่มต้นที่ตัวเรา • BodyFit Tracker", 300, 715);
+
+    const link = document.createElement("a");
+    link.download = `bodyfit_weekly_${getTodayDateString()}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+    showToast("บันทึกการ์ดสรุปสัปดาห์เรียบร้อย!", "success");
+};
+
+// --- MAIN UI UPDATER ---
 function updateUI() {
     // Header & User Info
     document.getElementById("sidebar-name").textContent = state.profile.name;
@@ -2608,11 +3827,20 @@ function updateUI() {
     // Motivation Banner & Projection
     updateMotivationBanner(sortedLogs, latestLog);
 
-    // Goal Progress
+    // Goal Progress & Mini-Milestones
     updateGoalProgress(latestLog);
 
-    // Health & Metabolism (BMI, WHR, BMR, TDEE, Deficit, Protein)
-    updateCalculators(latestLog);
+    // Health, BMR, TDEE, & Body Fat %
+    const tdeeVal = updateCalculators(latestLog);
+
+    // Macros
+    updateMacroUI(tdeeVal);
+
+    // Water Tracker
+    updateWaterUI();
+
+    // Measurement Matrix Table
+    renderMeasurementMatrix(sortedLogs, latestLog);
 
     // Milestones & Badges
     renderBadges(sortedLogs, latestLog);
@@ -2633,14 +3861,14 @@ function updateMotivationBanner(sortedLogs, latestLog) {
         return;
     }
 
-    // 1. Calculate Streak (Consecutive days recorded)
+    // Streak
     let streak = 1;
     const dates = sortedLogs.map(l => new Date(l.date).setHours(0, 0, 0, 0));
-    const uniqueDates = [...new Set(dates)].sort((a, b) => b - a); // newest first
+    const uniqueDates = [...new Set(dates)].sort((a, b) => b - a);
 
     for (let i = 0; i < uniqueDates.length - 1; i++) {
         const diffDays = Math.round((uniqueDates[i] - uniqueDates[i + 1]) / (1000 * 60 * 60 * 24));
-        if (diffDays <= 2) { // Allow up to 2 days gap for streak continuity
+        if (diffDays <= 2) {
             streak++;
         } else {
             break;
@@ -2648,7 +3876,7 @@ function updateMotivationBanner(sortedLogs, latestLog) {
     }
     document.getElementById("stat-streak").textContent = `${streak} วันต่อเนื่อง`;
 
-    // 2. Total Weight Loss
+    // Total Loss
     const startWeight = state.profile.startWeight;
     const currentWeight = latestLog.weight;
     const totalDiff = startWeight - currentWeight;
@@ -2661,7 +3889,7 @@ function updateMotivationBanner(sortedLogs, latestLog) {
         document.getElementById("stat-total-lost").textContent = `0.0 กก.`;
     }
 
-    // 3. Goal Projection
+    // Projection
     const targetWeight = state.profile.targetWeight;
     const remainingWeight = currentWeight - targetWeight;
 
@@ -2689,7 +3917,7 @@ function updateMotivationBanner(sortedLogs, latestLog) {
     }
 }
 
-// Calculate and show goal progress bars
+// Calculate and show goal progress bars & stepper
 function updateGoalProgress(latestLog) {
     const startW = state.profile.startWeight;
     const targetW = state.profile.targetWeight;
@@ -2722,6 +3950,9 @@ function updateGoalProgress(latestLog) {
     waistPct = Math.min(Math.max(waistPct, 0), 100);
     document.getElementById("goal-waist-bar").style.width = `${waistPct}%`;
     document.getElementById("goal-waist-text").textContent = `${currentWaist.toFixed(1)} / ${targetWaist.toFixed(1)} ${measureUnit} (${waistPct.toFixed(0)}%)`;
+
+    // Mini Milestones Stepper
+    updateMilestonesStepper(startW, currentW, targetW);
 }
 
 // Indicator delta changes
@@ -2747,17 +3978,14 @@ function updateChangeIndicator(metricId, currentVal, prevVal, unit, lowerIsBette
     }
 }
 
-// Metabolism Calculators (BMI, WHR, BMR, TDEE, Deficit, Protein)
+// Metabolism Calculators (BMI, WHR, BMR, TDEE, Body Fat %, Deficit, Protein)
 function updateCalculators(latestLog) {
     if (!latestLog) {
-        ["calc-bmi", "calc-whr", "calc-bmr", "calc-tdee", "calc-deficit-cal", "calc-protein"].forEach(id => {
-            document.getElementById(id).textContent = "--";
+        ["calc-bmi", "calc-whr", "calc-bmr", "calc-tdee", "calc-deficit-cal", "calc-protein", "calc-body-fat", "calc-lean-mass"].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = "--";
         });
-        document.getElementById("calc-bmi-status").textContent = "ไม่มีข้อมูล";
-        document.getElementById("calc-bmi-status").className = "calc-status";
-        document.getElementById("calc-whr-status").textContent = "ไม่มีข้อมูล";
-        document.getElementById("calc-whr-status").className = "calc-status";
-        return;
+        return 1800;
     }
 
     const weightKg = latestLog.weight;
@@ -2815,7 +4043,7 @@ function updateCalculators(latestLog) {
     const bmrVal = Math.round(bmr);
     document.getElementById("calc-bmr").textContent = bmrVal;
 
-    // 4. TDEE (Activity Multipliers)
+    // 4. TDEE
     const activityMultipliers = {
         sedentary: 1.2,
         light: 1.375,
@@ -2826,13 +4054,56 @@ function updateCalculators(latestLog) {
     const tdeeVal = Math.round(bmrVal * multiplier);
     document.getElementById("calc-tdee").textContent = tdeeVal;
 
-    // 5. Calorie Target for Safe Fat Loss (TDEE - 500 kcal, min 1200 kcal)
+    // 5. Calorie Target
     const deficitTarget = Math.max(1200, tdeeVal - 500);
     document.getElementById("calc-deficit-cal").textContent = deficitTarget;
 
-    // 6. Protein Target (1.6 g per kg of body weight)
+    // 6. Protein Target
     const proteinTarget = Math.round(weightKg * 1.6);
     document.getElementById("calc-protein").textContent = `${proteinTarget}g`;
+
+    // 7. US Navy Body Fat % & Lean Mass
+    const bfPct = calculateBodyFatPercentage(latestLog);
+    const bfEl = document.getElementById("calc-body-fat");
+    const bfStatusEl = document.getElementById("calc-body-fat-status");
+    const leanEl = document.getElementById("calc-lean-mass");
+
+    if (bfPct !== null) {
+        if (bfEl) bfEl.textContent = `${bfPct}%`;
+
+        // Body Fat Status
+        let bfLabel = "มาตรฐาน";
+        let bfBadgeClass = "status-normal";
+        if (gender === "male") {
+            if (bfPct < 10) { bfLabel = "นักกีฬา (Athletic)"; bfBadgeClass = "status-normal"; }
+            else if (bfPct <= 15) { bfLabel = "ฟิตเนส (Fitness)"; bfBadgeClass = "status-normal"; }
+            else if (bfPct <= 22) { bfLabel = "มาตรฐาน (Average)"; bfBadgeClass = "status-normal"; }
+            else { bfLabel = "ไขมันเกิน (Above)"; bfBadgeClass = "status-danger"; }
+        } else {
+            if (bfPct < 18) { bfLabel = "นักกีฬา (Athletic)"; bfBadgeClass = "status-normal"; }
+            else if (bfPct <= 24) { bfLabel = "ฟิตเนส (Fitness)"; bfBadgeClass = "status-normal"; }
+            else if (bfPct <= 31) { bfLabel = "มาตรฐาน (Average)"; bfBadgeClass = "status-normal"; }
+            else { bfLabel = "ไขมันเกิน (Above)"; bfBadgeClass = "status-danger"; }
+        }
+
+        if (bfStatusEl) {
+            bfStatusEl.textContent = bfLabel;
+            bfStatusEl.className = `calc-status ${bfBadgeClass}`;
+        }
+
+        const fatMass = weightKg * (bfPct / 100);
+        const leanMass = weightKg - fatMass;
+        if (leanEl) leanEl.textContent = `${leanMass.toFixed(1)} กก.`;
+    } else {
+        if (bfEl) bfEl.textContent = "--";
+        if (bfStatusEl) {
+            bfStatusEl.textContent = "แตะเพื่อใส่รอบคอ";
+            bfStatusEl.className = "calc-status";
+        }
+        if (leanEl) leanEl.textContent = "--";
+    }
+
+    return tdeeVal;
 }
 
 // Render Milestones & Badges
@@ -2846,48 +4117,14 @@ function renderBadges(sortedLogs, latestLog) {
     const totalLost = startW - minWeight;
 
     const badges = [
-        {
-            icon: "🚀",
-            title: "ก้าวแรกสู่ความฟิต",
-            desc: "เริ่มบันทึกสัดส่วนแรก",
-            unlocked: sortedLogs.length >= 1
-        },
-        {
-            icon: "🔥",
-            title: "วินัย 7 วัน",
-            desc: "มีบันทึกสะสมอย่างน้อย 7 ครั้ง",
-            unlocked: sortedLogs.length >= 7
-        },
-        {
-            icon: "🎯",
-            title: "พิชิต 1 กิโลแรก",
-            desc: "ลดน้ำหนักได้ 1 กก.",
-            unlocked: totalLost >= 1.0
-        },
-        {
-            icon: "🌟",
-            title: "ลดได้ 3 กิโลกรัม",
-            desc: "พัฒนาอย่างก้าวกระโดด",
-            unlocked: totalLost >= 3.0
-        },
-        {
-            icon: "🏆",
-            title: "ลดได้ 5 กิโลกรัม",
-            desc: "การเปลี่ยนแปลงชัดเจน",
-            unlocked: totalLost >= 5.0
-        },
-        {
-            icon: "👗",
-            title: "เอวกระชับลง",
-            desc: "รอบเอวลดได้สำเร็จ",
-            unlocked: sortedLogs.length >= 2 && latestLog && (sortedLogs[0].waist - latestLog.waist) >= 1.0
-        },
-        {
-            icon: "👑",
-            title: "พิชิตเป้าหมาย",
-            desc: "ถึงน้ำหนักเป้าหมายที่ตั้งไว้",
-            unlocked: latestLog && currentW <= state.profile.targetWeight
-        }
+        { icon: "🚀", title: "ก้าวแรกสู่ความฟิต", desc: "เริ่มบันทึกสัดส่วนแรก", unlocked: sortedLogs.length >= 1 },
+        { icon: "🔥", title: "วินัย 7 วัน", desc: "มีบันทึกสะสมอย่างน้อย 7 ครั้ง", unlocked: sortedLogs.length >= 7 },
+        { icon: "🎯", title: "พิชิต 1 กิโลแรก", desc: "ลดน้ำหนักได้ 1 กก.", unlocked: totalLost >= 1.0 },
+        { icon: "🌟", title: "ลดได้ 3 กิโลกรัม", desc: "พัฒนาอย่างก้าวกระโดด", unlocked: totalLost >= 3.0 },
+        { icon: "🏆", title: "ลดได้ 5 กิโลกรัม", desc: "การเปลี่ยนแปลงชัดเจน", unlocked: totalLost >= 5.0 },
+        { icon: "👗", title: "เอวกระชับลง", desc: "รอบเอวลดได้สำเร็จ", unlocked: sortedLogs.length >= 2 && latestLog && (sortedLogs[0].waist - latestLog.waist) >= 1.0 },
+        { icon: "💧", title: "เซียนดื่มน้ำ", desc: "ดื่มน้ำเกิน 2.5 ลิตรใน 1 วัน", unlocked: Object.values(state.waterLogs).some(w => w >= 2500) },
+        { icon: "👑", title: "พิชิตเป้าหมาย", desc: "ถึงน้ำหนักเป้าหมายที่ตั้งไว้", unlocked: latestLog && currentW <= state.profile.targetWeight }
     ];
 
     container.innerHTML = badges.map(b => `
@@ -2902,6 +4139,7 @@ function renderBadges(sortedLogs, latestLog) {
 // Render Historical log entries to table
 function renderHistoryTable() {
     const tbody = document.getElementById("history-table-body");
+    if (!tbody) return;
     tbody.innerHTML = "";
 
     if (state.logs.length === 0) {
@@ -2918,12 +4156,10 @@ function renderHistoryTable() {
         const armText = (log.armLeft || log.armRight) ? `${log.armLeft.toFixed(1)} / ${log.armRight.toFixed(1)}` : "--";
         const thighText = (log.thighLeft || log.thighRight) ? `${log.thighLeft.toFixed(1)} / ${log.thighRight.toFixed(1)}` : "--";
 
-        // Photo thumbnail
         const photoHtml = log.photo 
             ? `<img src="${log.photo}" class="tbl-thumb" alt="รูป" onclick="viewPhotoFullscreen('${log.photo}')" title="คลิกเพื่อดูรูปใหญ่">` 
             : `<span style="color: var(--text-muted); font-size: 0.8rem;">-</span>`;
 
-        // Tags & Notes
         const tagsHtml = (log.tags && log.tags.length > 0)
             ? `<div class="tbl-tags">${log.tags.map(t => `<span class="tbl-tag-pill">${t}</span>`).join("")}</div>`
             : "";
@@ -2934,7 +4170,7 @@ function renderHistoryTable() {
             <td>${formattedDate}</td>
             <td>${photoHtml}</td>
             <td><strong>${log.weight.toFixed(1)}</strong></td>
-            <td><strong>${log.waist.toFixed(1)}</strong></td>
+            <td><strong>${log.waist ? log.waist.toFixed(1) : '--'}</strong></td>
             <td>${log.chest ? log.chest.toFixed(1) : "--"} / ${log.hips ? log.hips.toFixed(1) : "--"}</td>
             <td>${armText}</td>
             <td>${thighText}</td>
@@ -2962,8 +4198,9 @@ window.editLog = function(logId) {
     document.getElementById("edit-id").value = log.id;
     document.getElementById("log-date").value = log.date;
     document.getElementById("log-weight").value = log.weight;
+    document.getElementById("log-neck").value = log.neck || state.profile.neck || "";
     document.getElementById("log-chest").value = log.chest || "";
-    document.getElementById("log-waist").value = log.waist;
+    document.getElementById("log-waist").value = log.waist || "";
     document.getElementById("log-hips").value = log.hips || "";
     document.getElementById("log-arm-left").value = log.armLeft || "";
     document.getElementById("log-arm-right").value = log.armRight || "";
@@ -2971,14 +4208,12 @@ window.editLog = function(logId) {
     document.getElementById("log-thigh-right").value = log.thighRight || "";
     document.getElementById("log-notes").value = log.notes || "";
 
-    // Tags
     currentSelectedTags = log.tags ? [...log.tags] : [];
     document.querySelectorAll(".tag-chip").forEach(chip => {
         const tag = chip.getAttribute("data-tag");
         chip.classList.toggle("active", currentSelectedTags.includes(tag));
     });
 
-    // Photo preview
     if (log.photo) {
         currentUploadedPhoto = log.photo;
         document.getElementById("photo-preview-img").src = log.photo;
@@ -3028,7 +4263,6 @@ function renderComparisonSlider() {
     noPhotoAlert.style.display = "none";
     document.querySelector(".compare-selectors").style.display = "flex";
 
-    // Populate dropdowns
     const prevBeforeVal = beforeSelect.value;
     const prevAfterVal = afterSelect.value;
 
@@ -3042,7 +4276,6 @@ function renderComparisonSlider() {
         return `<option value="${l.id}">${d} (${l.weight} กก.)</option>`;
     }).join("");
 
-    // Set defaults: first photo for Before, newest photo for After
     if (prevBeforeVal && logsWithPhotos.some(l => l.id.toString() === prevBeforeVal)) {
         beforeSelect.value = prevBeforeVal;
     } else {
@@ -3055,7 +4288,6 @@ function renderComparisonSlider() {
         afterSelect.value = logsWithPhotos[logsWithPhotos.length - 1].id;
     }
 
-    // Update images
     const beforeLog = logsWithPhotos.find(l => l.id.toString() === beforeSelect.value) || logsWithPhotos[0];
     const afterLog = logsWithPhotos.find(l => l.id.toString() === afterSelect.value) || logsWithPhotos[logsWithPhotos.length - 1];
 
@@ -3083,7 +4315,6 @@ window.handleSliderDrag = function(val) {
         afterWrapper.style.width = `${val}%`;
         divider.style.left = `${val}%`;
 
-        // Match inner image width to container
         if (container && afterImg) {
             afterImg.style.width = `${container.clientWidth}px`;
         }
@@ -3116,7 +4347,6 @@ function renderPhotoGallery() {
     }).join("");
 }
 
-// Click thumbnail to inspect in slider
 window.selectGalleryPhoto = function(logId) {
     const afterSelect = document.getElementById("after-photo-select");
     if (afterSelect) {
@@ -3126,7 +4356,7 @@ window.selectGalleryPhoto = function(logId) {
     }
 };
 
-// Export to CSV (Formatted with UTF-8 BOM for Microsoft Excel compatibility)
+// Export to CSV
 window.exportCSV = function() {
     if (state.logs.length === 0) {
         showToast("ไม่มีข้อมูลเพื่อส่งออก", "error");
@@ -3134,21 +4364,21 @@ window.exportCSV = function() {
     }
 
     const measureUnit = state.profile.unitSystem === 'metric' ? 'ซม.' : 'นิ้ว';
-    let csv = "\uFEFFวันที่,น้ำหนัก (กก.),รอบเอว (" + measureUnit + "),รอบอก (" + measureUnit + "),รอบสะโพก (" + measureUnit + "),ต้นแขนซ้าย,ต้นแขนขวา,ต้นขาซ้าย,ต้นขาขวา,แท็ก,บันทึกช่วยจำ\n";
+    let csv = "\uFEFFวันที่,น้ำหนัก (กก.),รอบคอ (" + measureUnit + "),รอบเอว (" + measureUnit + "),รอบอก (" + measureUnit + "),รอบสะโพก (" + measureUnit + "),ต้นแขนซ้าย,ต้นแขนขวา,ต้นขาซ้าย,ต้นขาขวา,แท็ก,บันทึกช่วยจำ\n";
 
     const sortedLogs = [...state.logs].sort((a, b) => new Date(a.date) - new Date(b.date));
 
     sortedLogs.forEach(log => {
         const tags = (log.tags || []).join("; ");
         const notes = (log.notes || "").replace(/"/g, '""');
-        csv += `"${log.date}",${log.weight},${log.waist},${log.chest || 0},${log.hips || 0},${log.armLeft || 0},${log.armRight || 0},${log.thighLeft || 0},${log.thighRight || 0},"${tags}","${notes}"\n`;
+        csv += `"${log.date}",${log.weight},${log.neck || 0},${log.waist || 0},${log.chest || 0},${log.hips || 0},${log.armLeft || 0},${log.armRight || 0},${log.thighLeft || 0},${log.thighRight || 0},"${tags}","${notes}"\n`;
     });
 
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
     link.setAttribute("href", url);
-    link.setAttribute("download", `bodyfit_records_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute("download", `bodyfit_records_${getTodayDateString()}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -3160,7 +4390,7 @@ window.exportData = function() {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `bodyfit_backup_${new Date().toISOString().split('T')[0]}.json`);
+    downloadAnchor.setAttribute("download", `bodyfit_backup_${getTodayDateString()}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
@@ -3179,7 +4409,6 @@ window.importData = async function(event) {
             const fileContent = (e.target.result || "").trim();
             let importedCount = 0;
 
-            // Handle JSON format
             if (file.name.endsWith('.json') || fileContent.startsWith('{') || fileContent.startsWith('[')) {
                 const importedData = JSON.parse(fileContent);
 
@@ -3191,6 +4420,9 @@ window.importData = async function(event) {
                     if (importedData.profile) {
                         state.profile = Object.assign(state.profile, importedData.profile);
                     }
+                    if (importedData.waterLogs) {
+                        state.waterLogs = Object.assign(state.waterLogs, importedData.waterLogs);
+                    }
                     importedCount = importedData.logs.length;
                 } else if (importedData.profile) {
                     state.profile = Object.assign(state.profile, importedData.profile);
@@ -3200,9 +4432,7 @@ window.importData = async function(event) {
                     inputEl.value = '';
                     return;
                 }
-            }
-            // Handle CSV format
-            else if (file.name.endsWith('.csv') || fileContent.includes(',')) {
+            } else if (file.name.endsWith('.csv') || fileContent.includes(',')) {
                 const lines = fileContent.split(/\r?\n/).filter(line => line.trim().length > 0);
                 if (lines.length > 1) {
                     const parsedLogs = [];
@@ -3213,16 +4443,17 @@ window.importData = async function(event) {
                                 id: Date.now() - (lines.length - i) * 86400000,
                                 date: cols[0],
                                 weight: parseFloat(cols[1]),
-                                waist: parseFloat(cols[2]) || 0,
-                                chest: parseFloat(cols[3]) || 0,
-                                hips: parseFloat(cols[4]) || 0,
-                                armLeft: parseFloat(cols[5]) || 0,
-                                armRight: parseFloat(cols[6]) || 0,
-                                thighLeft: parseFloat(cols[7]) || 0,
-                                thighRight: parseFloat(cols[8]) || 0,
+                                neck: parseFloat(cols[2]) || state.profile.neck || 33,
+                                waist: parseFloat(cols[3]) || 0,
+                                chest: parseFloat(cols[4]) || 0,
+                                hips: parseFloat(cols[5]) || 0,
+                                armLeft: parseFloat(cols[6]) || 0,
+                                armRight: parseFloat(cols[7]) || 0,
+                                thighLeft: parseFloat(cols[8]) || 0,
+                                thighRight: parseFloat(cols[9]) || 0,
                                 photo: null,
-                                tags: cols[9] ? cols[9].split(';').map(t => t.trim()).filter(Boolean) : [],
-                                notes: cols[10] || ''
+                                tags: cols[10] ? cols[10].split(';').map(t => t.trim()).filter(Boolean) : [],
+                                notes: cols[11] || ''
                             });
                         }
                     }
@@ -3245,7 +4476,6 @@ window.importData = async function(event) {
                 return;
             }
 
-            // Save state, update forms and all UI elements
             await saveState();
             initApp();
             updateUI();
@@ -3254,7 +4484,7 @@ window.importData = async function(event) {
 
         } catch (err) {
             console.error("Import Error:", err);
-            showToast("เกิดข้อผิดพลาดในการอ่านไฟล์สำรอง: " + err.message, "error");
+            showToast("เกิดข้อผิดพลาดในการอ่านไฟล์: " + err.message, "error");
             inputEl.value = '';
         }
     };
@@ -3303,14 +4533,12 @@ window.closeShareCardModal = function() {
     document.getElementById("share-card-modal").style.display = "none";
 };
 
-// Download Progress Card as PNG Image via Canvas
 window.downloadProgressCard = function() {
     const canvas = document.getElementById("card-render-canvas");
     canvas.width = 600;
     canvas.height = 760;
     const ctx = canvas.getContext("2d");
 
-    // Background Gradient
     const bgGrad = ctx.createRadialGradient(300, 100, 50, 300, 380, 500);
     bgGrad.addColorStop(0, "#2e1065");
     bgGrad.addColorStop(0.5, "#0f172a");
@@ -3318,12 +4546,10 @@ window.downloadProgressCard = function() {
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, 600, 760);
 
-    // Glowing Outer Border
     ctx.strokeStyle = "rgba(168, 85, 247, 0.4)";
     ctx.lineWidth = 4;
     ctx.strokeRect(20, 20, 560, 720);
 
-    // Header Badge & Name
     ctx.fillStyle = "#a855f7";
     ctx.beginPath();
     ctx.arc(80, 80, 32, 0, Math.PI * 2);
@@ -3343,7 +4569,6 @@ window.downloadProgressCard = function() {
     ctx.font = "15px sans-serif";
     ctx.fillText("BodyFit Tracker Milestone Journey", 130, 98);
 
-    // Big Hero Loss Number Box
     ctx.fillStyle = "rgba(255, 255, 255, 0.04)";
     ctx.fillRect(50, 140, 500, 170);
     ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
@@ -3360,7 +4585,6 @@ window.downloadProgressCard = function() {
     ctx.font = "18px sans-serif";
     ctx.fillText("น้ำหนักที่ลดลงได้ทั้งหมด 🎉", 300, 270);
 
-    // 3-Column Stats Row
     ctx.fillStyle = "rgba(0, 0, 0, 0.35)";
     ctx.fillRect(50, 340, 500, 110);
     ctx.strokeRect(50, 340, 500, 110);
@@ -3382,7 +4606,6 @@ window.downloadProgressCard = function() {
     ctx.fillText(document.getElementById("pc-current-weight").textContent, 300, 415);
     ctx.fillText(document.getElementById("pc-target-weight").textContent, 470, 415);
 
-    // Extra details rows
     ctx.textAlign = "left";
     ctx.fillStyle = "#94a3b8";
     ctx.font = "18px sans-serif";
@@ -3397,22 +4620,19 @@ window.downloadProgressCard = function() {
     ctx.fillText(document.getElementById("pc-goal-pct").textContent, 520, 545);
     ctx.fillText(document.getElementById("pc-streak").textContent, 520, 590);
 
-    // Divider line
     ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
     ctx.beginPath();
     ctx.moveTo(80, 630);
     ctx.lineTo(520, 630);
     ctx.stroke();
 
-    // Footer Slogan
     ctx.textAlign = "center";
     ctx.fillStyle = "#64748b";
     ctx.font = "15px sans-serif";
     ctx.fillText("⚡ สุขภาพดีเริ่มต้นที่ตัวเรา • BodyFit Personal Tracker", 300, 675);
 
-    // Download image
     const link = document.createElement("a");
-    link.download = `bodyfit_progress_card_${new Date().toISOString().split('T')[0]}.png`;
+    link.download = `bodyfit_progress_card_${getTodayDateString()}.png`;
     link.href = canvas.toDataURL("image/png");
     link.click();
     showToast("บันทึกการ์ดรูปภาพความสำเร็จเรียบร้อย!", "success");
@@ -3456,7 +4676,6 @@ function renderCharts() {
         return;
     }
 
-    // Filter logs based on Time Range
     let filteredLogs = [...state.logs].sort((a, b) => new Date(a.date) - new Date(b.date));
     const now = new Date();
 
@@ -3475,7 +4694,7 @@ function renderCharts() {
     }
 
     if (filteredLogs.length === 0) {
-        filteredLogs = state.logs.slice(-3); // fallback to recent
+        filteredLogs = state.logs.slice(-3);
     }
 
     const labels = filteredLogs.map(log => {
@@ -3489,7 +4708,6 @@ function renderCharts() {
 
     const measureUnit = state.profile.unitSystem === 'metric' ? 'ซม.' : 'นิ้ว';
 
-    // Build datasets according to metric view
     const datasets = [];
 
     if (currentFilter.metricView === 'all' || currentFilter.metricView === 'weight') {
@@ -3601,7 +4819,6 @@ function renderCharts() {
         }
     });
 }
-
 </script>
 </body>
 </html>
