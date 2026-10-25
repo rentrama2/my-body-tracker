@@ -568,19 +568,71 @@
                             </div>
                         </div>
 
-                        <!-- Photo Upload Section -->
+                        <!-- Triple Photo Upload Section (Front, Side, Back) -->
                         <div class="form-group full-width" style="margin-top: 1.5rem;">
-                            <label>รูปถ่ายหุ่นประจำวัน (หน้ากระจก / หน้าตรง / ด้านข้าง)</label>
-                            <div class="photo-upload-container">
-                                <input type="file" id="log-photo" accept="image/*" class="photo-file-input" onchange="handlePhotoUpload(event)">
-                                <label for="log-photo" class="photo-upload-dropzone" id="photo-dropzone">
-                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-cyan);"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                                    <span>แตะเพื่อเลือกรูปถ่าย หรือเปิดกล้องมือถือ</span>
-                                    <small style="color: var(--text-muted); font-size: 0.8rem;">(รูปจะถูกบีบอัดเก็บในเครื่อง ปลอดภัย 100%)</small>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
+                                <label style="font-weight: 700; font-size: 0.95rem; margin: 0; color: var(--text-primary);">
+                                    📸 รูปถ่ายหุ่นประจำวัน (บันทึกได้ครบ 3 มุม: ด้านหน้า, ด้านข้าง, ด้านหลัง)
                                 </label>
-                                <div class="photo-preview-wrap" id="photo-preview-wrap" style="display: none;">
-                                    <img id="photo-preview-img" src="" alt="พรีวิวรูปสัดส่วน">
-                                    <button type="button" class="btn-remove-photo" onclick="removeUploadedPhoto()">✕ นำรูปออก</button>
+                                <span style="font-size: 0.78rem; color: var(--accent-cyan);">บีบอัดอัตโนมัติ เก็บในเครื่องคุณ ปลอดภัย 100%</span>
+                            </div>
+
+                            <div class="photo-triple-grid">
+                                <!-- Angle 1: ด้านหน้า (Front) -->
+                                <div class="photo-angle-card">
+                                    <div class="photo-angle-header">
+                                        <span class="angle-badge">👤 1. ด้านหน้า (Front)</span>
+                                    </div>
+                                    <div class="photo-upload-container">
+                                        <input type="file" id="log-photo-front" accept="image/*" class="photo-file-input" onchange="handlePhotoUpload(event, 'front')">
+                                        <label for="log-photo-front" class="photo-upload-dropzone" id="photo-dropzone-front">
+                                            <div style="font-size: 1.9rem; margin-bottom: 2px;">👤</div>
+                                            <span style="font-weight: 600; font-size: 0.85rem;">แตะถ่าย / เลือกรูป</span>
+                                            <small style="color: var(--text-muted); font-size: 0.75rem;">หน้าตรงเต็มตัว</small>
+                                        </label>
+                                        <div class="photo-preview-wrap" id="photo-preview-wrap-front" style="display: none;">
+                                            <img id="photo-preview-img-front" src="" alt="พรีวิวรูปด้านหน้า">
+                                            <button type="button" class="btn-remove-photo" onclick="removeUploadedPhoto('front')">✕ นำรูปออก</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Angle 2: ด้านข้าง (Side) -->
+                                <div class="photo-angle-card">
+                                    <div class="photo-angle-header">
+                                        <span class="angle-badge">🧍 2. ด้านข้าง (Side)</span>
+                                    </div>
+                                    <div class="photo-upload-container">
+                                        <input type="file" id="log-photo-side" accept="image/*" class="photo-file-input" onchange="handlePhotoUpload(event, 'side')">
+                                        <label for="log-photo-side" class="photo-upload-dropzone" id="photo-dropzone-side">
+                                            <div style="font-size: 1.9rem; margin-bottom: 2px;">🧍</div>
+                                            <span style="font-weight: 600; font-size: 0.85rem;">แตะถ่าย / เลือกรูป</span>
+                                            <small style="color: var(--text-muted); font-size: 0.75rem;">ด้านข้างลำตัว</small>
+                                        </label>
+                                        <div class="photo-preview-wrap" id="photo-preview-wrap-side" style="display: none;">
+                                            <img id="photo-preview-img-side" src="" alt="พรีวิวรูปด้านข้าง">
+                                            <button type="button" class="btn-remove-photo" onclick="removeUploadedPhoto('side')">✕ นำรูปออก</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Angle 3: ด้านหลัง (Back) -->
+                                <div class="photo-angle-card">
+                                    <div class="photo-angle-header">
+                                        <span class="angle-badge">🚶 3. ด้านหลัง (Back)</span>
+                                    </div>
+                                    <div class="photo-upload-container">
+                                        <input type="file" id="log-photo-back" accept="image/*" class="photo-file-input" onchange="handlePhotoUpload(event, 'back')">
+                                        <label for="log-photo-back" class="photo-upload-dropzone" id="photo-dropzone-back">
+                                            <div style="font-size: 1.9rem; margin-bottom: 2px;">🚶</div>
+                                            <span style="font-weight: 600; font-size: 0.85rem;">แตะถ่าย / เลือกรูป</span>
+                                            <small style="color: var(--text-muted); font-size: 0.75rem;">ด้านหลังแผ่นหลัง</small>
+                                        </label>
+                                        <div class="photo-preview-wrap" id="photo-preview-wrap-back" style="display: none;">
+                                            <img id="photo-preview-img-back" src="" alt="พรีวิวรูปด้านหลัง">
+                                            <button type="button" class="btn-remove-photo" onclick="removeUploadedPhoto('back')">✕ นำรูปออก</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -623,6 +675,13 @@
 
                 <!-- Comparison Split Viewer -->
                 <div class="card-container" id="photo-comparison-card">
+                    <!-- Angle Selector Pills for Comparison -->
+                    <div class="angle-pill-group" id="compare-angle-pills">
+                        <button type="button" class="filter-pill active" data-angle="front" onclick="setComparisonAngle('front')">👤 ด้านหน้า (Front)</button>
+                        <button type="button" class="filter-pill" data-angle="side" onclick="setComparisonAngle('side')">🧍 ด้านข้าง (Side)</button>
+                        <button type="button" class="filter-pill" data-angle="back" onclick="setComparisonAngle('back')">🚶 ด้านหลัง (Back)</button>
+                    </div>
+
                     <div class="compare-selectors">
                         <div class="compare-select-item">
                             <label for="before-photo-select">👈 รูปเริ่มต้น (Before):</label>

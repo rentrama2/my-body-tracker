@@ -25,7 +25,13 @@ let currentFilter = {
     metricView: 'all' // 'all', 'weight', 'waist'
 };
 
-// Temporary Log Form State
+// Temporary Log Form State (Triple Angle Photos: Front, Side, Back)
+let currentUploadedPhotos = {
+    front: null,
+    side: null,
+    back: null
+};
+let currentComparisonAngle = 'front'; // 'front', 'side', 'back'
 let currentUploadedPhoto = null;
 let currentSelectedTags = [];
 
@@ -284,7 +290,15 @@ function setupEventListeners() {
             armRight: parseFloat(document.getElementById("log-arm-right").value) || 0,
             thighLeft: parseFloat(document.getElementById("log-thigh-left").value) || 0,
             thighRight: parseFloat(document.getElementById("log-thigh-right").value) || 0,
-            photo: currentUploadedPhoto,
+            photo: currentUploadedPhotos.front || currentUploadedPhotos.side || currentUploadedPhotos.back || currentUploadedPhoto || null,
+            photoFront: currentUploadedPhotos.front,
+            photoSide: currentUploadedPhotos.side,
+            photoBack: currentUploadedPhotos.back,
+            photos: {
+                front: currentUploadedPhotos.front,
+                side: currentUploadedPhotos.side,
+                back: currentUploadedPhotos.back
+            },
             tags: [...currentSelectedTags],
             notes: document.getElementById("log-notes").value.trim()
         };
@@ -292,9 +306,22 @@ function setupEventListeners() {
         if (logId) {
             const index = state.logs.findIndex(log => log.id === parseInt(logId));
             if (index !== -1) {
-                if (!newLog.photo && state.logs[index].photo) {
-                    newLog.photo = state.logs[index].photo;
+                const old = state.logs[index];
+                if (!newLog.photoFront && (old.photoFront || old.photos?.front || old.photo)) {
+                    newLog.photoFront = old.photoFront || old.photos?.front || old.photo;
                 }
+                if (!newLog.photoSide && (old.photoSide || old.photos?.side)) {
+                    newLog.photoSide = old.photoSide || old.photos?.side;
+                }
+                if (!newLog.photoBack && (old.photoBack || old.photos?.back)) {
+                    newLog.photoBack = old.photoBack || old.photos?.back;
+                }
+                newLog.photo = newLog.photoFront || newLog.photoSide || newLog.photoBack || null;
+                newLog.photos = {
+                    front: newLog.photoFront,
+                    side: newLog.photoSide,
+                    back: newLog.photoBack
+                };
                 state.logs[index] = newLog;
             }
         } else {
@@ -311,13 +338,27 @@ function setupEventListeners() {
     });
 }
 
+// Helper to retrieve photo for a specific angle from a log
+function getLogPhoto(log, angle = 'front') {
+    if (!log) return null;
+    if (angle === 'front') {
+        return log.photoFront || log.photos?.front || log.photo || null;
+    } else if (angle === 'side') {
+        return log.photoSide || log.photos?.side || null;
+    } else if (angle === 'back') {
+        return log.photoBack || log.photos?.back || null;
+    }
+    return null;
+}
+window.getLogPhoto = getLogPhoto;
+
 // Reset the Log Entry form
 function resetLogForm() {
     document.getElementById("measurement-form").reset();
     document.getElementById("edit-id").value = "";
     document.getElementById("log-date").value = new Date().toISOString().split('T')[0];
     document.getElementById("save-log-btn").textContent = "บันทึกข้อมูล";
-    removeUploadedPhoto();
+    removeUploadedPhoto(); // clears all 3 angles
     
     // Clear tags
     currentSelectedTags = [];
@@ -325,8 +366,8 @@ function resetLogForm() {
 }
 window.resetLogForm = resetLogForm;
 
-// Photo Upload Handler with Automatic Canvas Compression
-function handlePhotoUpload(event) {
+// Photo Upload Handler with Automatic Canvas Compression (supports front, side, back)
+function handlePhotoUpload(event, angle = 'front') {
     const file = event.target.files[0];
     if (!file) return;
 
@@ -361,12 +402,22 @@ function handlePhotoUpload(event) {
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0, width, height);
 
-            currentUploadedPhoto = canvas.toDataURL("image/jpeg", 0.75);
+            const compressed = canvas.toDataURL("image/jpeg", 0.75);
+            currentUploadedPhotos[angle] = compressed;
+            currentUploadedPhoto = currentUploadedPhotos.front || currentUploadedPhotos.side || currentUploadedPhotos.back || compressed;
 
-            document.getElementById("photo-preview-img").src = currentUploadedPhoto;
-            document.getElementById("photo-preview-wrap").style.display = "block";
-            document.getElementById("photo-dropzone").style.display = "none";
-            showToast("แนบรูปถ่ายเรียบร้อย!", "success");
+            const previewImg = document.getElementById(`photo-preview-img-${angle}`);
+            const previewWrap = document.getElementById(`photo-preview-wrap-${angle}`);
+            const dropzone = document.getElementById(`photo-dropzone-${angle}`);
+
+            if (previewImg && previewWrap && dropzone) {
+                previewImg.src = compressed;
+                previewWrap.style.display = "block";
+                dropzone.style.display = "none";
+            }
+
+            const angleLabels = { front: "ด้านหน้า", side: "ด้านข้าง", back: "ด้านหลัง" };
+            showToast(`แนบรูป${angleLabels[angle] || ''}เรียบร้อย!`, "success");
         };
         img.src = e.target.result;
     };
@@ -374,13 +425,23 @@ function handlePhotoUpload(event) {
 }
 window.handlePhotoUpload = handlePhotoUpload;
 
-// Remove uploaded photo in form
-function removeUploadedPhoto() {
-    currentUploadedPhoto = null;
-    document.getElementById("log-photo").value = "";
-    document.getElementById("photo-preview-img").src = "";
-    document.getElementById("photo-preview-wrap").style.display = "none";
-    document.getElementById("photo-dropzone").style.display = "flex";
+// Remove uploaded photo in form (angle: 'front', 'side', 'back', or all)
+function removeUploadedPhoto(angle) {
+    if (angle) {
+        currentUploadedPhotos[angle] = null;
+        const fileInput = document.getElementById(`log-photo-${angle}`);
+        const previewImg = document.getElementById(`photo-preview-img-${angle}`);
+        const previewWrap = document.getElementById(`photo-preview-wrap-${angle}`);
+        const dropzone = document.getElementById(`photo-dropzone-${angle}`);
+
+        if (fileInput) fileInput.value = "";
+        if (previewImg) previewImg.src = "";
+        if (previewWrap) previewWrap.style.display = "none";
+        if (dropzone) dropzone.style.display = "flex";
+    } else {
+        ['front', 'side', 'back'].forEach(a => removeUploadedPhoto(a));
+    }
+    currentUploadedPhoto = currentUploadedPhotos.front || currentUploadedPhotos.side || currentUploadedPhotos.back || null;
 }
 window.removeUploadedPhoto = removeUploadedPhoto;
 
@@ -1287,9 +1348,20 @@ function renderHistoryTable() {
         const armText = (log.armLeft || log.armRight) ? `${log.armLeft.toFixed(1)} / ${log.armRight.toFixed(1)}` : "--";
         const thighText = (log.thighLeft || log.thighRight) ? `${log.thighLeft.toFixed(1)} / ${log.thighRight.toFixed(1)}` : "--";
 
-        const photoHtml = log.photo 
-            ? `<img src="${log.photo}" class="tbl-thumb" alt="รูป" onclick="viewPhotoFullscreen('${log.photo}')" title="คลิกเพื่อดูรูปใหญ่">` 
-            : `<span style="color: var(--text-muted); font-size: 0.8rem;">-</span>`;
+        const pF = getLogPhoto(log, 'front');
+        const pS = getLogPhoto(log, 'side');
+        const pB = getLogPhoto(log, 'back');
+
+        let photoHtml = "";
+        if (pF || pS || pB) {
+            photoHtml = '<div class="tbl-thumb-group">';
+            if (pF) photoHtml += `<div class="tbl-thumb-item" onclick="viewPhotoFullscreen('${pF}')" title="ด้านหน้า (Front)"><img src="${pF}" alt="หน้า"><span class="tbl-thumb-tag">F</span></div>`;
+            if (pS) photoHtml += `<div class="tbl-thumb-item" onclick="viewPhotoFullscreen('${pS}')" title="ด้านข้าง (Side)"><img src="${pS}" alt="ข้าง"><span class="tbl-thumb-tag">S</span></div>`;
+            if (pB) photoHtml += `<div class="tbl-thumb-item" onclick="viewPhotoFullscreen('${pB}')" title="ด้านหลัง (Back)"><img src="${pB}" alt="หลัง"><span class="tbl-thumb-tag">B</span></div>`;
+            photoHtml += '</div>';
+        } else {
+            photoHtml = `<span style="color: var(--text-muted); font-size: 0.8rem;">-</span>`;
+        }
 
         const tagsHtml = (log.tags && log.tags.length > 0)
             ? `<div class="tbl-tags">${log.tags.map(t => `<span class="tbl-tag-pill">${t}</span>`).join("")}</div>`
@@ -1345,13 +1417,33 @@ window.editLog = function(logId) {
         chip.classList.toggle("active", currentSelectedTags.includes(tag));
     });
 
-    if (log.photo) {
-        currentUploadedPhoto = log.photo;
-        document.getElementById("photo-preview-img").src = log.photo;
-        document.getElementById("photo-preview-wrap").style.display = "block";
-        document.getElementById("photo-dropzone").style.display = "none";
-    } else {
-        removeUploadedPhoto();
+    // Populate all 3 angle photo slots
+    removeUploadedPhoto(); // reset slots first
+
+    const pFront = getLogPhoto(log, 'front');
+    const pSide = getLogPhoto(log, 'side');
+    const pBack = getLogPhoto(log, 'back');
+
+    if (pFront) {
+        currentUploadedPhotos.front = pFront;
+        const img = document.getElementById("photo-preview-img-front");
+        const wrap = document.getElementById("photo-preview-wrap-front");
+        const dz = document.getElementById("photo-dropzone-front");
+        if (img && wrap && dz) { img.src = pFront; wrap.style.display = "block"; dz.style.display = "none"; }
+    }
+    if (pSide) {
+        currentUploadedPhotos.side = pSide;
+        const img = document.getElementById("photo-preview-img-side");
+        const wrap = document.getElementById("photo-preview-wrap-side");
+        const dz = document.getElementById("photo-dropzone-side");
+        if (img && wrap && dz) { img.src = pSide; wrap.style.display = "block"; dz.style.display = "none"; }
+    }
+    if (pBack) {
+        currentUploadedPhotos.back = pBack;
+        const img = document.getElementById("photo-preview-img-back");
+        const wrap = document.getElementById("photo-preview-wrap-back");
+        const dz = document.getElementById("photo-dropzone-back");
+        if (img && wrap && dz) { img.src = pBack; wrap.style.display = "block"; dz.style.display = "none"; }
     }
 
     document.getElementById("save-log-btn").textContent = "อัปเดตบันทึกสัดส่วน";
@@ -1374,18 +1466,32 @@ window.viewPhotoFullscreen = function(photoUrl) {
     w.document.write(`<body style="margin:0;background:#090d16;display:flex;align-items:center;justify-content:center;height:100vh;"><img src="${photoUrl}" style="max-width:95vw;max-height:95vh;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.8);"></body>`);
 };
 
-// Before & After Split Slider Rendering
+// Angle selector for Before/After split comparison
+window.setComparisonAngle = function(angle) {
+    currentComparisonAngle = angle;
+    document.querySelectorAll("#compare-angle-pills .filter-pill").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-angle") === angle);
+    });
+    renderComparisonSlider();
+};
+
+// Before & After Split Slider Rendering (Supports front, side, back)
 function renderComparisonSlider() {
-    const logsWithPhotos = state.logs.filter(l => !!l.photo).sort((a, b) => new Date(a.date) - new Date(b.date));
+    const logsWithPhotos = state.logs.filter(l => !!getLogPhoto(l, currentComparisonAngle)).sort((a, b) => new Date(a.date) - new Date(b.date));
     
     const beforeSelect = document.getElementById("before-photo-select");
     const afterSelect = document.getElementById("after-photo-select");
     const sliderContainer = document.getElementById("comparison-container");
     const noPhotoAlert = document.getElementById("no-photo-alert");
 
+    const angleLabels = { front: "ด้านหน้า (Front)", side: "ด้านข้าง (Side)", back: "ด้านหลัง (Back)" };
+    const curAngleLabel = angleLabels[currentComparisonAngle] || "ด้านหน้า";
+
     if (logsWithPhotos.length === 0) {
         sliderContainer.style.display = "none";
         noPhotoAlert.style.display = "block";
+        const h3 = noPhotoAlert.querySelector("h3");
+        if (h3) h3.textContent = `ยังไม่มีรูปถ่าย${curAngleLabel}ที่บันทึกไว้`;
         document.querySelector(".compare-selectors").style.display = "none";
         return;
     }
@@ -1422,14 +1528,17 @@ function renderComparisonSlider() {
     const beforeLog = logsWithPhotos.find(l => l.id.toString() === beforeSelect.value) || logsWithPhotos[0];
     const afterLog = logsWithPhotos.find(l => l.id.toString() === afterSelect.value) || logsWithPhotos[logsWithPhotos.length - 1];
 
-    document.getElementById("before-img").src = beforeLog.photo;
-    document.getElementById("after-img").src = afterLog.photo;
+    const beforeSrc = getLogPhoto(beforeLog, currentComparisonAngle);
+    const afterSrc = getLogPhoto(afterLog, currentComparisonAngle);
+
+    document.getElementById("before-img").src = beforeSrc;
+    document.getElementById("after-img").src = afterSrc;
 
     const bDate = new Date(beforeLog.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short' });
     const aDate = new Date(afterLog.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short' });
 
-    document.getElementById("before-tag").textContent = `Before (${bDate} • ${beforeLog.weight} กก.)`;
-    document.getElementById("after-tag").textContent = `After (${aDate} • ${afterLog.weight} กก.)`;
+    document.getElementById("before-tag").textContent = `Before • ${curAngleLabel} (${bDate} • ${beforeLog.weight} กก.)`;
+    document.getElementById("after-tag").textContent = `After • ${curAngleLabel} (${aDate} • ${afterLog.weight} กก.)`;
 
     handleSliderDrag(50);
 }
@@ -1452,33 +1561,58 @@ window.handleSliderDrag = function(val) {
     }
 };
 
-// Render Gallery Grid
+// Render Gallery Grid (Shows all angles Front, Side, Back)
 function renderPhotoGallery() {
     const grid = document.getElementById("photo-gallery-grid");
     if (!grid) return;
 
-    const logsWithPhotos = state.logs.filter(l => !!l.photo).sort((a, b) => new Date(b.date) - new Date(a.date));
+    const angleConfigs = [
+        { key: 'front', label: 'ด้านหน้า' },
+        { key: 'side', label: 'ด้านข้าง' },
+        { key: 'back', label: 'ด้านหลัง' }
+    ];
 
-    if (logsWithPhotos.length === 0) {
+    const galleryItems = [];
+    const sortedLogs = [...state.logs].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    sortedLogs.forEach(l => {
+        const d = new Date(l.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+        angleConfigs.forEach(a => {
+            const photoSrc = getLogPhoto(l, a.key);
+            if (photoSrc) {
+                galleryItems.push({
+                    logId: l.id,
+                    angle: a.key,
+                    angleLabel: a.label,
+                    dateStr: d,
+                    weight: l.weight,
+                    photo: photoSrc
+                });
+            }
+        });
+    });
+
+    if (galleryItems.length === 0) {
         grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 1.5rem;">ยังไม่มีรูปถ่ายในระบบ</p>`;
         return;
     }
 
-    grid.innerHTML = logsWithPhotos.map(l => {
-        const d = new Date(l.date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
-        return `
-            <div class="gallery-item" onclick="selectGalleryPhoto(${l.id})">
-                <img src="${l.photo}" alt="รูป ${d}">
-                <div class="gallery-info">
-                    <span>${d}</span>
-                    <strong>${l.weight} กก.</strong>
-                </div>
+    grid.innerHTML = galleryItems.map(item => `
+        <div class="gallery-item" onclick="selectGalleryPhoto(${item.logId}, '${item.angle}')">
+            <img src="${item.photo}" alt="${item.angleLabel} ${item.dateStr}">
+            <div class="gallery-info">
+                <span><strong>${item.angleLabel}</strong> • ${item.dateStr}</span>
+                <strong>${item.weight} กก.</strong>
             </div>
-        `;
-    }).join("");
+        </div>
+    `).join("");
 }
 
-window.selectGalleryPhoto = function(logId) {
+window.selectGalleryPhoto = function(logId, angle = 'front') {
+    currentComparisonAngle = angle;
+    document.querySelectorAll("#compare-angle-pills .filter-pill").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-angle") === angle);
+    });
     const afterSelect = document.getElementById("after-photo-select");
     if (afterSelect) {
         afterSelect.value = logId;
