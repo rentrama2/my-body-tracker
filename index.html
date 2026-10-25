@@ -1472,6 +1472,11 @@ select.form-input {
     width: 100%;
 }
 
+.comp-photo-single .comp-photo-frame,
+.comp-photo-single .comp-empty-frame {
+    height: 360px;
+}
+
 .comp-photo-frame {
     position: relative;
     border-radius: 12px;
@@ -4846,7 +4851,6 @@ function renderComparisonCard() {
 
     let photosHtml = `<div class="comp-photos-grid">`;
     angles.forEach(ang => {
-        const bPhoto = getLogPhoto(beforeLog, ang.key);
         const aPhoto = getLogPhoto(afterLog, ang.key);
 
         photosHtml += `
@@ -4854,14 +4858,10 @@ function renderComparisonCard() {
                 <div class="comp-angle-header">
                     <span>${ang.icon} ${ang.title}</span>
                 </div>
-                <div class="comp-photo-pair">
-                    ${bPhoto 
-                        ? renderPhotoFrame(bPhoto, `ครั้งก่อน: ${beforeLog.weight} กก.`, 'comp-badge-before')
-                        : renderPhotoFrame(null, 'ครั้งก่อน (ไม่มีรูป)', '', true, `${bDateShort} • ${beforeLog.weight} กก.`)
-                    }
+                <div class="comp-photo-single">
                     ${aPhoto 
-                        ? renderPhotoFrame(aPhoto, `ครั้งนี้: ${afterLog.weight} กก.`, 'comp-badge-after')
-                        : renderPhotoFrame(null, 'ครั้งนี้ (ไม่มีรูป)', '', true, `${aDateShort} • ${afterLog.weight} กก.`)
+                        ? renderPhotoFrame(aPhoto, `${aDate} • ${afterLog.weight} กก.`, 'comp-badge-after')
+                        : renderPhotoFrame(null, 'ยังไม่มีรูปถ่าย', '', true, `${aDateShort} • ${afterLog.weight} กก.`)
                     }
                 </div>
             </div>
@@ -5191,13 +5191,10 @@ window.downloadComparisonCard = async function() {
         drawRoundRect(x, y, w, h, r, null, "rgba(255,255,255,0.15)", 2);
     }
 
-    // Load images
-    const [bFront, aFront, bSide, aSide, bBack, aBack] = await Promise.all([
-        loadImg(getLogPhoto(beforeLog, 'front')),
+    // Load images (Current log 3 angles)
+    const [aFront, aSide, aBack] = await Promise.all([
         loadImg(getLogPhoto(afterLog, 'front')),
-        loadImg(getLogPhoto(beforeLog, 'side')),
         loadImg(getLogPhoto(afterLog, 'side')),
-        loadImg(getLogPhoto(beforeLog, 'back')),
         loadImg(getLogPhoto(afterLog, 'back'))
     ]);
 
@@ -5293,9 +5290,9 @@ window.downloadComparisonCard = async function() {
     const startX = 55;
 
     const angleDefs = [
-        { title: "👤 1. ด้านหน้า (Front)", bImg: bFront, aImg: aFront },
-        { title: "🧍 2. ด้านข้าง (Side)", bImg: bSide, aImg: aSide },
-        { title: "🚶 3. ด้านหลัง (Back)", bImg: bBack, aImg: aBack }
+        { title: "👤 1. ด้านหน้า (Front)", img: aFront },
+        { title: "🧍 2. ด้านข้าง (Side)", img: aSide },
+        { title: "🚶 3. ด้านหลัง (Back)", img: aBack }
     ];
 
     angleDefs.forEach((ang, i) => {
@@ -5310,25 +5307,15 @@ window.downloadComparisonCard = async function() {
 
         const imgAreaY = photoY + 40;
         const imgAreaH = photoH - 4;
-        const halfW = (colW - 32) / 2;
-        const bX = colX + 12;
-        const aX = bX + halfW + 8;
+        const imgW = colW - 24;
+        const imgX = colX + 12;
 
-        // Before Photo
-        drawCover(ang.bImg, bX, imgAreaY, halfW, imgAreaH, 10, "📷 ครั้งก่อน");
-        drawRoundRect(bX + 4, imgAreaY + imgAreaH - 32, halfW - 8, 26, 6, "rgba(15,23,42,0.9)", "rgba(255,255,255,0.1)", 1);
-        ctx.fillStyle = "#cbd5e1";
-        ctx.font = "bold 11px sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText(`Before (${beforeLog.weight})`, bX + halfW / 2, imgAreaY + imgAreaH - 15);
-
-        // After Photo
-        drawCover(ang.aImg, aX, imgAreaY, halfW, imgAreaH, 10, "📷 ครั้งนี้");
-        drawRoundRect(aX + 4, imgAreaY + imgAreaH - 32, halfW - 8, 26, 6, "rgba(15,23,42,0.9)", "rgba(6,182,212,0.4)", 1);
+        drawCover(ang.img, imgX, imgAreaY, imgW, imgAreaH, 12, "📷 ยังไม่มีรูปถ่าย");
+        drawRoundRect(imgX + 10, imgAreaY + imgAreaH - 34, imgW - 20, 26, 6, "rgba(15,23,42,0.85)", "rgba(6,182,212,0.4)", 1);
         ctx.fillStyle = "#38bdf8";
-        ctx.font = "bold 11px sans-serif";
+        ctx.font = "bold 12px sans-serif";
         ctx.textAlign = "center";
-        ctx.fillText(`After (${afterLog.weight})`, aX + halfW / 2, imgAreaY + imgAreaH - 15);
+        ctx.fillText(`${aDate} • ${afterLog.weight} กก.`, imgX + imgW / 2, imgAreaY + imgAreaH - 16);
     });
 
     // Measurements Title

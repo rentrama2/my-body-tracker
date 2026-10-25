@@ -1457,6 +1457,11 @@ select.form-input {
     width: 100%;
 }
 
+.comp-photo-single .comp-photo-frame,
+.comp-photo-single .comp-empty-frame {
+    height: 360px;
+}
+
 .comp-photo-frame {
     position: relative;
     border-radius: 12px;
