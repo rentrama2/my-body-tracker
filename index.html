@@ -4915,13 +4915,6 @@ function renderComparisonCard() {
             diffBadge: (afterLog.thighLeft && beforeLog.thighLeft) ? formatDiffBadge(afterLog.thighLeft, beforeLog.thighLeft, mUnit, true) : ''
         },
         {
-            icon: '🧬',
-            label: 'รอบสะโพก',
-            curVal: afterLog.hips ? `${afterLog.hips.toFixed(1)} ${mUnit}` : '--',
-            prevVal: beforeLog.hips ? `${beforeLog.hips.toFixed(1)} ${mUnit}` : '--',
-            diffBadge: (afterLog.hips && beforeLog.hips) ? formatDiffBadge(afterLog.hips, beforeLog.hips, mUnit, true) : ''
-        },
-        {
             icon: '🔥',
             label: '% ไขมันในร่างกาย',
             curVal: bfAfter ? `${bfAfter}%` : '--',
@@ -4929,16 +4922,6 @@ function renderComparisonCard() {
             diffBadge: (bfAfter && bfBefore) ? formatDiffBadge(bfAfter, bfBefore, '%', true) : ''
         }
     ];
-
-    if (afterLog.neck || beforeLog.neck) {
-        metrics.push({
-            icon: '🧣',
-            label: 'รอบคอ',
-            curVal: afterLog.neck ? `${afterLog.neck.toFixed(1)} ${mUnit}` : '--',
-            prevVal: beforeLog.neck ? `${beforeLog.neck.toFixed(1)} ${mUnit}` : '--',
-            diffBadge: (afterLog.neck && beforeLog.neck) ? formatDiffBadge(afterLog.neck, beforeLog.neck, mUnit, true) : ''
-        });
-    }
 
     let metricsHtml = `
         <div class="comp-metrics-section">
@@ -5107,10 +5090,10 @@ window.downloadComparisonCard = async function() {
             diff: (afterLog.thighLeft && beforeLog.thighLeft) ? calcDiffPill(afterLog.thighLeft, beforeLog.thighLeft, mUnit, true) : null
         },
         {
-            label: "🧬 รอบสะโพก / % ไขมัน",
-            cur: `${afterLog.hips ? `${afterLog.hips.toFixed(1)} ${mUnit}` : '--'} ${bfAfter ? `(${bfAfter}%)` : ''}`,
-            prev: `${beforeLog.hips ? `${beforeLog.hips.toFixed(1)} ${mUnit}` : '--'} ${bfBefore ? `(${bfBefore}%)` : ''}`,
-            diff: (afterLog.hips && beforeLog.hips) ? calcDiffPill(afterLog.hips, beforeLog.hips, mUnit, true) : null
+            label: "🔥 % ไขมันในร่างกาย",
+            cur: bfAfter ? `${bfAfter}%` : "--",
+            prev: bfBefore ? `${bfBefore}%` : "--",
+            diff: (bfAfter && bfBefore) ? calcDiffPill(bfAfter, bfBefore, "%", true) : null
         }
     ];
 
